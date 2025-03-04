@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
-// import { AppSidebar } from './app-sidebar'
+import { AppSidebar } from './app-sidebar'
 import { ModeToggle } from './mode-toggle'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from '@/components/ui/dropdown-menu'
@@ -27,13 +27,14 @@ const SidebarLayout = ({ children }: Props) => {
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen overflow-hidden">
-        {/* <AppSidebar /> */}
+      <div className="w-full flex h-screen overflow-hidden">
+        <AppSidebar />
         <SidebarInset className="flex flex-col flex-1">
           <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-full items-center gap-4 px-10">
-              <div className="flex-1 flex items-center gap-4">
-                
+              <div className="flex-1 flex text-title items-center gap-2">
+              <h1 className="text-2xl font-semibold text-black">Hey,</h1>
+              <p className="text-2xl font-semibold text-gray-700 mt-1">{session?.user.name}</p>
               </div>
 
               <div className="flex items-center gap-4">
