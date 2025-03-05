@@ -45,16 +45,17 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
   const { mutate: addToModule, isPending: isAddingPending } = useMutation({
     mutationFn: async () => {
       const { videoId, playlistId } = getYouTubeIds(url);
+      console.log("videoId:", videoId, "playlistId:", playlistId, "moduleId:", moduleId, "action:", action, "moduleName:", moduleName);
       if (!videoId && !playlistId) throw new Error("Invalid YouTube URL");
       if (action === "new" && !moduleName.trim()) throw new Error("Module name is required");
-
+    
       const response = await axios.post<{ module: { id: string } }>("/api/add-to-module", {
         userId,
         videoId: action === "playlist" ? null : videoId,
         playlistId: action === "playlist" ? playlistId : null,
         moduleId: moduleId || null,
         action: moduleId ? "existing" : action,
-        moduleName: action === "new" ? moduleName : undefined,
+        newModuleName: action === "new" ? moduleName : undefined,
       });
       return response.data;
     },
@@ -71,33 +72,10 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
     },
   });
 
-  // Mutation for deleting a module
-  // const { mutate: deleteModule, isPending: isDeletingPending } = useMutation({
-  //   mutationFn: async (moduleId: string) => {
-  //     const response = await axios.delete(`/api/video-modules/${moduleId}?userId=${userId}`);
-  //     return response.data;
-  //   },
-  //   onSuccess: () => {
-  //     toast({
-  //       title: "Success",
-  //       description: "Module deleted successfully",
-  //     });
-  //     queryClient.invalidateQueries({ queryKey: ['modules', userId] });
-  //   },
-  //   onError: (error) => {
-  //     console.error(error);
-  //     toast({
-  //       title: "Error",
-  //       description: "Failed to delete module",
-  //       variant: "destructive",
-  //     });
-  //   },
-  // });
-
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const { videoId, playlistId } = getYouTubeIds(url);
+    console.log("handle videoId:", videoId, "playlistId:", playlistId, "moduleId:", moduleId, "action:", action, "moduleName:", moduleName);
 
     if (!url || (!videoId && !playlistId)) {
       toast("Please enter a valid YouTube URL");
@@ -116,20 +94,6 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
 
     addToModule();
   };
-
-//   const handleDelete = (moduleId: string) => {
-//     if (confirm("Are you sure you want to delete this module?")) {
-//       try
-//       {
-//         deleteModule(moduleId,userId);
-//       }
-//       catch (error)
-//       {
-//         console.error(error);
-//         toast( "Failed to delete module");
-//       }
-//     }
-//   };
 
   const { videoId, playlistId } = getYouTubeIds(url);
   // console.log("videoId:", videoId, "playlistId:", playlistId);
@@ -249,15 +213,7 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
                   >
                     {module.name}
                   </Link>
-                  {/* <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDelete(module.id)}
-                    // disabled={isDeletingPending}
-                    className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600"
-                  >
-                    <Trash2 className="h-5 w-5" />
-                  </Button> */}
+                
                 </div>
               ))}
             </div>

@@ -11,7 +11,11 @@ export default async function CreateVideoPage() {
   }
   const userId = session.user.id
 
-  const modules = []
+  const modules = await prisma.videoModule.findMany({
+    where: { userId },
+    select: { id: true, name: true
+    }
+  })
 
   return (
     <CreateVideoClient userId={userId} modules={modules} />
