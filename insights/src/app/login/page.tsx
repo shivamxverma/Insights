@@ -15,7 +15,7 @@ export default function LoginForm() {
     setIsLoading(true);
     try {
       await signIn(provider, {
-        callbackUrl: "/gallery", // Redirect after successful login
+        callbackUrl: "/", // Redirect after successful login
       });
     } catch (error) {
       console.error("OAuth sign-in error:", error);

@@ -62,7 +62,7 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
     onSuccess: ({ module }) => {
       toast("Video or playlist added to module",);
       queryClient.invalidateQueries({ queryKey: ['modules', userId] });
-      router.push(`/video-modules/${module.id}`);
+      router.push(`/video-modules/${module.id}/${videoId}`);
     },
     onError: (error: any) => {
       console.error(error);

@@ -127,3 +127,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-height: 700px) {
+  .iframe-container {
+    height: 300px;
+  }
+}
