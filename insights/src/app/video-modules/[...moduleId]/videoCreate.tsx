@@ -11,6 +11,8 @@ import { AppSidebar } from "@/app/(protected)/app-sidebar";
 import Transcript from "@/components/Transcript";
 import AiNotes from "@/components/AiNotes";
 import AiChat from "@/components/AiChat";
+import { VideoSidebar } from "@/components/VideoSidebar";
+import { Video } from "lucide-react";
 
 interface Video {
   id: string;
@@ -226,7 +228,11 @@ export default function VideoLearningPageClient({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-background text-foreground">
-        <AppSidebar />
+      <VideoSidebar
+          courseId={courseId}
+          videoId={module.videos[currentVideoIndex].videoId}
+          videos={module.videos}
+        />
         <VideoLearningContent
           courseId={courseId}
           module={module}
