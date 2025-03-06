@@ -11,6 +11,9 @@ import { AppSidebar } from "@/app/(protected)/app-sidebar";
 import{ VideoSidebar }from "@/components/VideoSidebar";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import Transcript from "@/components/Transcript";
+import { prisma } from "@/lib/db";
+import AiNote from "@/components/AiNotes";
 
 interface Video {
   id: string;
@@ -48,7 +51,7 @@ export default function DashboardClient({ modules }: { modules: Module[] }) {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-background text-foreground">
-        <AppSidebar />
+        {/* <ASidebar /> */}
         <div className="flex-1 flex flex-col">
           <Header videoTitle="Dashboard" lecturer="Your Learning Hub" />
           <main className="flex-1 p-6 overflow-hidden">
@@ -58,12 +61,8 @@ export default function DashboardClient({ modules }: { modules: Module[] }) {
                 <Plus className="h-4 w-4" /> Create New Module
               </Button>
             </div>
+
             <div className="flex h-full overflow-hidden">
-              <VideoSidebar
-                courseId={selectedModuleId}
-                videoId={selectedModule.videos[0]?.videoId || ""}
-                videos={selectedModule.videos}
-              />
               <div className="flex-1 ml-4 overflow-hidden">
                 <Tabs defaultValue="overview" className="h-full">
                   <TabsList className="w-full justify-start border-b border-border rounded-none bg-background">

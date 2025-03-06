@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import * as cookie from "cookie";
-// import { getAuthSession } from "./lib/auth";
 
 export function middleware(request: NextRequest) {
   const cookies = cookie.parse(request.headers.get("cookie") || "");
-  // const session = getAuthSession
 
   const sessionToken = cookies["next-auth.session-token"] || cookies["__Secure-next-auth.session-token"];
 
