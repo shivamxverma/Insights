@@ -1,3 +1,4 @@
+// app/video-modules/[moduleId]/videoCreate.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -11,6 +12,7 @@ import { AppSidebar } from "@/app/(protected)/app-sidebar";
 import Transcript from "@/components/Transcript";
 import AiNotes from "@/components/AiNotes";
 import AiChat from "@/components/AiChat";
+import QuizCard from "@/components/QuizzCard"; // Import the new component
 import { VideoSidebar } from "@/components/VideoSidebar";
 import { Video } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -29,7 +31,6 @@ interface Module {
   videos: Video[];
 }
 
-// Child component to ensure useSidebar is called within SidebarProvider
 function VideoLearningContent({
   courseId,
   module,
@@ -43,7 +44,7 @@ function VideoLearningContent({
   const [rightTab, setRightTab] = useState("notes");
   const { theme } = useTheme();
   const router = useRouter();
-  const { state: sidebarState } = useSidebar(); // Now safely called within SidebarProvider
+  const { state: sidebarState } = useSidebar();
 
   const currentVideo = module.videos[currentVideoIndex];
 
@@ -101,7 +102,7 @@ function VideoLearningContent({
   }, [isDragging, handleDragEnd]);
 
   return (
-    <div className="h-176">
+    <div className="h-[calc(100vh-64px)]">
       <Header videoTitle={currentVideo.name || "Untitled Video"} lecturer="Graham Weaver" />
       <main
         className="flex flex-1 overflow-hidden"
@@ -113,7 +114,6 @@ function VideoLearningContent({
           className="w-full lg:w-auto flex flex-col h-full border-r border-border"
           style={{ flex: `0 0 ${leftSectionWidth}%` }}
         >
-          {/* YouTube Video Player */}
           <div className="relative h-[400px] bg-black overflow-hidden">
             <iframe
               src={`https://www.youtube.com/embed/${currentVideo.videoId}`}
@@ -124,7 +124,6 @@ function VideoLearningContent({
             />
           </div>
 
-          {/* Tabs and Transcript */}
           <div className="flex flex-col flex-1 overflow-hidden">
             <Tabs defaultValue={leftTab} onValueChange={setLeftTab} className="flex flex-col h-full">
               <TabsList className="w-full justify-start border-b mt-2 border-border rounded-none bg-background">
@@ -139,7 +138,7 @@ function VideoLearningContent({
                   Transcript
                 </TabsTrigger>
                 <TabsTrigger value="discover" className="data-[state=active]:bg-primary/10">
-                  MyNotes
+                  Discover
                 </TabsTrigger>
                 <Button
                   onClick={handleNext}
@@ -149,22 +148,20 @@ function VideoLearningContent({
                   Next →
                 </Button>
               </TabsList>
-            
-            <ScrollArea className="h-72">
-              <TabsContent value="transcript" className="flex-1 overflow-hidden p-0 m-0">
-                <div className="h-full overflow-y-auto p-3">
-                  <Transcript moduleId={courseId} videoId={currentVideo.videoId} />
-                </div>
-              </TabsContent>
-            </ScrollArea>
 
-            
-              <TabsContent value="discover" className="flex-1 overflow-auto p-4">
-                <div className="text-sm">
-                  <h3 className="text-lg font-semibold mb-2">Discover related content</h3>
-                  <p>Explore more videos and resources related to this topic.</p>
-                </div>
-              </TabsContent>
+              <ScrollArea className="h-[calc(100%-50px)]">
+                <TabsContent value="transcript" className="flex-1 overflow-hidden p-0 m-0">
+                  <div className="h-full overflow-y-auto p-3">
+                    <Transcript moduleId={courseId} videoId={currentVideo.videoId} />
+                  </div>
+                </TabsContent>
+                <TabsContent value="discover" className="flex-1 overflow-auto p-4">
+                  <div className="text-sm">
+                    <h3 className="text-lg font-semibold mb-2">Discover related content</h3>
+                    <p>Explore more videos and resources related to this topic.</p>
+                  </div>
+                </TabsContent>
+              </ScrollArea>
             </Tabs>
           </div>
         </div>
@@ -179,7 +176,7 @@ function VideoLearningContent({
           </div>
         </div>
 
-        {/* Right section - AI Notes and Chat */}
+        {/* Right section - AI Notes, AI Chat, and Quiz */}
         <div
           className="w-full lg:w-auto flex flex-col h-full overflow-hidden"
           style={{ flex: `0 0 ${100 - leftSectionWidth - 0.25}%` }}
@@ -192,24 +189,27 @@ function VideoLearningContent({
               <TabsTrigger value="chat" className="data-[state=active]:bg-primary/10">
                 AI Chat
               </TabsTrigger>
+              <TabsTrigger value="quiz" className="data-[state=active]:bg-primary/10">
+                Quiz
+              </TabsTrigger>
             </TabsList>
 
-            {/* <Transcript moduleId="cm7w82quc0005757y5a19qmz9" videoId="FoQR9rLpRy8" ></Transcript>
-            <AiNote moduleId="cm7w82quc0005757y5a19qmz9" videoId="FoQR9rLpRy8" ></AiNote> */}
-            <ScrollArea className="h-172">
-            <TabsContent value="notes" className="flex-1 overflow-hidden p-0 m-0">
-              <div className="h-full overflow-y-auto p-3">
-              <AiNotes moduleId={courseId} videoId={currentVideo.videoId} />
-              </div>
-            </TabsContent>
-            </ScrollArea >
-
-            <ScrollArea className="h-172">
-            <TabsContent value="chat" className="flex-1 overflow-hidden p-0 m-0">
-              <div className="h-full overflow-y-auto p-3">
-                <AiChat videoId={currentVideo.videoId} />
-              </div>
-            </TabsContent>
+            <ScrollArea className="h-[calc(100%-50px)]">
+              <TabsContent value="notes" className="flex-1 overflow-hidden p-0 m-0">
+                <div className="h-full overflow-y-auto p-3">
+                  <AiNotes moduleId={courseId} videoId={currentVideo.videoId} />
+                </div>
+              </TabsContent>
+              <TabsContent value="chat" className="flex-1 overflow-hidden p-0 m-0">
+                <div className="h-full overflow-y-auto p-3">
+                  <AiChat videoId={currentVideo.videoId} />
+                </div>
+              </TabsContent>
+              <TabsContent value="quiz" className="flex-1 overflow-hidden p-0 m-0">
+                <div className="h-full overflow-y-auto p-3">
+                  <QuizCard videoId={currentVideo.videoId} />
+                </div>
+              </TabsContent>
             </ScrollArea>
           </Tabs>
         </div>
@@ -238,7 +238,7 @@ export default function VideoLearningPageClient({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-background text-foreground">
-      <VideoSidebar
+        <VideoSidebar
           courseId={courseId}
           videoId={module.videos[currentVideoIndex].videoId}
           videos={module.videos}
