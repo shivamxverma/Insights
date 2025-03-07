@@ -13,6 +13,7 @@ import AiNotes from "@/components/AiNotes";
 import AiChat from "@/components/AiChat";
 import { VideoSidebar } from "@/components/VideoSidebar";
 import { Video } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Video {
   id: string;
@@ -100,7 +101,7 @@ function VideoLearningContent({
   }, [isDragging, handleDragEnd]);
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="h-176">
       <Header videoTitle={currentVideo.name || "Untitled Video"} lecturer="Graham Weaver" />
       <main
         className="flex flex-1 overflow-hidden"
@@ -138,7 +139,7 @@ function VideoLearningContent({
                   Transcript
                 </TabsTrigger>
                 <TabsTrigger value="discover" className="data-[state=active]:bg-primary/10">
-                  Discover
+                  MyNotes
                 </TabsTrigger>
                 <Button
                   onClick={handleNext}
@@ -148,13 +149,16 @@ function VideoLearningContent({
                   Next →
                 </Button>
               </TabsList>
-
+            
+            <ScrollArea className="h-72">
               <TabsContent value="transcript" className="flex-1 overflow-hidden p-0 m-0">
                 <div className="h-full overflow-y-auto p-3">
-                  <Transcript videoId={currentVideo.videoId} />
+                  <Transcript moduleId={courseId} videoId={currentVideo.videoId} />
                 </div>
               </TabsContent>
+            </ScrollArea>
 
+            
               <TabsContent value="discover" className="flex-1 overflow-auto p-4">
                 <div className="text-sm">
                   <h3 className="text-lg font-semibold mb-2">Discover related content</h3>
@@ -190,17 +194,23 @@ function VideoLearningContent({
               </TabsTrigger>
             </TabsList>
 
+            {/* <Transcript moduleId="cm7w82quc0005757y5a19qmz9" videoId="FoQR9rLpRy8" ></Transcript>
+            <AiNote moduleId="cm7w82quc0005757y5a19qmz9" videoId="FoQR9rLpRy8" ></AiNote> */}
+            <ScrollArea className="h-172">
             <TabsContent value="notes" className="flex-1 overflow-hidden p-0 m-0">
               <div className="h-full overflow-y-auto p-3">
-                <AiNotes videoId={currentVideo.videoId} />
+              <AiNotes moduleId={courseId} videoId={currentVideo.videoId} />
               </div>
             </TabsContent>
+            </ScrollArea >
 
+            <ScrollArea className="h-172">
             <TabsContent value="chat" className="flex-1 overflow-hidden p-0 m-0">
               <div className="h-full overflow-y-auto p-3">
                 <AiChat videoId={currentVideo.videoId} />
               </div>
             </TabsContent>
+            </ScrollArea>
           </Tabs>
         </div>
       </main>

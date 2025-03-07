@@ -1,27 +1,27 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import VideoLearningPageClient from "./videoCreate";
 import { getAuthSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-const prisma = new PrismaClient();
+interface Props {
+    params: Promise<{moduleId : string[]}>;
+}
 
-export default async function VideoLearningPage({ params }: { params: { moduleId: string[] } }) {
+export default async function VideoLearningPage(props : Props) {
+  const { moduleId } = await props.params;
   const session = await getAuthSession();
   if (!session) {
     redirect("/login");
   }
 
   const userId = session.user.id;
-  const [courseId, videoId] = params.moduleId;
+  const [courseId, videoId] = moduleId;
 
   console.log("Course ID:", courseId, "Video ID:", videoId);
   if(!courseId) {
     notFound();
   }
-  // if(!videoId) {
-  //   // redirect(`/video-modules/${courseId}`);
-  // }
   // Fetch the current module with its videos
   let userModule = await prisma.videoModule.findFirst({
     where: {
@@ -65,19 +65,12 @@ export default async function VideoLearningPage({ params }: { params: { moduleId
     notFound();
   }
 
-  // Find the current video index using the videoId field
-  const currentVideoIndex = userModule.videos.findIndex((video) =>
+  let currentVideoIndex = 0;
+  if(videoId) {
+    currentVideoIndex = userModule.videos.findIndex((video) =>
     video.videoId.toLowerCase().trim() === videoId.toLowerCase().trim()
-  );
-  if (currentVideoIndex === -1) {
-    console.error(
-      "Video not found in module. Available videoIds:",
-      userModule.videos.map((v) => v.videoId),
-      "Searched videoId:",
-      videoId
-    );
-    notFound();
-  }
+  ) ;
+}
 
   console.log("Current Video Index:", currentVideoIndex);
 

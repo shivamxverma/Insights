@@ -121,6 +121,7 @@ export async function POST(req: NextRequest) {
           .filter((item: any) => !existingVideoIds.includes(item.snippet.resourceId.videoId))
           .map(async (item: any) => {
             const transcript = await getTranscript(item.snippet.resourceId.videoId);
+            console.log("in route Transcript:", transcript);
             const summary = transcript ? truncateTo300Words(transcript) : item.snippet.description?.slice(0, 200) || "No summary available.";
             return {
               name: item.snippet.title,
