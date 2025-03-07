@@ -103,7 +103,7 @@ export function AppSidebar() {
                       className={cn(
                         "flex items-center gap-2 p-2 rounded-md transition-colors duration-200 ease-in-out",
                         pathname === item.url
-                          ? "bg-primary text-white shadow-md"
+                          ? "bg-primary text-black shadow-md"
                           : "hover:bg-gray-100"
                       )}
                     >
@@ -143,7 +143,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
       </SidebarContent>
-          <Button className='w-full flex items-center gap-2 transition-colors duration-200 hover:bg-primary hover:text-white' variant="outline"  onClick={() => setOpen(!open)}>
+          <Button className='w-full flex items-center gap-2 transition-colors duration-200 hover:bg-primary hover:text-black' variant="outline"  onClick={() => setOpen(!open)}>
                 <ChevronLeft className={cn("h-4 w-4 transition-transform", open ? "" : "rotate-180")} />
               </Button>
     </Sidebar>
