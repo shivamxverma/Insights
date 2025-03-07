@@ -71,6 +71,7 @@ model Video {
   createdAt       DateTime     @default(now())
   videoModule     VideoModule? @relation(fields: [moduleId], references: [id], onDelete: SetNull)
   quizzes         Quiz[]
+  chat            Chat[]
   @@index([moduleId], name: "video_moduleId_index")
   @@unique([moduleId, videoId], name: "unique_module_video")
 }
@@ -83,4 +84,28 @@ model Quiz {
   answer      String   @default("") // Max 15 words enforced in code
   options     String   // JSON stringified array of options
   @@index([videoId])
+}
+
+enum MessageRole {
+  USER
+  SYSTEM
+}
+
+model Chat {
+  id            String       @id @default(cuid())
+  videoId       String
+  createdAt     DateTime  @default(now())
+  video         Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  @@index([videoId])
+  messages      Message[]
+}
+
+model Message {
+  id        String         @id @default(cuid())
+  chatId    String
+  content   String
+  role      MessageRole
+  createdAt DateTime    @default(now())
+
+  chat      Chat        @relation(fields: [chatId], references: [id])
 }
