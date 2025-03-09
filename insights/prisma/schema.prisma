@@ -61,19 +61,20 @@ model VideoModule {
 }
 
 model Video {
-  id              String       @id @default(cuid())
-  name            String?
-  url             String       
-  videoId         String       
-  summary         String?      @db.Text  // Stores the JSON-stringified transcript
-  generatedSummary String?      @db.Text  // New field for storing the AI-generated summary
-  moduleId        String?
-  createdAt       DateTime     @default(now())
-  videoModule     VideoModule? @relation(fields: [moduleId], references: [id], onDelete: SetNull)
-  quizzes         Quiz[]
-  chat            Chat[]
+  id               String       @id @default(cuid())
+  name             String?
+  url              String       
+  videoId          String       
+  summary          String?      @db.Text  // Stores the JSON-stringified transcript
+  generatedSummary String?      @db.Text  // Stores the AI-generated summary
+  moduleId         String
+  createdAt        DateTime     @default(now())
+  videoModule      VideoModule? @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+  quizzes          Quiz[]
+  chat             Chat[]
+
   @@index([moduleId], name: "video_moduleId_index")
-  @@unique([moduleId, videoId], name: "unique_module_video")
+  @@unique([moduleId, videoId], name: "moduleId_videoId") // Fixed unique constraint name
 }
 
 model Quiz {
