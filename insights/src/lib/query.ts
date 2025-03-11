@@ -41,3 +41,50 @@ export async function getNotes( moduleId: string, videoId: string) {
     throw error; // Re-throw to allow caller to handle it
   }
 }
+interface Video {
+  videoId: string;
+}
+
+interface Module {
+  id: string;
+  name: string | null;
+  videos: Video[] | null;
+}
+export async function fetchModuleVideos(userId: string): Promise<Module[]> {
+  console.log("Fetching module videos for user:", userId);
+  try {
+    const data = await prisma.videoModule.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+        videos: {
+          select: {
+            videoId: true,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+          take: 1, // Only get the first video for thumbnail
+        },
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+
+    return data.map((module) => ({
+      id: module.id,
+      name: module.name,
+      videos: module.videos.map((video) => ({
+        videoId: video.videoId,
+      })),
+    }));
+  } catch (error) {
+    console.error("Error fetching module videos:", error);
+    throw new Error("Failed to fetch module videos");
+  }
+}
