@@ -68,6 +68,10 @@ model Video {
   summary          String?      @db.Text  // Stores the JSON-stringified transcript
   generatedSummary String?      @db.Text  // Stores the AI-generated summary
   moduleId         String
+
+  note             String?
+  embeddingCreated Boolean      @default(false)
+
   createdAt        DateTime     @default(now())
   videoModule      VideoModule? @relation(fields: [moduleId], references: [id], onDelete: SetNull)
   quizzes          Quiz[]

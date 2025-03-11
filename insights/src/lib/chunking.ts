@@ -25,7 +25,6 @@ export interface ChunkingOptions {
   percentileThreshold?: number;
   maxSentencesPerBatch?: number; // New: Limit sentences processed at once
 }
-
 /**
  * Splits text into sentences using NLP.
  */

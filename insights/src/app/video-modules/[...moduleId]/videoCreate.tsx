@@ -202,7 +202,7 @@ function VideoLearningContent({
               </TabsContent>
               <TabsContent value="chat" className="flex-1 overflow-hidden p-0 m-0">
                 <div className="h-full overflow-y-auto p-3">
-                  <AiChat videoId={currentVideo.videoId} />
+                <AiChat moduleId={courseId} videoId={currentVideo.videoId} />
                   {/* <AiChat videoId={videoId} /> */}
                 </div>
               </TabsContent>
