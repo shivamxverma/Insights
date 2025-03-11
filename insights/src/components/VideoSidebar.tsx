@@ -53,8 +53,9 @@ export function VideoSidebar({ courseId, videoId, videos }: VideoSidebarProps) {
           {!open && (
             <span className="sr-only">Toggle Sidebar</span> 
           )}
-        </div>
+        </div> 
       </SidebarHeader>
+
 
       <Button
         className="w-full flex items-center gap-2 p-2 mt-2 mb-4 transition-colors duration-200 hover:bg-primary hover:text-white"

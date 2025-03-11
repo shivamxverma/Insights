@@ -1,11 +1,5 @@
+"use client"; // Ensure this runs only on the client
 import React, { useEffect, useState } from "react";
-
-// Function to decode HTML entities
-const decodeHtml = (html: string) => {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
-};
 
 interface TranscriptSegment {
   text: string;
@@ -19,8 +13,8 @@ interface TranscriptProps {
 }
 
 interface TranscriptResponse {
-  transcript: TranscriptSegment[]; 
-  generatedSummary?: string; 
+  transcript: TranscriptSegment[];
+  generatedSummary?: string;
 }
 
 interface ErrorResponse {
@@ -33,6 +27,16 @@ const Transcript: React.FC<TranscriptProps> = ({ moduleId, videoId }) => {
   const [error, setError] = useState<string | null>(null);
   const [textBatches, setTextBatches] = useState<string[]>([]);
 
+  // Simple HTML decode function without DOM manipulation
+  const decodeHtml = (html: string): string => {
+    return html
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+  };
+
   useEffect(() => {
     const fetchTranscript = async (): Promise<void> => {
       setLoading(true);
@@ -44,21 +48,20 @@ const Transcript: React.FC<TranscriptProps> = ({ moduleId, videoId }) => {
 
         if (res.ok && "transcript" in data) {
           setTranscript(data.transcript);
-          
-          // Process full transcript into batches of 50 words
+
           const fullText = data.transcript
             .map(segment => decodeHtml(segment.text))
             .join(" ")
             .replace(/\s+/g, " ")
             .trim();
-            
+
           const words = fullText.split(" ");
           const batches: string[] = [];
-          
+
           for (let i = 0; i < words.length; i += 50) {
             batches.push(words.slice(i, i + 50).join(" "));
           }
-          
+
           setTextBatches(batches);
         } else if ("error" in data) {
           setError(data.error || "Unknown error");
@@ -90,9 +93,7 @@ const Transcript: React.FC<TranscriptProps> = ({ moduleId, videoId }) => {
       ) : textBatches.length > 0 ? (
         <div className="space-y-2">
           {textBatches.map((batch, index) => (
-            <div 
-              key={index} 
-            >
+            <div key={index}>
               <p className="text-gray-700 leading-relaxed">{batch}</p>
             </div>
           ))}
