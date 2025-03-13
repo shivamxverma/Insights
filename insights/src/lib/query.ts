@@ -88,3 +88,22 @@ export async function fetchModuleVideos(userId: string): Promise<Module[]> {
     throw new Error("Failed to fetch module videos");
   }
 }
+
+export async function createWebScrapeProject(projectName: string, url: string, userId: string) {
+    console.log("data" , projectName, url, userId);
+  try {
+    const data = await prisma.webAnalysis.create({
+      data: {
+        name: projectName,
+        url: url,
+        userId: userId,
+        summary: "",
+      },
+    });
+    console.log("data" , data);
+    return data.url;
+  } catch (error) {
+    console.error("Error creating project:", error);
+    throw error;
+  }
+}

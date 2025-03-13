@@ -1,69 +1,58 @@
-// main.ts
-import { AdvancedScraper } from "./scraping";
-import { processText } from "./chunking";
-import { uploadToPinecone } from "./pineconedb";
+import { AdvancedScraper } from "./scraping"
+import { processText } from "./chunking"; 
+import { uploadToPinecone } from "./pineconedb"; 
 import md5 from "md5";
 import dotenv from "dotenv";
+
 dotenv.config();
 
-/**
- * scrapedContent - Scrapes a URL, processes the text into chunks and embeddings,
- * and uploads the resulting vectors to Pinecone. Returns the scraped content.
- *
- * @param url - The URL to process.
- * @returns The scraped content.
- */
-async function scrapedContent(url: string): Promise<string | void> {
+export async function scrapedContent(url: string): Promise<string | undefined> {
   const scraper = new AdvancedScraper();
-  
-  // Scrape the page content.
-  const finalResult = await scraper.scrape(url);
-  if (!finalResult) {
-    console.error("No content scraped from the URL.");
-    await scraper.close();
-    return;
-  }
-  
-  if (!finalResult.content) {
-    console.error("Scraped content is empty.");
-    await scraper.close();
-    return;
-  }
-  
-  console.log("Scraped content length:", finalResult.content.length);
-  console.log("Scraped content:", finalResult.content);
-  
-  // Process the scraped content into chunks, embeddings, and an aggregated embedding.
-  const { chunks, embeddings } = await processText(finalResult.content);
-  console.log("Final Chunks:", chunks);
-  console.log("Chunk Embeddings:", embeddings);
-  // console.log("Aggregated Embedding:", aggregatedEmbedding);
-  
-  // Create Pinecone vector records from the chunks.
-  const vectors = chunks.map((chunk, index) => ({
-    id: md5(chunk.text),
-    values: embeddings[index],
-    metadata: {
-      text: chunk.text,
-      startIndex: chunk.metadata.startIndex,
-      endIndex: chunk.metadata.endIndex,
-      title: finalResult.metadata.title,
-      description: finalResult.metadata.description,
-      source: finalResult.metadata.source,
-      timestamp: finalResult.metadata.timestamp,
+
+  try {
+    const result = await scraper.scrape(url);
+    if (!result || !result.content) {
+      console.error(`Failed to scrape content from ${url}`);
+      return;
     }
-  }));
-  
-  const namespace = url; // or use another namespace based on your requirements
-  console.log("Uploading embeddings to Pinecone...");
-  await uploadToPinecone(vectors, "insights");  // change it
-  console.log("Processing and uploading complete.");
-  
-  await scraper.close();
-  return finalResult.content;
+
+    console.log(`Scraped content length from ${url}:`, result.content.length);
+
+    // const { chunks, embeddings } = await processText(result.content);
+    // if (!chunks.length || !embeddings.length) {
+    //   console.error(`No chunks or embeddings generated for ${url}`);
+    //   return result.content;
+    // }
+
+    // console.log(`Generated ${chunks.length} chunks for ${url}`);
+
+    // const vectors = chunks.map((chunk, index) => ({
+    //   id: md5(`${url}-${chunk.metadata.startIndex}`), // Unique ID per chunk
+    //   values: embeddings[index],
+    //   metadata: {
+    //     text: chunk.text,
+    //     startIndex: chunk.metadata.startIndex,
+    //     endIndex: chunk.metadata.endIndex,
+    //     title: result.metadata.title,
+    //     description: result.metadata.description,
+    //     source: result.metadata.source,
+    //     url: result.metadata.url,
+    //     timestamp: result.metadata.timestamp,
+    //   },
+    // }));
+
+    // const namespace = new URL(url).hostname;
+    // // await uploadToPinecone(vectors, url);
+    // console.log(`Uploaded ${vectors.length} vectors to Pinecone for ${namespace}`);
+
+    return result.content;
+  } catch (error) {
+    console.error(`Error processing ${url}:`, error);
+  } finally {
+    await scraper.close();
+  }
 }
 
-// If the script is run directly, read the URL from command-line arguments.
 if (require.main === module) {
   const url = process.argv[2];
   if (!url) {
@@ -71,12 +60,9 @@ if (require.main === module) {
     process.exit(1);
   }
   scrapedContent(url)
-    .then(content => {
-      if (content) {
-        console.log("Final scraped content returned.");
-      }
+    .then((content) => {
+      if (content) console.log("Scraping and processing completed successfully.");
     })
-    .catch(err => console.error(err));
+    .catch((err) => console.error("Main process failed:", err));
 }
 
-export { scrapedContent };
