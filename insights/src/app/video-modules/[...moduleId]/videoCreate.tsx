@@ -102,7 +102,7 @@ function VideoLearningContent({
 
   return (
     <div className="h-[calc(100vh-64px)]">
-      <Header moduleId={module.name || "name"} videoTitle={currentVideo.name || "Untitled Video"}  />
+      <Header moduleId={module.name || "name"} videoTitle={currentVideo.name || "Untitled Video"} courseId={module.id}  />
       <main
         className="flex flex-1 overflow-hidden"
         id="split-container"

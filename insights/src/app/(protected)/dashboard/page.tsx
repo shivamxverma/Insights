@@ -1,36 +1,23 @@
-import { PrismaClient } from "@prisma/client";
-import { notFound } from "next/navigation";
-import DashboardClient from "./DashboardClient";
-import { getAuthSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
-const prisma = new PrismaClient();
+import { redirect } from "next/navigation"
+import { prisma } from "@/lib/db" 
+import { getAuthSession } from "@/lib/auth"
+import CreateVideoClient from "./createVideo"
 
-export default async function Dashboard() {
-  const session = await getAuthSession();
+export default async function CreateVideoPage() {
+  const session = await getAuthSession()
   if (!session) {
-    redirect("/login");
+    redirect("/login")
   }
+  const userId = session.user.id
 
-  const userId = session.user.id;
+  const modules = await prisma.videoModule.findMany({
+    where: { userId },
+    select: { id: true, name: true
+    }
+  })
 
-  // Fetch all video modules for the current user
-  const userModules = await prisma.videoModule.findMany({
-    where: {
-      userId,
-    },
-    include: {
-      videos: true,
-    },
-  });
-
-  if (!userModules || userModules.length === 0) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
-        <p>No modules found. Create or join a module to get started!</p>
-      </div>
-    );
-  }
-
-  return <DashboardClient modules={userModules} />;
+  return (
+    <CreateVideoClient userId={userId} modules={modules} />
+  )
 }

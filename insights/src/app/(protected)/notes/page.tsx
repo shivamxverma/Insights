@@ -10,7 +10,7 @@ const MyModules = async () => {
   if (!session) {
     redirect('/login');
   }
-  // ✅ Fetch modules only once at component level
+
   const modules = await fetchModuleVideos(session.user.id);
   // console.log(modules[0].videos[0].videoId); 
 
