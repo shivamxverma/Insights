@@ -30,12 +30,18 @@ export async function uploadToPinecone(vectors: PineconeRecord[], namespace: str
   const pineconeIndex = await client.index("insights");
   const ns = pineconeIndex.namespace(namespace);
   console.log("Inserting vectors into Pinecone...");
-  const sanitizedVectors = vectors.map(vector => ({
-    id: vector.id,
-    values: vector.values,
-    metadata: vector.metadata ? sanitizeMetadata(vector.metadata) : {},
-  }));
-  await ns.upsert(sanitizedVectors);
   
-  console.log("Vectors upserted successfully.");
+  try{
+    const sanitizedVectors = vectors.map(vector => ({
+      id: vector.id,
+      values: vector.values,
+      metadata: vector.metadata ? sanitizeMetadata(vector.metadata) : {},
+    }));
+    await ns.upsert(sanitizedVectors);
+    console.log("Vectors upserted successfully.");
+  }
+  catch (error) {
+    console.error("Error upserting vectors:", error);
+    throw error;
+  }
 }

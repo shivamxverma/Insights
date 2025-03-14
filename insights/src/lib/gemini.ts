@@ -24,33 +24,7 @@ Output only the rephrased transcript entries without additional commentary.
   }
 }
 
-// Function to generate summary using Gemini API
-// export async function generateSummary(transcript: string): Promise<string> {
-//   const prompt = `
-// Summarize the following transcript into a concise format with a main summary, key highlights, and insights. Structure the output as follows:
-// - **Summary**: A brief paragraph summarizing the main points (100-150 words).
-// - **Highlights**: 5-7 bullet points capturing key moments or themes, each starting with an emoji (e.g., 🚀, 🏃‍♂️).
-// - **Insights**: 3-5 bullet points providing deeper reflections or lessons, each starting with an emoji (e.g., 🧠, 🔨).
 
-// Transcript: "${transcript}"
-
-// Output only the summarized content in the specified structure without additional commentary.
-// `;
-
-//   try {
-//     const response = await model.generateContent(prompt);
-//     return response.response.text();
-//   } catch (error) {
-//     console.error("Error generating summary:", error);
-//     return `
-// - **Summary**: Unable to generate summary due to an error.
-// - **Highlights**:
-//   - ⚠️ Error occurred while processing the transcript.
-// - **Insights**:
-//   - 🛠️ Please ensure the Gemini API key is correctly configured.
-// `;
-//   }
-// }
 export async function generateSummary(transcript: string): Promise<string> {
   const prompt = `
 You are an **intelligent and highly skilled AI assistant** specializing in summarizing and refining content. Your task is to transform the following transcript into a **well-organized, professional-quality summary** in **Markdown format**. The goal is to present the content in a clear, structured, and engaging manner while preserving all essential details and improving readability.
