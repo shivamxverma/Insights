@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth";
 import WebscrapingProjects from "./WebscrapingProjects";
 import ProjectForm from "./ProjectForm";
-import { scrapedContent } from "@/lib/Scraper";
 
 export default async function WebScrapingPage() {
   // Get the session on the server.

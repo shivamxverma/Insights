@@ -3,22 +3,34 @@ import { useState, useEffect } from "react";
 import { MemoizedMarkdown } from "./memorized-markdown"; // Adjust path if needed
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card"; // Import Card component
+import { GetScrapeSumary, SaveSummaryWebscraper } from "@/lib/query";
 
 interface Props {
   content: string;
+  Projecturl : string;
 }
 
-export default function SummaryPage({ content }: Props) {
+export default function SummaryPage( props: Props) {
+  const { content , Projecturl } = props;
   const [summary, setSummary] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+   
+
   useEffect(() => {
     if (!content) return;
-
+    
     const fetchSummary = async () => {
       setIsLoading(true);
       setError(null);
+
+      const Scrapesummary = await GetScrapeSumary(Projecturl);
+      if(Scrapesummary && Scrapesummary.length > 0 && Scrapesummary != null){
+        setSummary(Scrapesummary);
+        setIsLoading(false);
+        return;
+      }
 
       try {
         const url = `/api/scraping-summary?content=${encodeURIComponent(
@@ -28,12 +40,13 @@ export default function SummaryPage({ content }: Props) {
 
         let result = "";
 
-        eventSource.onmessage = (event) => {
+        eventSource.onmessage = async (event) => {
           const data = JSON.parse(event.data);
 
           if (data.text === "[DONE]") {
             setSummary(result);
             eventSource.close();
+            const data = await SaveSummaryWebscraper( Projecturl,result);
             setIsLoading(false);
             return;
           }
@@ -49,7 +62,7 @@ export default function SummaryPage({ content }: Props) {
           setSummary(result);
         };
 
-        eventSource.onerror = () => {
+        eventSource.onerror = async() => {
           setError("Failed to connect to summary service");
           eventSource.close();
           setIsLoading(false);

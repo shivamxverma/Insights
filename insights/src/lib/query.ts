@@ -1,4 +1,5 @@
 'use server'
+import { url } from "inspector";
 import { prisma } from "./db";
 
 export async function addMynotes(notes: string, moduleId: string, videoId: string) {
@@ -89,8 +90,22 @@ export async function fetchModuleVideos(userId: string): Promise<Module[]> {
   }
 }
 
-export async function createWebScrapeProject(projectName: string, url: string, userId: string) {
+export async function createWebScrapeProject(projectName: string, url: string, userId: string): Promise<string> {
     console.log("data" , projectName, url, userId);
+    try {
+      const data = await prisma.webAnalysis.findFirst({
+        where: {
+          url: url,
+        },
+      })
+      if(data){
+        return data.url;
+      }
+    }
+    catch (error) {
+      console.error("Error fetching summary:", error);
+      throw error;
+    }
   try {
     const data = await prisma.webAnalysis.create({
       data: {
@@ -104,6 +119,38 @@ export async function createWebScrapeProject(projectName: string, url: string, u
     return data.url;
   } catch (error) {
     console.error("Error creating project:", error);
+    throw error;
+  }
+}
+
+export async function SaveSummaryWebscraper(url: string, summary: string) {
+  console.log("Saving summary for URL:", url);
+  try {
+    const data = await prisma.webAnalysis.update({
+      where: { url },
+      data: { summary },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error saving summary:", error);
+    throw error;
+  }
+}
+
+export async function GetScrapeSumary(url: string): Promise<string | null> {
+  try {
+    const data: { summary: string | null } | null = await prisma.webAnalysis.findFirst({
+      where: {
+      url: url,
+      },
+      select: {
+      summary: true,
+      },
+    });
+    return data ? data.summary : null;
+  }
+  catch (error) {
+    console.error("Error fetching summary:", error);
     throw error;
   }
 }

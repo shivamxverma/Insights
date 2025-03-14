@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Globe, ArrowRight } from "lucide-react";
 import { getAuthSession } from "@/lib/auth"; 
-import { createWebScrapeProject } from "@/lib/query";
+import { createWebScrapeProject, GetScrapeSumary } from "@/lib/query";
 
 interface Props {
   userId: string;
@@ -29,6 +29,12 @@ export default function ProjectForm(props : Props) {
     
     setIsLoading(true);
     setError(null);
+
+      const Scrapesummary = await GetScrapeSumary(url);
+          if(Scrapesummary && Scrapesummary.length > 0 && Scrapesummary != null){
+            router.push(`/website-article/${url}`);
+            return;
+          }
   
     try {
       console.log("Creating project with userId:", userId);

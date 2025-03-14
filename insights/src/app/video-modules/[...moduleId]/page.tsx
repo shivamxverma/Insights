@@ -34,7 +34,9 @@ export default async function VideoLearningPage(props : Props) {
   if (!userModule) {
     const originalModule = await prisma.videoModule.findUnique({
       where: { id: courseId },
-      include: { videos: true },
+      include: {
+         videos: true,
+       },
     });
 
     if (!originalModule) {
