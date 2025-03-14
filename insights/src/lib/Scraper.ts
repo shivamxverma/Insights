@@ -3,11 +3,34 @@ import { processText } from "./chunking";
 import { uploadToPinecone } from "./pineconedb"; 
 import md5 from "md5";
 import dotenv from "dotenv";
+import { prisma } from "./db";
 
 dotenv.config();
 
-export async function scrapedContent(url: string): Promise<string | undefined> {
+export async function scrapedContent(projectId: string): Promise<string | undefined> {
   const scraper = new AdvancedScraper();
+  let url = "";
+   try {
+      const data = await prisma.webAnalysis.findUnique({
+        where: {
+        id: projectId,
+        },
+        select: {
+        url: true,
+        },
+      });
+      if(data){
+        url = data.url;
+      }
+      else{
+        console.error("No data found for project ID:", projectId);
+        return;
+      }
+    }
+    catch (error) {
+      console.error("Error fetching summary:", error);
+      throw error;
+    }
 
   try {
     const result = await scraper.scrape(url);

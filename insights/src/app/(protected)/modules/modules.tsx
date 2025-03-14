@@ -35,7 +35,7 @@ const VideoModules: React.FC<Props> = ({ modules }) => {
     const handleDelete = async(moduleId:string) => {
       const data = await DeleteModule(moduleId);
       if(data.success){
-        redirect(`/notes`);
+        redirect(`/modules`);
       }
       
     }

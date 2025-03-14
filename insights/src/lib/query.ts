@@ -91,52 +91,50 @@ export async function fetchModuleVideos(userId: string): Promise<Module[]> {
 }
 
 export async function createWebScrapeProject(projectName: string, url: string, userId: string): Promise<string> {
-    console.log("data" , projectName, url, userId);
-    try {
-      const data = await prisma.webAnalysis.findFirst({
-        where: {
-          url: url,
-        },
-      })
-      if(data){
-        return data.url;
-      }
+  console.log("data", projectName, url, userId);
+  try {
+    const data = await prisma.webAnalysis.findFirst({
+      where: { url },
+    });
+    if (data) {
+      return data.id; // Return existing project's ID
     }
-    catch (error) {
-      console.error("Error fetching summary:", error);
-      throw error;
-    }
+  } catch (error) {
+    console.error("Error fetching project:", error);
+    throw error;
+  }
+
   try {
     const data = await prisma.webAnalysis.create({
       data: {
         name: projectName,
-        url: url,
-        userId: userId,
+        url,
+        userId,
         summary: "",
       },
     });
-    console.log("data" , data);
-    return data.url;
+    console.log("Created project:", data);
+    return data.id; // Return new project's ID
   } catch (error) {
     console.error("Error creating project:", error);
     throw error;
   }
 }
 
-export async function SaveSummaryWebscraper(url: string, summary: string) {
-  console.log("Saving scrape summary for URL:", url);
+// Saves the summary for a project by ID
+export async function SaveSummaryWebscraper(projectId: string, summary: string) {
+  console.log("Saving scrape summary for project ID:", projectId);
   try {
-    // Check if the record exists first
     const existingRecord = await prisma.webAnalysis.findFirst({
-      where: { url },
+      where: { id: projectId },
     });
     console.log("Existing record:", existingRecord);
     if (!existingRecord) {
-      throw new Error(`No record found for URL: ${url}`);
+      throw new Error(`No record found for project ID: ${projectId}`);
     }
 
     const data = await prisma.webAnalysis.update({
-      where: { url },
+      where: { id: projectId },
       data: { summary },
     });
     console.log("Updated record:", data);
@@ -147,20 +145,47 @@ export async function SaveSummaryWebscraper(url: string, summary: string) {
   }
 }
 
-export async function GetScrapeSumary(url: string): Promise<string | null> {
+// Retrieves the summary for a project by ID
+export async function GetScrapeSumary(url: string) {
   try {
-    const data: { summary: string | null } | null = await prisma.webAnalysis.findUnique({
-      where: {
-      url: url,
-      },
-      select: {
-      summary: true,
-      },
+    const data = await prisma.webAnalysis.findUnique({
+      where: { url: url },
+      select: { summary: true,
+        id : true
+       },
     });
-    return data ? data.summary : null;
-  }
-  catch (error) {
+    return{
+      summary : data ? data.summary : null,
+      id : data ? data.id : null
+    } 
+  } catch (error) {
     console.error("Error fetching summary:", error);
+    throw error;
+  }
+}
+export async function GetScrapeSumaryThroughProjectId(projectId: string) {
+  try {
+    const data = await prisma.webAnalysis.findUnique({
+      where: { id: projectId },
+      select: { summary: true
+       },
+    });
+    return data?.summary || null || "";
+  } catch (error) {
+    console.error("Error fetching summary:", error);
+    throw error;
+  }
+}
+
+export async function DeleteWebProject(projectId: string) {
+  try {
+    const deletedProject = await prisma.webAnalysis.delete({
+      where: { id: projectId },
+    });
+    console.log("Deleted project:", deletedProject);
+    return deletedProject;
+  } catch (error) {
+    console.error("Error deleting project:", error);
     throw error;
   }
 }

@@ -79,7 +79,7 @@ export async function SummarizeScrapeContent(content: string): Promise<string> {
   - Refine the language to improve **flow** and **readability** without altering the original meaning.  
   - Explain technical terms or complex ideas using **simple language** where needed.  
   - Add **context** where necessary to clarify the content and make it more actionable.  
-  - Highlight key takeaways or insights to enhance the user’s understanding.  
+  - Highlight key takeaways or insights to enhance the user's understanding.  
   
   ---
   

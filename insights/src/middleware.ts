@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
 
   const sessionToken = cookies["next-auth.session-token"] || cookies["__Secure-next-auth.session-token"];
 
-  const protectedRoutes = ["/notes", "/video-modules"];
+  const protectedRoutes = ["/modules", "/video-modules"];
 
   if (protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))) {
     if (!sessionToken) {
@@ -19,5 +19,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/notes/:path*", "/video-modules/:path*"],
+  matcher: ["/modules/:path*", "/video-modules/:path*"],
 };

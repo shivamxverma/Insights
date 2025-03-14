@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 import { MemoizedMarkdown } from "../../../../components/memorized-markdown";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { GetScrapeSumary, SaveSummaryWebscraper } from "@/lib/query";
+import { GetScrapeSumary, GetScrapeSumaryThroughProjectId, SaveSummaryWebscraper } from "@/lib/query";
 import { SummarizeScrapeContent } from "@/lib/geminiAPI";
 
 interface Props {
   content: string;
-  projectUrl: string; // Renamed to camelCase for consistency
+  projectId: string; // Renamed to camelCase for consistency
 }
 
-export default function SummaryPage({ content, projectUrl }: Props) {
+export default function SummaryPage({ content, projectId }: Props) {
   const [summary, setSummary] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +28,7 @@ export default function SummaryPage({ content, projectUrl }: Props) {
 
       try {
         // Check if a summary already exists in the database
-        const existingSummary = await GetScrapeSumary(projectUrl);
+        const existingSummary = await GetScrapeSumaryThroughProjectId(projectId);
         if (existingSummary && existingSummary.trim().length > 0) {
           setSummary(existingSummary);
           setIsLoading(false);
@@ -51,7 +51,7 @@ export default function SummaryPage({ content, projectUrl }: Props) {
         }
 
         setSummary( generatedSummary);
-        await SaveSummaryWebscraper(projectUrl, generatedSummary);
+        await SaveSummaryWebscraper(projectId, generatedSummary);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
         setError(errorMessage);
@@ -62,7 +62,7 @@ export default function SummaryPage({ content, projectUrl }: Props) {
     };
 
     fetchSummary();
-  }, [content, projectUrl]);
+  }, [content, projectId]);
 
   return (
     <div className="h-full flex flex-col p-6 bg-background text-foreground">

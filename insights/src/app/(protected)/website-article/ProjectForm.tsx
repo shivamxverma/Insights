@@ -31,21 +31,21 @@ export default function ProjectForm(props : Props) {
     setError(null);
 
       const Scrapesummary = await GetScrapeSumary(url);
-          if(Scrapesummary && Scrapesummary.length > 0 && Scrapesummary != null){
-            router.push(`/website-article/${url}`);
+          if(Scrapesummary.summary && Scrapesummary.summary.length > 0 && Scrapesummary.summary != null){
+            router.push(`/website-article/${Scrapesummary.id}`);
             return;
           }
   
     try {
       console.log("Creating project with userId:", userId);
-      const projectURl = await createWebScrapeProject(name, url, userId);
+      const projectId = await createWebScrapeProject(name, url, userId);
   
-      if (!projectURl) {
+      if (!projectId) {
         throw new Error("Failed to save analysis");
       }
   
       // Redirect to SummaryPage with the project URL
-      router.push(`/website-article/${projectURl}`);
+      router.push(`/website-article/${projectId}`);
     } catch (err) {
       console.error("Project creation error:", err);
       setError(err instanceof Error ? err.message : "An error occurred");

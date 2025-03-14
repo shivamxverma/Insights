@@ -60,11 +60,11 @@ export function VideoSidebar({ courseId, videoId, videos }: VideoSidebarProps) {
       <Button
         className="w-full flex items-center gap-2 p-2 mt-2 mb-4 transition-colors duration-200 hover:bg-primary hover:text-white"
         variant="outline"
-        onClick={() => window.location.href = "/notes"}
+        onClick={() => window.location.href = "/modules"}
         aria-label={open ? "Collapse Sidebar" : "Expand Sidebar"}
       >
         <LayoutDashboard className="h-4 w-4" />
-        {open && <span>Notes</span>}
+        {open && <span>modules</span>}
       </Button>
 
       <SidebarContent>
