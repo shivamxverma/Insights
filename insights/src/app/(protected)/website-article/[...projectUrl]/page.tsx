@@ -65,7 +65,7 @@ export default async function WebScrapingPage({ params, searchParams }: Props) {
     if (existingSummary && typeof existingSummary === "string" && existingSummary.trim() !== "") {
       return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-          <SummaryPage content={existingSummary} Projecturl={fullUrl} />
+          <SummaryPage content={existingSummary} projectUrl={fullUrl} />
         </div>
       );
     }
@@ -75,7 +75,7 @@ export default async function WebScrapingPage({ params, searchParams }: Props) {
 
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-        <SummaryPage content={content} Projecturl={fullUrl} />
+        <SummaryPage content={content} projectUrl={fullUrl} />
       </div>
     );
   } catch (error) {

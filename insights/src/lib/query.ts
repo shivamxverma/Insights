@@ -124,12 +124,22 @@ export async function createWebScrapeProject(projectName: string, url: string, u
 }
 
 export async function SaveSummaryWebscraper(url: string, summary: string) {
-  console.log("Saving summary for URL:", url);
+  console.log("Saving scrape summary for URL:", url);
   try {
+    // Check if the record exists first
+    const existingRecord = await prisma.webAnalysis.findFirst({
+      where: { url },
+    });
+    console.log("Existing record:", existingRecord);
+    if (!existingRecord) {
+      throw new Error(`No record found for URL: ${url}`);
+    }
+
     const data = await prisma.webAnalysis.update({
       where: { url },
       data: { summary },
     });
+    console.log("Updated record:", data);
     return data;
   } catch (error) {
     console.error("Error saving summary:", error);
@@ -139,7 +149,7 @@ export async function SaveSummaryWebscraper(url: string, summary: string) {
 
 export async function GetScrapeSumary(url: string): Promise<string | null> {
   try {
-    const data: { summary: string | null } | null = await prisma.webAnalysis.findFirst({
+    const data: { summary: string | null } | null = await prisma.webAnalysis.findUnique({
       where: {
       url: url,
       },
@@ -207,6 +217,16 @@ export async function DeleteModule(id: string) {
     }
   } catch (error) {
     console.error("Error deleting module:", error);
+    throw error;
+  }
+}
+
+export async function GetWebProject() {
+  try {
+    const data = await prisma.webAnalysis.findMany();
+    return data;
+  } catch (error) {
+    console.error("Error fetching web projects:", error);
     throw error;
   }
 }

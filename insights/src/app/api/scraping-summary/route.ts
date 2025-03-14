@@ -1,24 +1,19 @@
-// scraping-summary/route.ts
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const maxDuration = 30;
+export const maxDuration = 60; // Increased to 60 seconds to accommodate Gemini API
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const content = searchParams.get("content"); // Expecting scraped content as a query param
+  const content = searchParams.get("content");
 
   if (!content) {
-    return new Response(JSON.stringify({ error: "Content is required" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json({ error: "Content is required" }, { status: 400 });
   }
 
-  // Parse content if it’s JSON-encoded (e.g., from scraper output)
   let parsedContent;
   try {
     parsedContent = JSON.parse(content);
@@ -79,35 +74,16 @@ ${JSON.stringify(parsedContent, null, 2)}
 **Deliver a polished and enhanced summary that reflects the professionalism and quality expected from an expert AI assistant.**  
 `;
 
-  return new Response(
-    new ReadableStream({
-      async start(controller) {
-        try {
-          const result = await model.generateContentStream(summarizationPrompt);
-          for await (const chunk of result.stream) {
-            const chunkText = chunk.text();
-            controller.enqueue(
-              new TextEncoder().encode(`data: ${JSON.stringify({ text: chunkText })}\n\n`)
-            );
-          }
-          controller.enqueue(new TextEncoder().encode(`data: ${JSON.stringify({ text: "[DONE]" })}\n\n`));
-          controller.close();
-        } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : "Unknown error";
-          controller.enqueue(
-            new TextEncoder().encode(`data: ${JSON.stringify({ error: `Error generating summary: ${errorMessage}` })}\n\n`)
-          );
-          controller.enqueue(new TextEncoder().encode("data: [DONE]\n\n"));
-          controller.close();
-        }
-      },
-    }),
-    {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
-    }
-  );
+  try {
+    const result = await model.generateContent(summarizationPrompt);
+    const summary = result.response.text();
+    return NextResponse.json({ summary }, { status: 200 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error generating summary:", error);
+    return NextResponse.json(
+      { error: `Error generating summary: ${errorMessage}` },
+      { status: 500 }
+    );
+  }
 }

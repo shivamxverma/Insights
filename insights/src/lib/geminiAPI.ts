@@ -48,85 +48,70 @@ export async function generateFinalAnswer(query: string, results: string[]): Pro
     return "Unable to generate an answer.";
   }
 }
-// import { GoogleGenerativeAI } from '@google/generative-ai';
-// import dotenv from 'dotenv';
-// dotenv.config();
 
-// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-// const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+export async function SummarizeScrapeContent(content: string): Promise<string> {
 
-// /**
-//  * Refine the user's query for better retrieval.
-//  * The prompt instructs the model to rephrase the query to maximize clarity and search relevance.
-//  */
-// export async function refineQuery(query: string): Promise<string> {
-//   const prompt = `
-// User Query: "${query}"
+  const summarizationPrompt = `
+  You are an **intelligent and highly skilled AI assistant** specializing in summarizing and refining web-scraped content. Your task is to transform raw scraped data into a **well-organized, professional-quality summary** in **Markdown format**. The goal is to present the content in a clear, structured, and engaging manner while preserving all essential details and improving readability.
   
-// Please rephrase the above query to improve its clarity and relevance for search. 
-// Output only the revised query text without any additional commentary.
-// `;
-//   try {
-//     const response = await model.generateContent(prompt);
-//     const refined = response.response.text();
-//     console.log("Refined query:", refined);
-//     return refined;
-//   } catch (error) {
-//     console.error("Error refining query:", error);
-//     return query;
-//   }
-// }
+  ---
+  
+  ## ✅ **Guidelines for Summarization**  
+  Follow these detailed instructions to ensure the summary is polished and professional:  
+  
+  ### 1. **Markdown Formatting**  
+  - Use appropriate **headings** (\`#\`, \`##\`, \`###\`) to organize the content logically and enhance readability.  
+  - Present information using **bullet points** and **numbered lists** for clarity and structure.  
+  - For technical terms or code snippets, use **code blocks** (\`\`\`language).  
+  - Apply **bold** or *italic* text for emphasis where needed.  
+  
+  ---
+  
+  ### 2. **Summarization Style**  
+  - Be **concise** yet **comprehensive** — maintain the key details while improving clarity.  
+  - Use a **neutral, professional tone** while remaining friendly and accessible.  
+  - Eliminate any redundant or low-value information without losing the core message.  
+  - Ensure the summary is easy to follow and logically structured.  
+  
+  ---
+  
+  ### 3. **Enhancement Guidelines**  
+  - Refine the language to improve **flow** and **readability** without altering the original meaning.  
+  - Explain technical terms or complex ideas using **simple language** where needed.  
+  - Add **context** where necessary to clarify the content and make it more actionable.  
+  - Highlight key takeaways or insights to enhance the user’s understanding.  
+  
+  ---
+  
+  ### 4. **Handling Edge Cases**  
+  - If the content is incomplete or unclear, **indicate the gap** and provide a logical interpretation.  
+  - If certain details are missing, make an informed guess where possible or highlight the limitation.  
+  - If the content is inappropriate, irrelevant, or unethical, respond with a polite refusal and suggest alternative approaches.  
+  
+  ---
+  
+  ## 🚀 **Task**  
+  Transform the following raw scraped content into a structured, easy-to-understand, and professional-quality summary. Ensure the content is logically organized, refined for clarity, and formatted in Markdown.  
+  
+  ### 📝 **Scraped Content**  
+  \`\`\`json
+  ${JSON.stringify(content, null, 2)}
+  \`\`\`
+  
+  ---
+  
+  **Deliver a polished and enhanced summary that reflects the professionalism and quality expected from an expert AI assistant.**  
+  `;
 
-// /**
-//  * Re-rank retrieval results based on the user query.
-//  * The prompt instructs the model to reorder the provided documents by relevance,
-//  * returning a JSON array of the document texts, sorted from most to least relevant.
-//  */
-// export async function rerankResults(query: string, results: string[]): Promise<string[]> {
-//   const prompt = `
-// User Query: "${query}"
+   try {
+      const result = await model.generateContent(summarizationPrompt);
+      const summary = result.response.text();
+      console.log("Generated summary:", summary);
+      return summary;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      console.error("Error generating summary:", error);
+      return errorMessage;
 
-// Retrieved Documents (in no particular order):
-// ${JSON.stringify(results, null, 2)}
-
-// Please rank these documents in order of relevance to the query (most relevant first). 
-// Output only a JSON array of the reordered document texts without any extra commentary.
-// `;
-//   try {
-//     const response = await model.generateContent(prompt);
-//     const ranked = JSON.parse(response.response.text());
-//     console.log("Ranked results:", ranked);
-//     return ranked;
-//   } catch (error) {
-//     console.error("Error re-ranking results:", error);
-//     return results;
-//   }
-// }
-
-// /**
-//  * Generate a final answer by summarizing the key points from the results.
-//  * The prompt instructs the model to synthesize a concise and informative answer,
-//  * integrating the important details from the top retrieval results to address the query.
-//  */
-// export async function generateFinalAnswer(query: string, results: string[]): Promise<string> {
-//   const prompt = `
-// You are a knowledgeable retrieval assistant.
-
-// User Query: "${query}"
-
-// Top Retrieval Results:
-// ${JSON.stringify(results, null, 2)}
-
-// Based on the documents above, generate a clear, concise, and informative final answer that summarizes the key points and directly addresses the query.
-// Provide your answer as plain text .
-// `;
-//   try {
-//     const response = await model.generateContent(prompt);
-//     const finalAnswer = response.response.text();
-//     console.log("Final answer generated:", finalAnswer);
-//     return finalAnswer;
-//   } catch (error) {
-//     console.error("Error generating final answer:", error);
-//     return "";
-//   }
-// }
+}
+}

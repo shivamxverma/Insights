@@ -25,13 +25,8 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: "notes",
-    url: "/notes",
-    icon: Bot,
-  },
-  {
-    title: "YT video",
-    url: "/yt-video",
+    title: "Modules",
+    url: "/modules",
     icon: Bot,
   },
   {

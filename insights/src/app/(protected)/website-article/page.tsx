@@ -15,7 +15,7 @@ export default async function WebScrapingPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <ProjectForm userId ={session.user.id} />
-     
+      <WebscrapingProjects />
     </div>
   );
 }
