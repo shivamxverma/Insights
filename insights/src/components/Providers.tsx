@@ -18,6 +18,6 @@ export function Provider({ children, ...props }: ThemeProviderProps) {
       >
         <SessionProvider>{children}</SessionProvider>
       </NextThemesProvider>
-    // </QueryClientProvider>
+  </QueryClientProvider>
   );
 }

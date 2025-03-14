@@ -1,6 +1,6 @@
 'use server'
-import { url } from "inspector";
 import { prisma } from "./db";
+
 
 export async function addMynotes(notes: string, moduleId: string, videoId: string) {
   console.log("Module ID in addnotes:", moduleId, "Video ID:", videoId);
@@ -66,7 +66,7 @@ export async function fetchModuleVideos(userId: string): Promise<Module[]> {
           select: {
             videoId: true,
           },
-          orderBy: {
+          orderBy:{
             createdAt: "asc",
           },
           take: 1, // Only get the first video for thumbnail
@@ -151,6 +151,62 @@ export async function GetScrapeSumary(url: string): Promise<string | null> {
   }
   catch (error) {
     console.error("Error fetching summary:", error);
+    throw error;
+  }
+}
+
+export async function DeleteVideo(id: string) {
+  console.log("Deleting video with ID:", id);
+  try {
+    const data = await prisma.video.delete({
+      where: {
+        id
+      },
+    });
+    if(data){
+      return {
+        success : true,
+        message : "Video deleted successfully",
+        data : data
+      }
+    }
+    return {
+      success : false,
+      message : "Video not found",
+      data : null
+    }
+  } catch (error) {
+    console.error("Error deleting video:", error);
+    return {
+      success : false,
+      message : "Error deleting video",
+      data : error
+    }
+  }
+}
+
+export async function DeleteModule(id: string) {
+  console.log("Deleting module with ID:", id);
+  try {
+    const data = await prisma.videoModule.delete({
+      where: {
+        id
+      },
+    });
+    if(data){
+      return {
+        success : true,
+        message : "module deleted successfully",
+        data : data
+      }
+    }
+    return {
+      success : false,
+      message : "module not found",
+      data : null
+    }
+  } catch (error) {
+    console.error("Error deleting module:", error);
     throw error;
   }
 }

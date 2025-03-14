@@ -5,6 +5,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Youtube, Copy, Search, Share } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
+import { DeleteModule } from "@/lib/query";
 
 interface Video {
   videoId: string;
@@ -29,6 +31,14 @@ const VideoModules: React.FC<Props> = ({ modules }) => {
     navigator.clipboard.writeText(url);
     alert("Module URL copied to clipboard!");
   };
+
+    const handleDelete = async(moduleId:string) => {
+      const data = await DeleteModule(moduleId);
+      if(data.success){
+        redirect(`/notes`);
+      }
+      
+    }
 
   // Filter modules based on search term
   const filteredModules = modules.filter((module) =>
@@ -110,6 +120,12 @@ const VideoModules: React.FC<Props> = ({ modules }) => {
                               <Share className="h-4 w-4" />
                               <span className="hidden sm:inline">Share</span>
                           </Button>
+                          
+                          <Button variant="destructive" size="sm" className="gap-1"
+                            onClick={() => handleDelete(module.id)}
+                            >
+                              <span className="hidden sm:inline">Delete</span>
+                            </Button>
                         </div>
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-2 line-clamp-2">
                           {module.name}

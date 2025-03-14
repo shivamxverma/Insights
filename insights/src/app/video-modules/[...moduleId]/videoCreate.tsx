@@ -1,5 +1,5 @@
 "use client";
-
+// SSR convertible : 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
@@ -40,9 +40,9 @@ function VideoLearningContent({
   module: Module;
   currentVideoIndex: number;
 }) {
-  const [leftTab, setLeftTab] = useState("transcript");
+  const [leftTab, setLeftTab] = useState("transcript"); 
   const [rightTab, setRightTab] = useState("notes");
-  const { theme } = useTheme();
+  // const { theme } = useTheme();
   const router = useRouter();
 
   const currentVideo = module.videos[currentVideoIndex];
@@ -102,7 +102,7 @@ function VideoLearningContent({
 
   return (
     <div className="h-[calc(100vh-64px)]">
-      <Header moduleId={module.name || "name"} videoTitle={currentVideo.name || "Untitled Video"} courseId={module.id}  />
+      <Header moduleId={module.name || "name"} videoTitle={currentVideo.name || "Untitled Video"} courseId={module.id} videoId={currentVideo.id} />
       <main
         className="flex flex-1 overflow-hidden"
         id="split-container"

@@ -25,16 +25,83 @@ Output only the rephrased transcript entries without additional commentary.
 }
 
 // Function to generate summary using Gemini API
+// export async function generateSummary(transcript: string): Promise<string> {
+//   const prompt = `
+// Summarize the following transcript into a concise format with a main summary, key highlights, and insights. Structure the output as follows:
+// - **Summary**: A brief paragraph summarizing the main points (100-150 words).
+// - **Highlights**: 5-7 bullet points capturing key moments or themes, each starting with an emoji (e.g., 🚀, 🏃‍♂️).
+// - **Insights**: 3-5 bullet points providing deeper reflections or lessons, each starting with an emoji (e.g., 🧠, 🔨).
+
+// Transcript: "${transcript}"
+
+// Output only the summarized content in the specified structure without additional commentary.
+// `;
+
+//   try {
+//     const response = await model.generateContent(prompt);
+//     return response.response.text();
+//   } catch (error) {
+//     console.error("Error generating summary:", error);
+//     return `
+// - **Summary**: Unable to generate summary due to an error.
+// - **Highlights**:
+//   - ⚠️ Error occurred while processing the transcript.
+// - **Insights**:
+//   - 🛠️ Please ensure the Gemini API key is correctly configured.
+// `;
+//   }
+// }
 export async function generateSummary(transcript: string): Promise<string> {
   const prompt = `
+You are an **intelligent and highly skilled AI assistant** specializing in summarizing and refining content. Your task is to transform the following transcript into a **well-organized, professional-quality summary** in **Markdown format**. The goal is to present the content in a clear, structured, and engaging manner while preserving all essential details and improving readability.
+
+---
+
+## ✅ **Guidelines for Summarization**  
+Follow these detailed instructions to ensure the summary is polished and professional:  
+
+### 1. **Markdown Formatting**  
+- Use appropriate **headings** (\`#\`, \`##\`, \`###\`) to organize the content logically and enhance readability.  
+- Present information using **bullet points** and **numbered lists** for clarity and structure.  
+- For technical terms or code snippets, use **code blocks** (\`\`\`language).  
+- Apply **bold** or *italic* text for emphasis where needed.  
+
+---
+
+### 2. **Summarization Style**  
+- Be **concise** yet **comprehensive** — maintain the key details while improving clarity.  
+- Use a **neutral, professional tone** while remaining friendly and accessible.  
+- Eliminate any redundant or low-value information without losing the core message.  
+- Ensure the summary is easy to follow and logically structured.  
+
+---
+
+### 3. **Enhancement Guidelines**  
+- Refine the language to improve **flow** and **readability** without altering the original meaning.  
+- Explain technical terms or complex ideas using **simple language** where needed.  
+- Add **context** where necessary to clarify the content and make it more actionable.  
+- Highlight key takeaways or insights to enhance the user’s understanding.  
+
+---
+
+### 4. **Handling Edge Cases**  
+- If the content is incomplete or unclear, **indicate the gap** and provide a logical interpretation.  
+- If certain details are missing, make an informed guess where possible or highlight the limitation.  
+- If the content is inappropriate, irrelevant, or unethical, respond with a polite refusal and suggest alternative approaches.  
+
+---
+
+## 🚀 **Task**  
 Summarize the following transcript into a concise format with a main summary, key highlights, and insights. Structure the output as follows:
-- **Summary**: A brief paragraph summarizing the main points (100-150 words).
-- **Highlights**: 5-7 bullet points capturing key moments or themes, each starting with an emoji (e.g., 🚀, 🏃‍♂️).
-- **Insights**: 3-5 bullet points providing deeper reflections or lessons, each starting with an emoji (e.g., 🧠, 🔨).
 
-Transcript: "${transcript}"
+### 📝 **Transcript**  
+\`\`\`
+${transcript}
+\`\`\`
 
-Output only the summarized content in the specified structure without additional commentary.
+---
+
+**Deliver a polished and enhanced summary that reflects the professionalism and quality expected from an expert AI assistant.**  
 `;
 
   try {
@@ -43,14 +110,18 @@ Output only the summarized content in the specified structure without additional
   } catch (error) {
     console.error("Error generating summary:", error);
     return `
-- **Summary**: Unable to generate summary due to an error.
-- **Highlights**:
-  - ⚠️ Error occurred while processing the transcript.
-- **Insights**:
-  - 🛠️ Please ensure the Gemini API key is correctly configured.
+### ✅ **Summary**  
+- Unable to generate summary due to an error.
+
+### 🌟 **Highlights**  
+- ⚠️ Error occurred while processing the transcript.
+
+### 🧠 **Insights**  
+- 🛠️ Please ensure the Gemini API key is correctly configured.
 `;
   }
 }
+
 
 // Function to generate MCQ questions using Gemini API
 export async function generateQuestions(

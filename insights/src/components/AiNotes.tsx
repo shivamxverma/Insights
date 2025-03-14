@@ -1,4 +1,7 @@
 "use client";
+
+import { MemoizedMarkdown } from "./memorized-markdown"; // Adjust path if needed
+import { findGeneratedSummary } from "@/lib/finder";
 import { useEffect, useState } from "react";
 
 interface TranscriptProps {
@@ -19,14 +22,11 @@ export default function AiNotes({ moduleId, videoId }: TranscriptProps) {
       setError(null);
 
       try {
-        const res = await fetch(`/api/getSummary?moduleId=${moduleId}&videoId=${videoId}`);
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Failed to fetch summary");
+        const data = await findGeneratedSummary({ moduleId, videoId });
+        if (!data) {
+          throw new Error("No summary available for this video.");
         }
-
-        setSummary(data.summary);
+        setSummary(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch summary");
         console.error("Error in AiNotes:", err);
@@ -39,22 +39,29 @@ export default function AiNotes({ moduleId, videoId }: TranscriptProps) {
   }, [moduleId, videoId]);
 
   return (
-    <div className="p-6 text-black rounded-lg shadow-lg">
-      <h2 className="text-xl text-gray-700 mb-4">Summary</h2>
+    <div className="p-6 rounded-lg shadow-lg bg-background text-foreground">
+      <h2 className="text-xl font-semibold mb-4">Summary</h2>
       {loading ? (
-        <p className="text-gray-700">Loading...</p>
+        <div className="flex items-center justify-center p-6">
+          <svg
+            className="w-6 h-6 animate-spin text-muted-foreground mr-2"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="12" cy="12" r="10" strokeWidth="4" opacity="0.3" />
+            <path d="M4 12a8 8 0 018-8v8h-8z" />
+          </svg>
+          <span className="text-muted-foreground">Loading summary...</span>
+        </div>
       ) : error ? (
-        <p className="text-red-400">{error}</p>
+        <p className="text-destructive">{error}</p>
       ) : summary ? (
         <div className="space-y-4">
-          {summary.split("\n").map((line, index) => (
-            <p key={index} className={line.startsWith("-") ? "text-gray-700 ml-6" : "text-gray-700 font-bold"}>
-              {line}
-            </p>
-          ))}
+          <MemoizedMarkdown content={summary} id="summary" />
         </div>
       ) : (
-        <p className="text-gray-500">No summary available.</p>
+        <p className="text-muted-foreground">No summary available.</p>
       )}
     </div>
   );

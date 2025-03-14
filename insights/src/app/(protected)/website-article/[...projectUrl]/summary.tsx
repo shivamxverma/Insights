@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { MemoizedMarkdown } from "./memorized-markdown"; // Adjust path if needed
+import { MemoizedMarkdown } from "../../../../components/memorized-markdown"; // Adjust path if needed
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card"; // Import Card component
 import { GetScrapeSumary, SaveSummaryWebscraper } from "@/lib/query";
