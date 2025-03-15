@@ -298,7 +298,7 @@ export default function WebScrapingPage() {
             Start saving time and effort today! Summarize YouTube videos effortlessly with Insights.
           </h2>
           <Link href="/dashboard">
-          <Button className="bg-white text-vlack px-6 py-3 rounded-lg hover:bg-blue-200 transition duration-200 transform hover:scale-105 dark:text-black">
+          <Button className="bg-white text-black px-6 py-3 rounded-lg hover:bg-blue-200 transition duration-200 transform hover:scale-105 dark:text-black">
             Try Insights for Free
           </Button>
           </Link>
