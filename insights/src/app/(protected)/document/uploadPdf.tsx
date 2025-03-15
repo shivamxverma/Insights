@@ -53,7 +53,7 @@ export default function UploadPDF() {
         className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg cursor-pointer transition-all duration-200 border-gray-300 hover:border-primary hover:bg-primary/5"
         onClick={() => inputFileRef.current?.click()}
       >
-        <Upload className="w-12 h-12 text-gray-400 mb-2" />
+        <Upload className="w-7 h-7 text-gray-400 mb-2" />
         <p className="text-sm text-gray-600 text-center">Drag & Drop your file here or Click to upload</p>
         <Button type="button" variant="outline" className="mt-4">
           Select File

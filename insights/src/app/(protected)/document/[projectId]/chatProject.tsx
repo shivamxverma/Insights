@@ -42,8 +42,8 @@ export default function SummaryPage({ content, projectId }: Props) {
   }, [content, projectId]);
 
   return (
-    <div className="h-full flex flex-col p-6 bg-background text-foreground">
-      <div className="w-full max-w-3xl mx-auto flex-1">
+    <div className="h-full flex flex-col bg-background text-foreground">
+      <div className="w-full mx-auto flex-1">
         {isLoading && !summary ? (
           <Card className="flex items-center justify-center p-6 border border-border bg-muted">
             <svg

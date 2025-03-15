@@ -56,7 +56,7 @@ export async function POST(req: Request) {
 
       console.log("Creating embeddings from video summary");
       const { chunks, embeddings } = await processText(transcript.summary, {
-        bufferSize: 2,
+        bufferSize: 2,  
         mergeLengthThreshold: 200,
         cosineSimThreshold: 0.9,
         percentileThreshold: 90,

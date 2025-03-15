@@ -1,8 +1,8 @@
 // app/ChatPdf/page.tsx
 import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth";
-import ChatPdfProject from "./[projectId]/chatProject";
 import UploadPDF from "./uploadPdf";
+import ChatPdfProject from "./chatPdfproject";
 
 export default async function ChatPdfPage() {
 
@@ -21,7 +21,7 @@ export default async function ChatPdfPage() {
          </div>
          <div className="container mx-auto px-4 py-8"></div>
       <UploadPDF></UploadPDF>
-      {/* <ChatPdfProject></ChatPdfProject> */}
+      <ChatPdfProject></ChatPdfProject>
     </div>
   );
 }

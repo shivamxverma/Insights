@@ -108,6 +108,7 @@ model ChatPdf {
   name       String
   content    String?
   userId     String
+  embeddingCreated Boolean      @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

@@ -1,5 +1,6 @@
 'use server'
 import { prisma } from "./db";
+import { retrieveAnswer } from "./retrieval";
 
 
 export async function addMynotes(notes: string, moduleId: string, videoId: string) {
@@ -256,16 +257,35 @@ export async function GetWebProject() {
   }
 }
 
-
-export async function GeTPdfContent(projectId: string) {
+export async function GetChatProject() {
   try {
-    const data = await prisma.chatPdf.findFirst({
-      where: { id: projectId },
-    });
-    return data?.content || "";
+    const data = await prisma.chatPdf.findMany()
+    return data;
   } catch (error) {
-    console.error("Error fetching PDF content:", error);
+    console.error("Error fetching chat projects:", error);
     throw error;
   }
+}
 
+export async function DeletechatPdfProject(projectId: string) {
+  try {
+    const deletedProject = await prisma.chatPdf.delete({
+      where: { id: projectId },
+    });
+    console.log("Deleted project:", deletedProject);
+    return deletedProject;
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    throw error;
+  }
+}
+
+export async function chatPdfChatbot( query : string, namespace : string ){
+   try {
+    const res = await retrieveAnswer(query, namespace);
+    return res;
+  } catch (error) {
+    console.error("Error fetching chat projects:", error);
+    throw error;
+   }
 }
