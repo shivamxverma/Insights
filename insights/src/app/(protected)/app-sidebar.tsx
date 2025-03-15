@@ -30,21 +30,22 @@ const items = [
     icon: Bot,
   },
   {
-      title: "Webpages/Articles",
-      url: "/website-article",
-      icon: Presentation,
-    },
-    {
-      title: "Documents",
-      url: "/document",
-      icon: Bot,
-    },
+    title: "Webpages/Articles",
+    url: "/website-article",
+    icon: Presentation,
+  },
+  {
+    title: "Documents",
+    url: "/document",
+    icon: Bot,
+  },
   {
     title: "Billing",
     url: "/billing",
     icon: CreditCard,
   },
 ];
+
 const options = [
   {
     title: "Community",
@@ -57,36 +58,36 @@ const options = [
     icon: Bot,
   },
   {
-      title: "tutorial",
-      url: "",
-      icon: Presentation,
-    },
+    title: "Tutorial",
+    url: "",
+    icon: Presentation,
+  },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { open, setOpen } = useSidebar()
+  const { open, setOpen } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon" variant="floating">
-      <SidebarHeader>
+    <Sidebar collapsible="icon" variant="floating" className="bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700">
+      <SidebarHeader className="p-4">
         <div className="flex items-center gap-2">
-          {/* <Image src="/logo4.png" alt="logo" width={80} height={80} /> */}
           {open && (
-            <h1  className="text-2xl font-extrabold text-primary/90 tracking-wide leading-tight drop-shadow-md">
-             <Link href='/' >Insights</Link>
+            <h1 className="text-2xl font-extrabold text-blue-500 dark:text-blue-300 tracking-wide leading-tight drop-shadow-md transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-200">
+              <Link href='/'>Insights</Link>
             </h1>
           )}
         </div>
-        
       </SidebarHeader>
 
       <SidebarContent>
         {/* Application Section */}
         <SidebarGroup>
-        <div className="flex items-center justify-between">
-              <SidebarGroupLabel>Application</SidebarGroupLabel>
-            </div>
+          <div className="flex items-center justify-between px-4">
+            <SidebarGroupLabel className="text-gray-700 dark:text-gray-300 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+              Application
+            </SidebarGroupLabel>
+          </div>
 
           <SidebarGroupContent>
             <SidebarMenu>
@@ -96,13 +97,13 @@ export function AppSidebar() {
                     <Link
                       href={item.url}
                       className={cn(
-                        "flex items-center gap-2 p-2 rounded-md transition-colors duration-200 ease-in-out",
+                        "flex items-center gap-2 p-2 rounded-md transition-all duration-200 ease-in-out",
                         pathname === item.url
-                          ? "bg-primary text-white shadow-md"
-                          : "hover:bg-gray-100"
+                          ? "bg-blue-500 text-white shadow-md"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-blue-500 dark:hover:text-blue-300"
                       )}
                     >
-                      <item.icon className="w-5 h-5" />
+                      <item.icon className="w-5 h-5 transition-transform duration-200 hover:scale-110" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -110,24 +111,28 @@ export function AppSidebar() {
               ))}
             </SidebarMenu>
 
-              <div className="mt-4"> <br /> </div>
-              <div className="flex items-center justify-between">
-              <SidebarGroupLabel>Options</SidebarGroupLabel>
+            <div className="mt-4">
+              <br />
             </div>
-            <SidebarMenu >
+            <div className="flex items-center justify-between px-4">
+              <SidebarGroupLabel className="text-gray-700 dark:text-gray-300 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+                Options
+              </SidebarGroupLabel>
+            </div>
+            <SidebarMenu>
               {options.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link
                       href={item.url}
                       className={cn(
-                        "flex items-center gap-2 p-2 rounded-md transition-colors duration-200 ease-in-out",
+                        "flex items-center gap-2 p-2 rounded-md transition-all duration-200 ease-in-out",
                         pathname === item.url
-                          ? "bg-primary text-white shadow-md"
-                          : "hover:bg-gray-100"
+                          ? "bg-blue-500 text-white shadow-md"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-blue-500 dark:hover:text-blue-300"
                       )}
                     >
-                      <item.icon className="w-5 h-5" />
+                      <item.icon className="w-5 h-5 transition-transform duration-200 hover:scale-110" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -136,12 +141,17 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
       </SidebarContent>
-          <Button className='w-full flex items-center gap-2 transition-colors duration-200 hover:bg-primary hover:text-white' variant="outline"  onClick={() => setOpen(!open)}>
-                <ChevronLeft className={cn("h-4 w-4 transition-transform", open ? "" : "rotate-180")} />
-              </Button>
+
+      <Button
+        className="w-full flex items-center gap-2 transition-all duration-300 hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white hover:shadow-md"
+        variant="outline"
+        onClick={() => setOpen(!open)}
+      >
+        <ChevronLeft
+          className={cn("h-4 w-4 transition-transform duration-200", open ? "" : "rotate-180")}
+        />
+      </Button>
     </Sidebar>
   );
 }
-

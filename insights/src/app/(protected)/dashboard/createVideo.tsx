@@ -7,8 +7,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Trash2, Clock, BookOpen, User, Globe, Subtitles, FileText } from "lucide-react";
-import Link from "next/link";
+import { Clock, BookOpen, User, Globe, Subtitles, FileText } from "lucide-react";
 
 interface Module {
   id: string;
@@ -44,7 +43,6 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
   const { mutate: addToModule, isPending: isAddingPending } = useMutation({
     mutationFn: async () => {
       const { videoId, playlistId } = getYouTubeIds(url);
-      console.log("videoId:", videoId, "playlistId:", playlistId, "moduleId:", moduleId, "action:", action, "moduleName:", moduleName);
       if (!videoId && !playlistId) throw new Error("Invalid YouTube URL");
       if (action === "new" && !moduleName.trim()) throw new Error("Module name is required");
 
@@ -72,7 +70,6 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const { videoId, playlistId } = getYouTubeIds(url);
-    console.log("handle videoId:", videoId, "playlistId:", playlistId, "moduleId:", moduleId, "action:", action, "moduleName:", moduleName);
 
     if (!url || (!videoId && !playlistId)) {
       toast("Please enter a valid YouTube URL");
@@ -95,10 +92,12 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
   const { videoId, playlistId } = getYouTubeIds(url);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6">
-      <div className="max-w-3xl w-full">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-foreground">
+      <div className="container mx-auto px-4 py-16">
         {/* Header Section */}
-        <h1 className="text-3xl font-bold text-center mb-8">Add a YouTube Video to Your Learning Module</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8 transition-all duration-300 hover:text-blue-500 dark:hover:text-blue-300">
+          Add a YouTube Video to Your Learning Module
+        </h1>
 
         {/* URL Input Section */}
         <div className="flex items-center gap-4 mb-8">
@@ -107,45 +106,45 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
             placeholder="Enter the YouTube video link, for example: https://www.youtube.com/watch?v=example"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="flex-1 py-3 text-sm bg-background border-border focus:border-foreground/50"
+            className="flex-1 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:border-blue-500 dark:focus:border-blue-300 transition-all duration-200 hover:shadow-md focus:shadow-lg"
           />
         </div>
 
         {/* Form Section */}
         {url && (videoId || playlistId) ? (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-2">
+                <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                   <input
                     type="radio"
                     value="single"
                     checked={action === "single"}
                     onChange={() => setAction("single")}
-                    className="text-foreground focus:ring-foreground/50"
+                    className="text-blue-500 focus:ring-blue-500 dark:text-blue-300 dark:focus:ring-blue-300 transition-transform duration-200 hover:scale-110"
                     disabled={!videoId}
                   />
                   <span>Add only this video</span>
                 </label>
                 {playlistId && (
-                  <label className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                     <input
                       type="radio"
                       value="playlist"
                       checked={action === "playlist"}
                       onChange={() => setAction("playlist")}
-                      className="text-foreground focus:ring-foreground/50"
+                      className="text-blue-500 focus:ring-blue-500 dark:text-blue-300 dark:focus:ring-blue-300 transition-transform duration-200 hover:scale-110"
                     />
                     <span>Add entire playlist</span>
                   </label>
                 )}
-                <label className="flex items-center gap-2">
+                <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                   <input
                     type="radio"
                     value="new"
                     checked={action === "new"}
                     onChange={() => setAction("new")}
-                    className="text-foreground focus:ring-foreground/50"
+                    className="text-blue-500 focus:ring-blue-500 dark:text-blue-300 dark:focus:ring-blue-300 transition-transform duration-200 hover:scale-110"
                   />
                   <span>Create new module</span>
                 </label>
@@ -153,28 +152,34 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
 
               {action === "new" && (
                 <div>
-                  <label className="block text-sm font-medium mb-1">Module Name:</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+                    Module Name:
+                  </label>
                   <Input
                     type="text"
                     placeholder="Enter the module name"
                     value={moduleName}
                     onChange={(e) => setModuleName(e.target.value)}
-                    className="w-full py-3 bg-background border-border focus:border-foreground/50"
+                    className="w-full py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:border-blue-500 dark:focus:border-blue-300 transition-all duration-200 hover:shadow-md focus:shadow-lg"
                   />
                 </div>
               )}
 
               {action !== "new" && (
                 <div>
-                  <label className="block text-sm font-medium mb-1">Select Module:</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+                    Select Module:
+                  </label>
                   <select
                     value={moduleId}
                     onChange={(e) => setModuleId(e.target.value)}
-                    className="w-full px-3 py-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-foreground/50"
+                    className="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 transition-all duration-200 hover:shadow-md"
                   >
-                    <option value="">-- Select a module --</option>
+                    <option value="" className="text-gray-400 dark:text-gray-500">
+                      -- Select a module --
+                    </option>
                     {modules.map((m) => (
-                      <option key={m.id} value={m.id}>
+                      <option key={m.id} value={m.id} className="text-gray-800 dark:text-gray-200">
                         {m.name}
                       </option>
                     ))}
@@ -186,72 +191,74 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
             <Button
               type="submit"
               disabled={isAddingPending || (!moduleId && action !== "new")}
-              className="w-full py-3 font-semibold bg-foreground text-background hover:bg-foreground/80"
+              className="w-full py-3 font-semibold bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isAddingPending ? "Submitting..." : "Submit"}
             </Button>
           </form>
         ) : (
-          <p className="text-muted-foreground text-center">Please enter a valid YouTube URL to proceed.</p>
+          <p className="text-center text-gray-600 dark:text-gray-300 transition-opacity duration-300 hover:opacity-80">
+            Please enter a valid YouTube URL to proceed.
+          </p>
         )}
-      </div>
 
-      {/* Feature Showcase Section (Inspired by the Image) */}
-      <div className="max-w-5xl w-full mt-12">
-        <h2 className="text-2xl font-semibold text-center mb-8">Why Use Insights?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Time-Saving */}
-          <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-md">
-            <Clock className="h-8 w-8 mb-4 text-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Time-Saving</h3>
-            <p className="text-muted-foreground text-sm">
-              Get transcriptions and summaries in seconds, quickly decide if you want to continue watching, without any ads.
-            </p>
-          </div>
-
-          {/* Perfect for Learning */}
-          <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-md">
-            <BookOpen className="h-8 w-8 mb-4 text-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Perfect for Learning</h3>
-            <p className="text-muted-foreground text-sm">
-              Helps you understand videos through Highlights, Key Insights, Outline, Core Concepts, FAQs, AI Chat, and more.
-            </p>
-          </div>
-
-          {/* Personalized for You */}
-          <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-md">
-            <User className="h-8 w-8 mb-4 text-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Personalized for You</h3>
-            <p className="text-muted-foreground text-sm">
-              Customize summary prompts, depth, length, tone, and more to fit your needs.
-            </p>
-          </div>
-
-          {/* 100+ Languages */}
-          <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-md">
-            <Globe className="h-8 w-8 mb-4 text-foreground" />
-            <h3 className="text-lg font-semibold mb-2">100+ Languages</h3>
-            <p className="text-muted-foreground text-sm">
-              Transcribe and summarize in over 100 languages, easily access global content.
-            </p>
-          </div>
-
-          {/* No-Subtitle YouTube */}
-          <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-md">
-            <Subtitles className="h-8 w-8 mb-4 text-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No-Subtitle YouTube</h3>
-            <p className="text-muted-foreground text-sm">
-              Transcribe YouTube videos without subtitles (up to 40min), and for videos with subtitles, there’s no length limit.
-            </p>
-          </div>
-
-          {/* Timestamped Transcripts */}
-          <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-md">
-            <FileText className="h-8 w-8 mb-4 text-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Timestamped Transcripts</h3>
-            <p className="text-muted-foreground text-sm">
-              Get the transcripts with timestamps and download subtitles for easy reference.
-            </p>
+        {/* Feature Showcase Section */}
+        <div className="mt-12">
+          <h2 className="text-2xl md:text-3xl font-semibold text-center text-gray-800 dark:text-gray-100 mb-8 transition-all duration-300 hover:text-blue-500 dark:hover:text-blue-300">
+            Why Use Insights?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Clock,
+                title: "Time-Saving",
+                description:
+                  "Get transcriptions and summaries in seconds, quickly decide if you want to continue watching, without any ads.",
+              },
+              {
+                icon: BookOpen,
+                title: "Perfect for Learning",
+                description:
+                  "Helps you understand videos through Highlights, Key Insights, Outline, Core Concepts, FAQs, AI Chat, and more.",
+              },
+              {
+                icon: User,
+                title: "Personalized for You",
+                description:
+                  "Customize summary prompts, depth, length, tone, and more to fit your needs.",
+              },
+              {
+                icon: Globe,
+                title: "100+ Languages",
+                description:
+                  "Transcribe and summarize in over 100 languages, easily access global content.",
+              },
+              {
+                icon: Subtitles,
+                title: "No-Subtitle YouTube",
+                description:
+                  "Transcribe YouTube videos without subtitles (up to 40min), and for videos with subtitles, there’s no length limit.",
+              },
+              {
+                icon: FileText,
+                title: "Timestamped Transcripts",
+                description:
+                  "Get the transcripts with timestamps and download subtitles for easy reference.",
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center text-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                <feature.icon className="h-8 w-8 mb-4 text-blue-500 dark:text-blue-300 transition-transform duration-200 hover:scale-110" />
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm transition-opacity duration-200 hover:opacity-90">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

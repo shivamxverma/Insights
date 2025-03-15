@@ -1,4 +1,3 @@
-// app/ChatPdf/page.tsx
 import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth";
 import UploadPDF from "./uploadPdf";
@@ -20,8 +19,8 @@ export default async function ChatPdfPage() {
               </p>
          </div>
          <div className="container mx-auto px-4 py-8"></div>
-      <UploadPDF></UploadPDF>
-      <ChatPdfProject></ChatPdfProject>
+          <UploadPDF></UploadPDF>
+          <ChatPdfProject></ChatPdfProject>
     </div>
   );
 }
