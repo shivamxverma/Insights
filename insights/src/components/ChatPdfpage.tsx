@@ -1,6 +1,8 @@
 "use client";
 
+import { Upload } from "lucide-react";
 import Image from "next/image";
+import { Button } from "./ui/button";
 
 export default function ChatPdfPage() {
   return (
@@ -21,80 +23,21 @@ export default function ChatPdfPage() {
         </p>
 
         <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border-2 border-gray-200 dark:border-gray-700 max-w-3xl mx-auto transition-all duration-200 hover:shadow-lg">
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            <input
-              type="text"
-              placeholder="https://example.com/your-pdf-link"
-              className="flex-1 p-3 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 transition-all duration-200 hover:shadow-md focus:shadow-lg"
-            />
+          <div
+        className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg cursor-pointer transition-all duration-200 border-gray-300 hover:border-primary hover:bg-primary/5"
+      >
+        <Upload className="w-7 h-7 text-gray-400 mb-2" />
+        <p className="text-sm text-gray-600 text-center">Drag & Drop your file here or Click to upload</p>
+        <Button type="button" variant="outline" className="mt-4">
+          Select File
+        </Button>
+      </div>
             <button
-              className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-300 transform hover:scale-105 hover:shadow-md"
+              className="bg-blue-500 mt-4 text-white px-6 py-3 rounded-lg hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-300 transform hover:scale-105 hover:shadow-md"
             >
               Generate Summary
             </button>
-            <button
-              className="bg-white text-blue-600 dark:bg-gray-700 dark:text-gray-200 px-6 py-3 rounded-lg border border-blue-600 dark:border-blue-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 hover:shadow-md"
-            >
-              Batch Summarize
-            </button>
           </div>
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex flex-col items-center transition-all duration-200 hover:shadow-md">
-              <Image
-                src="/pdf-example-1.png"
-                alt="Example 1"
-                width={150}
-                height={100}
-                className="rounded-lg shadow-sm transition-transform duration-200 hover:scale-105"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 transition-opacity duration-200 hover:opacity-80">
-                PDF Guide
-              </p>
-              <p className="text-xs text-blue-600 dark:text-blue-300 mt-1 transition-colors duration-200 hover:text-blue-700 dark:hover:text-blue-200">
-                ChatPDF Subscription
-              </p>
-            </div>
-            <div className="flex flex-col items-center transition-all duration-200 hover:shadow-md">
-              <Image
-                src="/pdf-example-2.png"
-                alt="Example 2"
-                width={150}
-                height={100}
-                className="rounded-lg shadow-sm transition-transform duration-200 hover:scale-105"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 transition-opacity duration-200 hover:opacity-80">
-                Research Paper
-              </p>
-              <p className="text-xs text-blue-600 dark:text-blue-300 mt-1 transition-colors duration-200 hover:text-blue-700 dark:hover:text-blue-200">
-                Batch Summary Survey
-              </p>
-            </div>
-            <div className="flex flex-col items-center transition-all duration-200 hover:shadow-md">
-              <Image
-                src="/pdf-example-3.png"
-                alt="Example 3"
-                width={150}
-                height={100}
-                className="rounded-lg shadow-sm transition-transform duration-200 hover:scale-105"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 transition-opacity duration-200 hover:opacity-80">
-                Manual
-              </p>
-            </div>
-            <div className="flex flex-col items-center transition-all duration-200 hover:shadow-md">
-              <Image
-                src="/pdf-example-4.png"
-                alt="Example 4"
-                width={150}
-                height={100}
-                className="rounded-lg shadow-sm transition-transform duration-200 hover:scale-105"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 transition-opacity duration-200 hover:opacity-80">
-                Report
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* How to Summarize ChatPDFs Section */}
@@ -107,7 +50,7 @@ export default function ChatPdfPage() {
             You can easily use ChatPDF AI summarizer with just 3 simple steps.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-md">
+            <div className="flex flex-col items-center text-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 dark:hover:bg-gray-700">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                 Step1: Get PDF link or file
               </h3>
@@ -115,7 +58,7 @@ export default function ChatPdfPage() {
                 Upload or paste the PDF link or file into ChatPDF.
               </p>
             </div>
-            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-md">
+            <div className="flex flex-col items-center text-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 dark:hover:bg-gray-700">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                 Step2: Generate Summary
               </h3>
@@ -124,7 +67,7 @@ export default function ChatPdfPage() {
                 summarize the PDF content.
               </p>
             </div>
-            <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-md">
+            <div className="flex flex-col items-center text-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 dark:hover:bg-gray-700">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                 Step3: Read the summary
               </h3>

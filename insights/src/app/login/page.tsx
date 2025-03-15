@@ -4,19 +4,17 @@ import { signIn } from "next-auth/react";
 import { Github, Chrome, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ModeToggle } from "../(protected)/mode-toggle";
 import Image from "next/image";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
 
   const handleOAuthSignIn = async (provider: "github" | "google") => {
     setIsLoading(true);
     try {
       await signIn(provider, {
-        callbackUrl: "/", // Redirect after successful login
+        callbackUrl: "/dashboard", // Redirect after successful login
       });
     } catch (error) {
       console.error("OAuth sign-in error:", error);

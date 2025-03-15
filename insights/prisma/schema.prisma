@@ -86,7 +86,7 @@ model Video {
   embeddingCreated Boolean      @default(false)
 
   createdAt        DateTime     @default(now())
-  videoModule      VideoModule? @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+  videoModule      VideoModule? @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   quizzes          Quiz[]
 
   @@index([moduleId], name: "video_moduleId_index")

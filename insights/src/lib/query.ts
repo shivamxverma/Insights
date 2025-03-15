@@ -226,7 +226,7 @@ export async function DeleteModule(id: string) {
   try {
     const data = await prisma.videoModule.delete({
       where: {
-        id
+        id : id
       },
     });
     if(data){

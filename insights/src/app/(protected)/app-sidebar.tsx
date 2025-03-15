@@ -17,6 +17,7 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 const items = [
   {
@@ -72,10 +73,19 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" variant="floating" className="bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2">
+          <Image
+            src="/logo.png"
+            alt="Insights"
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
           {open && (
-            <h1 className="text-2xl font-extrabold text-blue-500 dark:text-blue-300 tracking-wide leading-tight drop-shadow-md transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-200">
-              <Link href='/'>Insights</Link>
-            </h1>
+            <>
+              <h1 className="text-2xl font-extrabold text-blue-500 dark:text-blue-300 tracking-wide leading-tight drop-shadow-md transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-200">
+                <Link href='/'>Insights</Link>
+              </h1>
+            </>
           )}
         </div>
       </SidebarHeader>

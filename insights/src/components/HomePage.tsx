@@ -11,24 +11,16 @@ export default function HomePage() {
             AI Summarizer & Generator <br /> for Enhanced Learning
           </h1>
           <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
-            Insights - YouTube Video Summarizer, PDF Summary, PPT Summary, Image
-            Summaries, and more. Create PPTs, Mindmaps, and Notes with Insights AI
+            Insights - YouTube Video Summarizer, PDF Summary, chatPdf and more. Get Summary, anwer to your question, and Notes with Insights AI
             to improve your learning efficiency by 10x.
           </p>
           <div className="flex justify-center lg:justify-start gap-4">
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
+            <button onClick={() => window.location.href = '/dashboard'} className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
               Get Started Free
             </button>
             <button className="bg-white text-blue-600 dark:bg-gray-700 dark:text-gray-200 px-6 py-3 rounded-full border border-blue-600 dark:border-blue-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition">
               Add to Chrome - It's Free
             </button>
-          </div>
-          <div className="mt-8 flex justify-center lg:justify-start gap-4 flex-wrap">
-            {["YouTube", "Udemy", "Coursera", "Vimeo", "Bilibili", "Google", "Quizlet", "CRAM"].map((platform) => (
-              <span key={platform} className="text-blue-600 dark:text-blue-300 text-sm">
-                {platform}
-              </span>
-            ))}
           </div>
         </div>
 
@@ -65,9 +57,9 @@ export default function HomePage() {
                 <span className="text-green-600 dark:text-green-400">✔ Online Articles</span>
               </div>
               <div className="mt-4">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Mind Map</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Quiz's</h3>
                 <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 bg-gray-50 dark:bg-gray-700 h-32 flex items-center justify-center text-gray-500 dark:text-gray-400">
-                  Mind Map Placeholder
+                  quiz's Section Placeholder
                 </div>
               </div>
               <div className="mt-4 text-sm text-gray-600 dark:text-gray-300">

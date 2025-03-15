@@ -16,6 +16,7 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 interface Video {
   id: string;
@@ -42,13 +43,18 @@ export function VideoSidebar({ courseId, videoId, videos }: VideoSidebarProps) {
     <Sidebar collapsible="icon" variant="floating" className="h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-200">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
+           <Image
+                          src="/logo.png"
+                          alt="Insights"
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
           {open && (
+            
             <h1 className="text-2xl font-extrabold text-gray-800 dark:text-gray-100 tracking-wide leading-tight drop-shadow-md transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
               <Link href={`/dashboard`}>Insights</Link>
             </h1>
-          )}
-          {!open && (
-            <span className="sr-only">Toggle Sidebar</span>
           )}
         </div>
       </SidebarHeader>
