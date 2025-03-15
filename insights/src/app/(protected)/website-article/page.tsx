@@ -1,4 +1,3 @@
-// app/webscraping/page.tsx
 import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth";
 import WebscrapingProjects from "./WebscrapingProjects";

@@ -35,8 +35,8 @@ const items = [
       icon: Presentation,
     },
     {
-      title: "Groups",
-      url: "/groups",
+      title: "Documents",
+      url: "/document",
       icon: Bot,
     },
   {

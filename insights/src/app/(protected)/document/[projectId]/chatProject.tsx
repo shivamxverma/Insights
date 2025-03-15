@@ -1,0 +1,82 @@
+"use client";
+import { useState, useEffect } from "react";
+import { MemoizedMarkdown } from "@/components/memorized-markdown";
+import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { GetScrapeSumary, GetScrapeSumaryThroughProjectId, SaveSummaryWebscraper } from "@/lib/query";
+import { SummarizeScrapeContent } from "@/lib/geminiAPI";
+
+interface Props {
+  content: string;
+  projectId: string; // Renamed to camelCase for consistency
+}
+
+export default function SummaryPage({ content, projectId }: Props) {
+  console.log("content in chatpdf" , content)
+  const [summary, setSummary] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!content) {
+      setError("No content provided to summarize.");
+      return;
+    }
+    const fetchSummary = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+
+        setSummary( content);
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
+        setError(errorMessage);
+        console.error("Error fetching summary:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSummary();
+  }, [content, projectId]);
+
+  return (
+    <div className="h-full flex flex-col p-6 bg-background text-foreground">
+      <div className="w-full max-w-3xl mx-auto flex-1">
+        {isLoading && !summary ? (
+          <Card className="flex items-center justify-center p-6 border border-border bg-muted">
+            <svg
+              className="w-8 h-8 animate-spin text-muted-foreground mr-2"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <circle cx="12" cy="12" r="10" strokeWidth="4" opacity="0.3" />
+              <path d="M4 12a8 8 0 018-8v8h-8z" />
+            </svg>
+            <span className="text-muted-foreground text-lg">Generating your summary...</span>
+          </Card>
+        ) : error ? (
+          <Card className="p-6 border border-destructive bg-muted">
+            <p className="text-center text-destructive text-lg">{error}</p>
+          </Card>
+        ) : summary ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <Card className="p-6 border border-border bg-background shadow-sm">
+              <MemoizedMarkdown content={summary} id="summary" />
+            </Card>
+          </motion.div>
+        ) : (
+          <Card className="p-6 border border-border bg-muted">
+            <p className="text-center text-muted-foreground text-lg">No content available yet.</p>
+          </Card>
+        )}
+      </div>
+    </div>
+  );
+}

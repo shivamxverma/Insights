@@ -48,12 +48,13 @@ model User {
   credits       Int          @default(5)
   webAnalytic   webAnalysis[]
   videoModules  VideoModule[]
+  chatPdfs       ChatPdf[]
 }
 
 model webAnalysis {
   id         String   @id @default(cuid())
   name       String?
-  url        String   @unique
+  url        String   
   summary    String   @db.Text
   userId     String
   createdAt  DateTime @default(now())
@@ -87,7 +88,6 @@ model Video {
   createdAt        DateTime     @default(now())
   videoModule      VideoModule? @relation(fields: [moduleId], references: [id], onDelete: SetNull)
   quizzes          Quiz[]
-  chat             Chat[]
 
   @@index([moduleId], name: "video_moduleId_index")
   @@unique([moduleId, videoId], name: "moduleId_videoId") // Fixed unique constraint name
@@ -103,26 +103,13 @@ model Quiz {
   @@index([videoId])
 }
 
-enum MessageRole {
-  USER
-  SYSTEM
-}
+model ChatPdf {
+  id         String   @id @default(cuid())
+  name       String
+  content    String?
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-model Chat {
-  id            String       @id @default(cuid())
-  videoId       String
-  createdAt     DateTime  @default(now())
-  video         Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
-  @@index([videoId])
-  messages      Message[]
-}
-
-model Message {
-  id        String         @id @default(cuid())
-  chatId    String
-  content   String
-  role      MessageRole
-  createdAt DateTime    @default(now())
-
-  chat      Chat        @relation(fields: [chatId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 }

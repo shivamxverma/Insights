@@ -27,7 +27,7 @@ Output only the rephrased transcript entries without additional commentary.
 
 export async function generateSummary(transcript: string): Promise<string> {
   const prompt = `
-You are an **intelligent and highly skilled AI assistant** specializing in summarizing and refining content. Your task is to transform the following transcript into a **well-organized, professional-quality summary** in **Markdown format**. The goal is to present the content in a clear, structured, and engaging manner while preserving all essential details and improving readability.
+You are an **intelligent and highly skilled AI assistant** specializing in summarizing and refining content. Your task is to transform the following transcript or Pdf content into a **well-organized, professional-quality summary** in **Markdown format**. The goal is to present the content in a clear, structured, and engaging manner while preserving all essential details and improving readability.
 
 ---
 
@@ -54,7 +54,7 @@ Follow these detailed instructions to ensure the summary is polished and profess
 - Refine the language to improve **flow** and **readability** without altering the original meaning.  
 - Explain technical terms or complex ideas using **simple language** where needed.  
 - Add **context** where necessary to clarify the content and make it more actionable.  
-- Highlight key takeaways or insights to enhance the user’s understanding.  
+- Highlight key takeaways or insights to enhance the user's understanding.  
 
 ---
 
@@ -66,9 +66,9 @@ Follow these detailed instructions to ensure the summary is polished and profess
 ---
 
 ## 🚀 **Task**  
-Summarize the following transcript into a concise format with a main summary, key highlights, and insights. Structure the output as follows:
+Summarize the following transcript or Pdf content into a concise format with a main summary, key highlights, and insights. Structure the output as follows:
 
-### 📝 **Transcript**  
+### 📝 **Transcript or Pdf content**  
 \`\`\`
 ${transcript}
 \`\`\`

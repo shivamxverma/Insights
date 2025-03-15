@@ -148,7 +148,7 @@ export async function SaveSummaryWebscraper(projectId: string, summary: string) 
 // Retrieves the summary for a project by ID
 export async function GetScrapeSumary(url: string) {
   try {
-    const data = await prisma.webAnalysis.findUnique({
+    const data = await prisma.webAnalysis.findFirst({
       where: { url: url },
       select: { summary: true,
         id : true
@@ -254,4 +254,18 @@ export async function GetWebProject() {
     console.error("Error fetching web projects:", error);
     throw error;
   }
+}
+
+
+export async function GeTPdfContent(projectId: string) {
+  try {
+    const data = await prisma.chatPdf.findFirst({
+      where: { id: projectId },
+    });
+    return data?.content || "";
+  } catch (error) {
+    console.error("Error fetching PDF content:", error);
+    throw error;
+  }
+
 }
