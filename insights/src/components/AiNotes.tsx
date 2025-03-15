@@ -39,12 +39,14 @@ export default function AiNotes({ moduleId, videoId }: TranscriptProps) {
   }, [moduleId, videoId]);
 
   return (
-    <div className="p-6 rounded-lg shadow-lg bg-background text-foreground">
-      <h2 className="text-xl font-semibold mb-4">Summary</h2>
+    <div className="p-6 rounded-lg shadow-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-lg">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+        Summary
+      </h2>
       {loading ? (
         <div className="flex items-center justify-center p-6">
           <svg
-            className="w-6 h-6 animate-spin text-muted-foreground mr-2"
+            className="w-6 h-6 animate-spin text-gray-500 dark:text-gray-400 transition-transform duration-200 hover:scale-110"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -52,16 +54,16 @@ export default function AiNotes({ moduleId, videoId }: TranscriptProps) {
             <circle cx="12" cy="12" r="10" strokeWidth="4" opacity="0.3" />
             <path d="M4 12a8 8 0 018-8v8h-8z" />
           </svg>
-          <span className="text-muted-foreground">Loading summary...</span>
+          <span className="text-gray-500 dark:text-gray-400 ml-2 transition-opacity duration-200 hover:opacity-80">Loading summary...</span>
         </div>
       ) : error ? (
-        <p className="text-destructive">{error}</p>
+        <p className="text-red-500 transition-opacity duration-200 hover:opacity-80">{error}</p>
       ) : summary ? (
         <div className="space-y-4">
           <MemoizedMarkdown content={summary} id="summary" />
         </div>
       ) : (
-        <p className="text-muted-foreground">No summary available.</p>
+        <p className="text-gray-500 dark:text-gray-400 transition-opacity duration-200 hover:opacity-80">No summary available.</p>
       )}
     </div>
   );

@@ -17,54 +17,50 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-// Define the shape of a video (based on your Prisma schema)
 interface Video {
   id: string;
-  name: string | null; // Nullable in schema
+  name: string | null;
   url: string;
   videoId: string;
   summary: string | null;
 }
 
-// Props interface for the component
 interface VideoSidebarProps {
-  courseId: string; // This is the moduleId
-  videoId: string; // Current video ID for highlighting
-  videos: Video[]; // Array of Video objects
+  courseId: string;
+  videoId: string;
+  videos: Video[];
 }
 
 export function VideoSidebar({ courseId, videoId, videos }: VideoSidebarProps) {
   const pathname = usePathname();
   const { open, setOpen } = useSidebar();
 
-  // Function to determine if the current path matches the video link
   const isActive = (videoVideoId: string) =>
     pathname === `/video-modules/${courseId}/${videoVideoId}`;
 
   return (
-    <Sidebar collapsible="icon" variant="floating" className="h-full">
+    <Sidebar collapsible="icon" variant="floating" className="h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-200">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
           {open && (
-            <h1 className="text-2xl font-extrabold text-primary/90 tracking-wide leading-tight drop-shadow-md">
+            <h1 className="text-2xl font-extrabold text-gray-800 dark:text-gray-100 tracking-wide leading-tight drop-shadow-md transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
               <Link href={`/dashboard`}>Insights</Link>
             </h1>
           )}
           {!open && (
-            <span className="sr-only">Toggle Sidebar</span> 
+            <span className="sr-only">Toggle Sidebar</span>
           )}
-        </div> 
+        </div>
       </SidebarHeader>
 
-
       <Button
-        className="w-full flex items-center gap-2 p-2 mt-2 mb-4 transition-colors duration-200 hover:bg-primary hover:text-white"
+        className="w-full flex items-center gap-2 p-2 mt-2 mb-4 transition-all duration-200 hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white hover:shadow-md"
         variant="outline"
         onClick={() => window.location.href = "/modules"}
         aria-label={open ? "Collapse Sidebar" : "Expand Sidebar"}
       >
-        <LayoutDashboard className="h-4 w-4" />
-        {open && <span>modules</span>}
+        <LayoutDashboard className="h-4 w-4 transition-transform duration-200 hover:scale-110" />
+        {open && <span className="transition-opacity duration-200 hover:opacity-80">Modules</span>}
       </Button>
 
       <SidebarContent>
@@ -75,19 +71,21 @@ export function VideoSidebar({ courseId, videoId, videos }: VideoSidebarProps) {
                 <SidebarMenuItem key={video.id}>
                   <SidebarMenuButton asChild>
                     <Link
-                      href={`/video-modules/${courseId}/${video.videoId}`} // Use videoId for URL consistency
+                      href={`/video-modules/${courseId}/${video.videoId}`}
                       className={cn(
-                        "flex items-center gap-2 p-2 rounded-md transition-colors duration-200 ease-in-out",
+                        "flex items-center gap-2 p-2 rounded-md transition-all duration-200",
                         isActive(video.videoId)
-                          ? "bg-primary text-white shadow-md"
-                          : "hover:bg-gray-100 text-foreground"
+                          ? "bg-blue-500 dark:bg-blue-600 text-white shadow-md"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-sm"
                       )}
                       aria-label={`Go to ${video.name || "Untitled Video"}`}
                     >
-                      <Play className="h-4 w-4" />
-                      <span className="truncate flex-1">{video.name || "Untitled Video"}</span>
+                      <Play className="h-4 w-4 transition-transform duration-200 hover:scale-110" />
+                      <span className="truncate flex-1 transition-opacity duration-200 hover:opacity-80">
+                        {video.name || "Untitled Video"}
+                      </span>
                       {isActive(video.videoId) && open && (
-                        <span className="bg-secondary text-secondary-foreground text-xs px-2 py-1 rounded-full">
+                        <span className="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 text-xs px-2 py-1 rounded-full transition-opacity duration-200 hover:opacity-80">
                           Active
                         </span>
                       )}
@@ -101,13 +99,13 @@ export function VideoSidebar({ courseId, videoId, videos }: VideoSidebarProps) {
       </SidebarContent>
 
       <Button
-        className="w-full flex items-center gap-2 p-2 transition-colors duration-200 hover:bg-primary hover:text-white"
+        className="w-full flex items-center gap-2 p-2 transition-all duration-200 hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white hover:shadow-md"
         variant="outline"
         onClick={() => setOpen(!open)}
         aria-label={open ? "Collapse Sidebar" : "Expand Sidebar"}
       >
-        <ChevronLeft className={cn("h-4 w-4 transition-transform", open ? "" : "rotate-180")} />
-        {open && <span>{open ? "Collapse" : "Expand"}</span>}
+        <ChevronLeft className={cn("h-4 w-4 transition-transform duration-200", open ? "" : "rotate-180")} />
+        {open && <span className="transition-opacity duration-200 hover:opacity-80">{open ? "Collapse" : "Expand"}</span>}
       </Button>
     </Sidebar>
   );

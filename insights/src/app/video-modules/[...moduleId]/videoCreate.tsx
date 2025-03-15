@@ -1,5 +1,5 @@
 "use client";
-// SSR convertible : 
+
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
@@ -40,9 +40,8 @@ function VideoLearningContent({
   module: Module;
   currentVideoIndex: number;
 }) {
-  const [leftTab, setLeftTab] = useState("transcript"); 
+  const [leftTab, setLeftTab] = useState("transcript");
   const [rightTab, setRightTab] = useState("notes");
-  // const { theme } = useTheme();
   const router = useRouter();
 
   const currentVideo = module.videos[currentVideoIndex];
@@ -101,7 +100,7 @@ function VideoLearningContent({
   }, [isDragging]);
 
   return (
-    <div className="h-[calc(100vh-64px)]">
+    <div className="h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900">
       <Header moduleId={module.name || "name"} videoTitle={currentVideo.name || "Untitled Video"} courseId={module.id} videoId={currentVideo.id} />
       <main
         className="flex flex-1 overflow-hidden"
@@ -110,39 +109,47 @@ function VideoLearningContent({
       >
         {/* Left section - Video and Transcript */}
         <div
-          className="w-full lg:w-auto flex flex-col h-full border-r border-border"
+          className="w-full lg:w-auto flex flex-col h-full border-r border-gray-200 dark:border-gray-700"
           style={{ flex: `0 0 ${leftSectionWidth}%` }}
         >
-          <div className="relative h-[400px] bg-black overflow-hidden">
+          <div className="relative h-[400px] bg-black overflow-hidden transition-all duration-300 hover:shadow-lg">
             <iframe
               src={`https://www.youtube.com/embed/${currentVideo.videoId}`}
               title={currentVideo.name || "YouTube Video"}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="absolute top-0 left-0 w-full h-full"
+              className="absolute top-0 left-0 w-full h-full transition-transform duration-300 hover:scale-105"
             />
           </div>
 
-          <div className="flex flex-col flex-1 overflow-hidden">
+          <div className="flex flex-col flex-1 overflow-hidden bg-white dark:bg-gray-800">
             <Tabs defaultValue={leftTab} onValueChange={setLeftTab} className="flex flex-col h-full">
-              <TabsList className="w-full justify-start border-b mt-2 border-border rounded-none bg-background">
+              <TabsList className="w-full justify-start border-b mt-2 border-gray-200 dark:border-gray-700 rounded-none bg-white dark:bg-gray-800">
                 <Button
                   onClick={handlePrevious}
                   disabled={currentVideoIndex === 0}
                   variant="outline"
+                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   ← Previous
                 </Button>
-                <TabsTrigger value="transcript" className="data-[state=active]:bg-primary/10">
+                <TabsTrigger
+                  value="transcript"
+                  className="data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-500 dark:data-[state=active]:text-blue-300 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-blue-500 dark:hover:text-blue-300"
+                >
                   Transcript
                 </TabsTrigger>
-                <TabsTrigger value="Mynote" className="data-[state=active]:bg-primary/10">
+                <TabsTrigger
+                  value="Mynote"
+                  className="data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-500 dark:data-[state=active]:text-blue-300 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-blue-500 dark:hover:text-blue-300"
+                >
                   My Notes
                 </TabsTrigger>
                 <Button
                   onClick={handleNext}
                   disabled={currentVideoIndex === module.videos.length - 1}
                   variant="outline"
+                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next →
                 </Button>
@@ -170,28 +177,37 @@ function VideoLearningContent({
 
         {/* Drag handle */}
         <div
-          className="hidden lg:block w-1 bg-border hover:bg-primary/50 cursor-col-resize relative"
+          className="hidden lg:block w-1 bg-gray-200 dark:bg-gray-700 hover:bg-blue-500/50 dark:hover:bg-blue-300/50 cursor-col-resize relative transition-all duration-200"
           onMouseDown={handleDragStart}
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="h-8 w-1 bg-primary/50 rounded-full"></div>
+            <div className="h-8 w-1 bg-blue-500/50 dark:bg-blue-300/50 rounded-full transition-transform duration-200 hover:scale-110"></div>
           </div>
         </div>
 
         {/* Right section - AI Notes, AI Chat, and Quiz */}
         <div
-          className="w-full lg:w-auto flex flex-col h-full overflow-hidden"
+          className="w-full lg:w-auto flex flex-col h-full overflow-hidden bg-white dark:bg-gray-800"
           style={{ flex: `0 0 ${100 - leftSectionWidth - 0.25}%` }}
         >
           <Tabs defaultValue={rightTab} onValueChange={setRightTab} className="flex flex-col h-full">
-            <TabsList className="w-full justify-start border-b border-border rounded-none bg-background">
-              <TabsTrigger value="notes" className="data-[state=active]:bg-primary/10">
+            <TabsList className="w-full justify-start border-b border-gray-200 dark:border-gray-700 rounded-none bg-white dark:bg-gray-800">
+              <TabsTrigger
+                value="notes"
+                className="data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-500 dark:data-[state=active]:text-blue-300 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-blue-500 dark:hover:text-blue-300"
+              >
                 AI Notes
               </TabsTrigger>
-              <TabsTrigger value="chat" className="data-[state=active]:bg-primary/10">
+              <TabsTrigger
+                value="chat"
+                className="data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-500 dark:data-[state=active]:text-blue-300 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-blue-500 dark:hover:text-blue-300"
+              >
                 AI Chat
               </TabsTrigger>
-              <TabsTrigger value="quiz" className="data-[state=active]:bg-primary/10">
+              <TabsTrigger
+                value="quiz"
+                className="data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-500 dark:data-[state=active]:text-blue-300 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-blue-500 dark:hover:text-blue-300"
+              >
                 Quiz
               </TabsTrigger>
             </TabsList>
@@ -245,7 +261,7 @@ export default function VideoLearningPageClient({
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen bg-background text-foreground">
+      <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-foreground">
         <VideoSidebar
           courseId={courseId}
           videoId={module.videos[currentVideoIndex].videoId}
