@@ -83,7 +83,7 @@ export function AppSidebar() {
           {open && (
             <>
               <h1 className="text-2xl font-extrabold text-blue-500 dark:text-blue-300 tracking-wide leading-tight drop-shadow-md transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-200">
-                <Link href='/'>Insights</Link>
+                <Link href='/dashboard'>Insights</Link>
               </h1>
             </>
           )}

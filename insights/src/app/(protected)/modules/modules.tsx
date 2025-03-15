@@ -1,30 +1,31 @@
+// src/app/(protected)/modules/modules.tsx
 "use client";
 import React, { useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Youtube, Copy, Search, Share } from "lucide-react";
+import { Youtube, Search, Share } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { DeleteModule } from "@/lib/query";
 
-interface Video {
+ interface Video {
   videoId: string;
-  name: string | null;
+  name: string;
 }
 
-interface Module {
+ interface Module {
   id: string;
-  name: string;
+  name: string; // Strictly a string
   videos: Video[];
 }
-
 interface Props {
   modules: Module[];
 }
 
 const VideoModules: React.FC<Props> = ({ modules }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
   const handleCopyLink = (moduleId: string) => {
     const url = `${window.location.origin}/video-modules/${moduleId}`;
@@ -35,18 +36,19 @@ const VideoModules: React.FC<Props> = ({ modules }) => {
   const handleDelete = async (moduleId: string) => {
     const data = await DeleteModule(moduleId);
     if (data.success) {
-      redirect(`/modules`);
+      router.push("/modules");
+      router.refresh();
+    } else {
+      alert("Failed to delete module.");
     }
   };
 
-  // Filter modules based on search term
   const filteredModules = modules.filter((module) =>
     module.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-foreground p-4">
-      {/* Updated Header */}
       <div className="mb-8 text-center flex flex-col sm:flex-row justify-between items-center gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-gray-100 transition-all duration-300 hover:text-blue-500 dark:hover:text-blue-300">
@@ -57,7 +59,6 @@ const VideoModules: React.FC<Props> = ({ modules }) => {
           </p>
         </div>
         <div className="max-w-md w-full">
-          {/* Search Bar */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 transition-transform duration-200 hover:scale-110" />
             <input

@@ -1,7 +1,7 @@
+
 import { getAuthSession } from '@/lib/auth';
 import { fetchModuleVideos } from '@/lib/query';
 import { redirect } from 'next/navigation';
-import React from 'react';
 import VideoModules from './modules';
 
 const MyModules = async () => {
@@ -11,14 +11,19 @@ const MyModules = async () => {
     redirect('/login');
   }
 
-  const module = await fetchModuleVideos(session.user.id);
-  // console.log(modules[0].videos[0].videoId); 
+  let modules;
+  try {
+    modules = await fetchModuleVideos(session.user.id);
+  } catch (error) {
+    console.error("Error in MyModules:", error);
+    return <div className="text-center text-red-500">Error loading modules</div>;
+  }
 
   return (
     <div>
-      <VideoModules modules={module} />
-     </div>
+      <VideoModules modules={modules} />
+    </div>
   );
 };
-export default MyModules;
 
+export default MyModules;

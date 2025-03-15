@@ -1,6 +1,7 @@
 'use server'
 import { prisma } from "./db";
 import { retrieveAnswer } from "./retrieval";
+import { Module } from "./types";
 
 
 export async function addMynotes(notes: string, moduleId: string, videoId: string) {
@@ -43,15 +44,7 @@ export async function getNotes( moduleId: string, videoId: string) {
     throw error; // Re-throw to allow caller to handle it
   }
 }
-interface Video {
-  videoId: string;
-}
 
-interface Module {
-  id: string;
-  name: string | null;
-  videos: Video[] | null;
-}
 export async function fetchModuleVideos(userId: string): Promise<Module[]> {
   console.log("Fetching module videos for user:", userId);
   try {
@@ -66,8 +59,9 @@ export async function fetchModuleVideos(userId: string): Promise<Module[]> {
         videos: {
           select: {
             videoId: true,
+            name: true,
           },
-          orderBy:{
+          orderBy: {
             createdAt: "asc",
           },
           take: 1, // Only get the first video for thumbnail
@@ -78,13 +72,17 @@ export async function fetchModuleVideos(userId: string): Promise<Module[]> {
       },
     });
 
-    return data.map((module) => ({
+    // Transform the data to match the Module type
+    const transformedData: Module[] = data.map((module) => ({
       id: module.id,
-      name: module.name,
+      name: module.name ?? "Unnamed Module", // Ensure name is a string
       videos: module.videos.map((video) => ({
         videoId: video.videoId,
+        name: video.name ?? "Unnamed Video", // Ensure video name is a string
       })),
     }));
+
+    return transformedData;
   } catch (error) {
     console.error("Error fetching module videos:", error);
     throw new Error("Failed to fetch module videos");
@@ -288,4 +286,17 @@ export async function chatPdfChatbot( query : string, namespace : string ){
     console.error("Error fetching chat projects:", error);
     throw error;
    }
+}
+
+export async function chatPdfContent( projectId : string ){
+  try {
+    const data = await prisma.chatPdf.findUnique({
+      where: { id: projectId },
+      select: { content: true },
+    });
+    return data?.content || "No content available for this video.";
+  } catch (error) {
+    console.error("Error fetching chat projects:", error);
+    throw error;
+  }
 }
