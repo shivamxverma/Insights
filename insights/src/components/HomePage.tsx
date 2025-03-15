@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+    <div  className=" min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
       <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row items-center gap-12">
         {/* Left Section: Text Content */}
         <div className="lg:w-1/2 text-center lg:text-left">
@@ -11,8 +11,8 @@ export default function HomePage() {
             AI Summarizer & Generator <br /> for Enhanced Learning
           </h1>
           <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
-            NoteGPT - YouTube Video Summarizer, PDF Summary, PPT Summary, Image
-            Summaries, and more. Create PPTs, Mindmaps, and Notes with NoteGPT AI
+            Insights - YouTube Video Summarizer, PDF Summary, PPT Summary, Image
+            Summaries, and more. Create PPTs, Mindmaps, and Notes with Insights AI
             to improve your learning efficiency by 10x.
           </p>
           <div className="flex justify-center lg:justify-start gap-4">
@@ -38,7 +38,7 @@ export default function HomePage() {
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 bg-blue-500 rounded-full"></span>
-                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">NoteGPT</span>
+                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">Insights</span>
               </div>
               <button className="text-blue-600 dark:text-blue-300 text-sm">New AI Summary</button>
             </div>
@@ -71,7 +71,7 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="mt-4 text-sm text-gray-600 dark:text-gray-300">
-                Summary to enhance your YouTube videos with NoteGPT to efficiently
+                Summary to enhance your YouTube videos with Insights to efficiently
                 learn and improve efficiency
               </div>
               <div className="mt-4 bg-blue-800 text-white p-2 rounded flex justify-between items-center">

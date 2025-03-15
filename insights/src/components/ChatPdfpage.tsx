@@ -11,7 +11,7 @@ export default function ChatPdfPage() {
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-4 transition-opacity duration-200 hover:opacity-80">
           Get PDF content extracted and use AI to summarize PDF documents in one
-          click for free online with NoteGPT’s ChatPDF tool.
+          click for free online with Insights ChatPDF tool.
         </p>
         <p className="text-base text-gray-600 dark:text-gray-300 mb-8 transition-opacity duration-200 hover:opacity-80">
           Want to summarize local files?{" "}

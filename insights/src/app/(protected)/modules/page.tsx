@@ -11,13 +11,12 @@ const MyModules = async () => {
     redirect('/login');
   }
 
-  const modules = await fetchModuleVideos(session.user.id);
+  const module = await fetchModuleVideos(session.user.id);
   // console.log(modules[0].videos[0].videoId); 
 
   return (
     <div>
-      <VideoModules modules={modules} />
-      
+      <VideoModules modules={module} />
      </div>
   );
 };

@@ -31,6 +31,13 @@ export default function WebScrapingPage() {
     }
   };
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-foreground">
       {/* Header */}
@@ -44,57 +51,65 @@ export default function WebScrapingPage() {
               height={40}
               className="rounded-full"
             />
-            <span className="text-xl font-bold text-gray-800 dark:text-gray-100">
-              LearnerAI
+            <span className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              Insights
             </span>
           </div>
           <nav className="hidden md:flex space-x-6">
             {[
-              { href: "/ai", label: "AI" },
-              { href: "/youtube", label: "YouTube" },
-              { href: "/presentation", label: "Presentation" },
-              { href: "/ai-pdf", label: "AI PDF" },
-              { href: "/study", label: "Study" },
-              { href: "/writer", label: "Writer" },
-              { href: "/ai-tools", label: "AI Tools" },
+              { id: "home", label: "AI" },
+              { id: "youtube", label: "YouTube" },
+              { id: "chatpdf", label: "ChatPdf" },
+              { id: "article", label: "Website/Article" },
               { href: "/pricing", label: "Pricing" },
             ].map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-300 transition"
-              >
-                {link.label}
-              </Link>
+              link.href ? (
+                <Link 
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-300 transition"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <button
+                  key={link.id}
+                  onClick={() => link.id && scrollToSection(link.id)}
+                  className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-300 transition cursor-pointer"
+                >
+                  {link.label}
+                </button>
+              )
             ))}
           </nav>
           <div className="flex items-center space-x-3">
             <ModeToggle />
+            <Link href="/login">
             <Button
               variant="outline"
               className="text-sm font-medium text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               Login
             </Button>
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium">
-              Sign Up
-            </Button>
+            </Link>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <HomePage />
+      <div id="home">
+        <HomePage />
+      </div>
 
       {/* YouTube Video Summarizer Section */}
-      <main className="container mx-auto px-4 py-16">
+      <main id="youtube" className="container mx-auto px-4 py-16">
         <section className="text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 leading-tight mb-6">
             YouTube Video Summarizer
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
             Get YouTube transcript and use AI to summarize YouTube videos in one
-            click for free online with NoteGPT’s YouTube summary tool.
+            click for free online with Insights YouTube summary tool.
           </p>
           <p className="text-base text-gray-600 dark:text-gray-300 mb-8">
             Want to summarize local Video/Audio files?{" "}
@@ -138,7 +153,7 @@ export default function WebScrapingPage() {
 
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { src: "/youtube-example-1.png", title: "NoteGPT Guide", subtitle: "YouTube Subscription" },
+                { src: "/youtube-example-1.png", title: "Insights Guide", subtitle: "YouTube Subscription" },
                 { src: "/youtube-example-2.png", title: "Tech Video", subtitle: "YouTube Batch Summary" },
                 { src: "/youtube-example-3.png", title: "TED Talk" },
                 { src: "/youtube-example-4.png", title: "History Video" },
@@ -177,12 +192,12 @@ export default function WebScrapingPage() {
             {[
               {
                 title: "Step 1: Get YouTube video link",
-                description: "Copy and paste the YouTube video link into NoteGPT.",
+                description: "Copy and paste the YouTube video link into Insights.",
               },
               {
                 title: "Step 2: Generate Summary",
                 description:
-                  "Click the 'Generate Summary' button, and NoteGPT will fetch the transcript and summarize the YouTube video.",
+                  "Click the 'Generate Summary' button, and Insights will fetch the transcript and summarize the YouTube video.",
               },
               {
                 title: "Step 3: Read the AI summary",
@@ -204,12 +219,16 @@ export default function WebScrapingPage() {
       </main>
 
       {/* Additional Sections */}
-      <ChatPdfPage />
-      <ArticleSummarizer />
+      <div id="chatpdf">
+        <ChatPdfPage />
+      </div>
+      
+      <div id="article">
+        <ArticleSummarizer />
+      </div>
 
-
-            {/* Use Cases for Different Roles Section */}
-            <section className="py-16 bg-blue-50 dark:bg-gray-800">
+      {/* Use Cases for Different Roles Section */}
+      <section className="py-16 bg-blue-50 dark:bg-gray-800">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             Use Cases for Different Roles
@@ -275,22 +294,24 @@ export default function WebScrapingPage() {
           </div>
         </div>
       </section>
-  {/* CTA Section */}
-  <section className="py-16 bg-gradient-to-r from-blue-500 to-blue-300 dark:from-blue-800 dark:to-blue-600">
+      
+      {/* CTA Section */}
+      <section className="py-16 bg-gradient-to-r from-blue-500 to-blue-300 dark:from-blue-800 dark:to-blue-600">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            Start saving time and effort today! Summarize YouTube videos effortlessly with NoteGPT.
+            Start saving time and effort today! Summarize YouTube videos effortlessly with Insights.
           </h2>
           <Button className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition">
-            Try NoteGPT for Free
+            Try Insights for Free
           </Button>
         </div>
       </section>
+      
       {/* Footer */}
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Image src="/logo.png" alt="LearnerAI Logo" width={24} height={24} />
+            <Image src="/logo.png" alt="LearnerAI Logo" width={40} height={40} />
             <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
               LearnerAI © 2025
             </span>

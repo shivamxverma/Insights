@@ -17,22 +17,33 @@ const MemoizedMarkdownBlock = memo(
         rehypePlugins={[rehypeHighlight]}
         components={{
           h1: ({ children }) => (
-            <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">{children}</h1>
+            <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+              {children}
+            </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-100 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">{children}</h2>
+            <h2 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-100 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+              {children}
+            </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-100 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">{children}</h3>
+            <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-100 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+              {children}
+            </h3>
           ),
           p: ({ children }) => (
-            <p className="text-base mb-4 text-gray-600 dark:text-gray-300 transition-opacity duration-200 hover:opacity-80">{children}</p>
+            <p className="text-base mb-4 text-gray-600 dark:text-gray-300 transition-opacity duration-200 hover:opacity-80">
+              {children}
+            </p>
           ),
           code({ className, children, ...props }) {
             const isInline = !className;
             if (isInline) {
               return (
-                <code className="px-2 py-1 bg-gray-800 dark:bg-gray-900 rounded text-sm text-gray-200 transition-all duration-200 hover:bg-gray-700 dark:hover:bg-gray-600" {...props}>
+                <code
+                  className="px-2 py-1 bg-gray-800 dark:bg-gray-900 rounded text-sm text-gray-200 transition-all duration-200 hover:bg-gray-700 dark:hover:bg-gray-600"
+                  {...props}
+                >
                   {children}
                 </code>
               );
@@ -46,13 +57,19 @@ const MemoizedMarkdownBlock = memo(
             );
           },
           ul: ({ children }) => (
-            <ul className="list-disc list-inside space-y-2 mb-4 text-gray-900 dark:text-white transition-opacity duration-200 hover:font-bold ">{children}</ul>
+            <ul className="list-disc list-inside space-y-2 mb-4 text-gray-600 dark:text-gray-300 transition-opacity duration-200 hover:opacity-80">
+              {children}
+            </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside space-y-2 mb-4 text-gray-900 dark:text-black transition-opacity duration-200 hover:font-bold ">{children}</ol>
+            <ol className="list-decimal list-inside space-y-2 mb-4 text-gray-600 dark:text-gray-300 transition-opacity duration-200 hover:opacity-80">
+              {children}
+            </ol>
           ),
           li: ({ children }) => (
-            <li className="text-base transition-opacity duration-200 hover:font-bold ">{children}</li>
+            <li className="text-base transition-opacity duration-200 hover:opacity-80">
+              {children}
+            </li>
           ),
           a: ({ href, children }) => (
             <a
@@ -65,15 +82,19 @@ const MemoizedMarkdownBlock = memo(
             </a>
           ),
           table: ({ children }) => (
-            <table className="border-collapse border border-gray-200 dark:border-gray-900 my-4 w-full transition-all duration-200 hover:text-blue-500 hover:shadow-md">
+            <table className="border-collapse border border-gray-200 dark:border-gray-700 my-4 w-full transition-all duration-200 hover:shadow-md">
               {children}
             </table>
           ),
           th: ({ children }) => (
-            <th className="border border-gray-200 dark:border-gray-700 p-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-colors duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">{children}</th>
+            <th className="border border-gray-200 dark:border-gray-700 p-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-colors duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+              {children}
+            </th>
           ),
           td: ({ children }) => (
-            <td className="border border-gray-200 dark:border-gray-700 p-2 text-gray-600 dark:text-gray-300 transition-opacity duration-200 hover:opacity-80">{children}</td>
+            <td className="border border-gray-200 dark:border-gray-700 p-2 text-gray-600 dark:text-gray-300 transition-opacity duration-200 hover:opacity-80">
+              {children}
+            </td>
           ),
         }}
       >
@@ -91,7 +112,7 @@ export const MemoizedMarkdown = memo(
     const blocks = useMemo(() => parseMarkdownIntoBlocks(content), [content]);
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-lg">
         {blocks.map((block, index) => (
           <MemoizedMarkdownBlock content={block} key={`${id}-block_${index}`} />
         ))}
