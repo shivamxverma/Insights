@@ -21,6 +21,11 @@ import Image from "next/image";
 
 const items = [
   {
+    title: "Create",
+    url: "/create",
+    icon: LayoutDashboard,
+  },
+  {
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
