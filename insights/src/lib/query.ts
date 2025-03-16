@@ -300,3 +300,24 @@ export async function chatPdfContent( projectId : string ){
     throw error;
   }
 }
+
+export async function GetCourse(courseId : string){
+  try {
+    const data = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        units: {
+          include: {
+            chapters: {
+              include: { courseQuiz: true },
+            },
+          },
+        },
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error fetching chat projects:", error);
+    throw error;
+  }
+}

@@ -1,5 +1,3 @@
-// /api/chapter/getInto
-
 import { prisma } from "@/lib/db";
 import { strict_output } from "@/lib/geminiCourse";
 import {
