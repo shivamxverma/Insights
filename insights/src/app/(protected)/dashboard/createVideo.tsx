@@ -1,13 +1,14 @@
-"use client";
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Clock, BookOpen, User, Globe, Subtitles, FileText } from "lucide-react";
+'use client';
+
+import React, { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Clock, BookOpen, User, Globe, Subtitles, FileText } from 'lucide-react';
 
 interface Module {
   id: string;
@@ -20,10 +21,10 @@ interface CreateVideoClientProps {
 }
 
 export default function CreateVideoClient({ userId, modules }: CreateVideoClientProps) {
-  const [url, setUrl] = useState("");
-  const [action, setAction] = useState<"single" | "playlist" | "new">("single");
-  const [moduleId, setModuleId] = useState<string>("");
-  const [moduleName, setModuleName] = useState<string>("");
+  const [url, setUrl] = useState('');
+  const [action, setAction] = useState<'single' | 'playlist' | 'new' | 'newPlaylist'>('single');
+  const [moduleId, setModuleId] = useState<string>('');
+  const [moduleName, setModuleName] = useState<string>('');
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -31,8 +32,8 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
   function getYouTubeIds(youtubeUrl: string): { videoId: string | null; playlistId: string | null } {
     try {
       const urlObj = new URL(youtubeUrl);
-      const videoId = urlObj.searchParams.get("v") || null;
-      const playlistId = urlObj.searchParams.get("list") || null;
+      const videoId = urlObj.searchParams.get('v') || null;
+      const playlistId = urlObj.searchParams.get('list') || null;
       return { videoId, playlistId };
     } catch {
       return { videoId: null, playlistId: null };
@@ -43,53 +44,54 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
   const { mutate: addToModule, isPending: isAddingPending } = useMutation({
     mutationFn: async () => {
       const { videoId, playlistId } = getYouTubeIds(url);
-      if (!videoId && !playlistId) throw new Error("Invalid YouTube URL");
-      if (action === "new" && !moduleName.trim()) throw new Error("Module name is required");
 
-      const response = await axios.post<{ module: { id: string } }>("/api/add-to-module", {
+      // Validate URL and IDs
+      if (!url.trim()) throw new Error('Please enter a YouTube URL');
+      if (!videoId && !playlistId) throw new Error('Invalid YouTube URL: No video or playlist ID found');
+
+      // Validate module selection or name based on action
+      if ((action === 'single' || action === 'playlist') && !moduleId && modules.length > 0) {
+        throw new Error('Please select a module');
+      }
+      if ((action === 'new' || action === 'newPlaylist') && !moduleName.trim()) {
+        throw new Error('Module name is required');
+      }
+
+      // Prepare payload based on action
+      const payload = {
         userId,
-        videoId: action === "playlist" ? null : videoId,
-        playlistId: action === "playlist" ? playlistId : null,
-        moduleId: moduleId || null,
-        action: moduleId ? "existing" : action,
-        newModuleName: action === "new" ? moduleName : undefined,
-      });
+        videoId: action === 'single' || action === 'new' ? videoId : null,
+        playlistId: action === 'playlist' || action === 'newPlaylist' ? playlistId : null,
+        moduleId: action === 'single' || action === 'playlist' ? moduleId : null,
+        action,
+        newModuleName: (action === 'new' || action === 'newPlaylist') ? moduleName : undefined,
+      };
+
+      const response = await axios.post<{ module: { id: string } }>('/api/add-to-module', payload);
       return response.data;
     },
     onSuccess: ({ module }) => {
-      toast("Video or playlist added to module");
-      queryClient.invalidateQueries({ queryKey: ["modules", userId] });
-      router.push(`/video-modules/${module.id}/${videoId}`);
+      const { videoId } = getYouTubeIds(url);
+      toast.success('Video or playlist added to module');
+      queryClient.invalidateQueries({ queryKey: ['modules', userId] });
+      router.push(`/video-modules/${module.id}${videoId ? `/${videoId}` : ''}`);
     },
     onError: (error: any) => {
       console.error(error);
-      toast("Failed to add video or playlist to module");
+      toast.error(error.message || 'Failed to add video or playlist to module');
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { videoId, playlistId } = getYouTubeIds(url);
-
-    if (!url || (!videoId && !playlistId)) {
-      toast("Please enter a valid YouTube URL");
-      return;
-    }
-
-    if (!moduleId && action !== "new") {
-      toast("Please select a module or choose to create a new one");
-      return;
-    }
-
-    if (action === "new" && !moduleName.trim()) {
-      toast("Please enter a module name");
-      return;
-    }
-
     addToModule();
   };
 
   const { videoId, playlistId } = getYouTubeIds(url);
+  const isFormValid =
+    url.trim() &&
+    ((action === 'single' && videoId) || (action === 'playlist' && playlistId) || (action === 'new' && moduleName.trim()) || (action === 'newPlaylist' && playlistId && moduleName.trim())) &&
+    ((action === 'single' || action === 'playlist') ? !!moduleId : true);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-foreground">
@@ -119,8 +121,8 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
                   <input
                     type="radio"
                     value="single"
-                    checked={action === "single"}
-                    onChange={() => setAction("single")}
+                    checked={action === 'single'}
+                    onChange={() => setAction('single')}
                     className="text-blue-500 focus:ring-blue-500 dark:text-blue-300 dark:focus:ring-blue-300 transition-transform duration-200 hover:scale-110"
                     disabled={!videoId}
                   />
@@ -131,26 +133,38 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
                     <input
                       type="radio"
                       value="playlist"
-                      checked={action === "playlist"}
-                      onChange={() => setAction("playlist")}
+                      checked={action === 'playlist'}
+                      onChange={() => setAction('playlist')}
                       className="text-blue-500 focus:ring-blue-500 dark:text-blue-300 dark:focus:ring-blue-300 transition-transform duration-200 hover:scale-110"
                     />
                     <span>Add entire playlist</span>
+                  </label>
+                )}
+                {playlistId && (
+                  <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
+                    <input
+                      type="radio"
+                      value="newPlaylist"
+                      checked={action === 'newPlaylist'}
+                      onChange={() => setAction('newPlaylist')}
+                      className="text-blue-500 focus:ring-blue-500 dark:text-blue-300 dark:focus:ring-blue-300 transition-transform duration-200 hover:scale-110"
+                    />
+                    <span>Create new module with playlist</span>
                   </label>
                 )}
                 <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                   <input
                     type="radio"
                     value="new"
-                    checked={action === "new"}
-                    onChange={() => setAction("new")}
+                    checked={action === 'new'}
+                    onChange={() => setAction('new')}
                     className="text-blue-500 focus:ring-blue-500 dark:text-blue-300 dark:focus:ring-blue-300 transition-transform duration-200 hover:scale-110"
                   />
                   <span>Create new module</span>
                 </label>
               </div>
 
-              {action === "new" && (
+              {(action === 'new' || action === 'newPlaylist') && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                     Module Name:
@@ -165,7 +179,7 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
                 </div>
               )}
 
-              {action !== "new" && (
+              {(action === 'single' || action === 'playlist') && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
                     Select Module:
@@ -190,10 +204,10 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
 
             <Button
               type="submit"
-              disabled={isAddingPending || (!moduleId && action !== "new")}
+              disabled={!isFormValid || isAddingPending}
               className="w-full py-3 font-semibold bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isAddingPending ? "Submitting..." : "Submit"}
+              {isAddingPending ? 'Submitting...' : 'Submit'}
             </Button>
           </form>
         ) : (
@@ -211,39 +225,39 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
             {[
               {
                 icon: Clock,
-                title: "Time-Saving",
+                title: 'Time-Saving',
                 description:
-                  "Get transcriptions and summaries in seconds, quickly decide if you want to continue watching, without any ads.",
+                  'Get transcriptions and summaries in seconds, quickly decide if you want to continue watching, without any ads.',
               },
               {
                 icon: BookOpen,
-                title: "Perfect for Learning",
+                title: 'Perfect for Learning',
                 description:
-                  "Helps you understand videos through Highlights, Key Insights, Outline, Core Concepts, FAQs, AI Chat, and more.",
+                  'Helps you understand videos through Highlights, Key Insights, Outline, Core Concepts, FAQs, AI Chat, and more.',
               },
               {
                 icon: User,
-                title: "Personalized for You",
+                title: 'Personalized for You',
                 description:
-                  "Customize summary prompts, depth, length, tone, and more to fit your needs.",
+                  'Customize summary prompts, depth, length, tone, and more to fit your needs.',
               },
               {
                 icon: Globe,
-                title: "100+ Languages",
+                title: '100+ Languages',
                 description:
-                  "Transcribe and summarize in over 100 languages, easily access global content.",
+                  'Transcribe and summarize in over 100 languages, easily access global content.',
               },
               {
                 icon: Subtitles,
-                title: "No-Subtitle YouTube",
+                title: 'No-Subtitle YouTube',
                 description:
-                  "Transcribe YouTube videos without subtitles (up to 40min), and for videos with subtitles, there’s no length limit.",
+                  'Transcribe YouTube videos without subtitles (up to 40min), and for videos with subtitles, there’s no length limit.',
               },
               {
                 icon: FileText,
-                title: "Timestamped Transcripts",
+                title: 'Timestamped Transcripts',
                 description:
-                  "Get the transcripts with timestamps and download subtitles for easy reference.",
+                  'Get the transcripts with timestamps and download subtitles for easy reference.',
               },
             ].map((feature, index) => (
               <div
