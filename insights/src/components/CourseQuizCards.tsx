@@ -1,11 +1,11 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { CreateCourseQuizz } from "@/lib/courseQuery";
 
 interface Quiz {
   id: string;
@@ -16,10 +16,10 @@ interface Quiz {
 }
 
 interface Props {
-  videoId: string;
+  chapterId: string;
 }
 
-const QuizCard: React.FC<Props> = ({ videoId }) => {
+const CourseQuizCard: React.FC<Props> = ({ chapterId }) => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [questionState, setQuestionState] = useState<Record<string, boolean | null>>({});
@@ -30,18 +30,16 @@ const QuizCard: React.FC<Props> = ({ videoId }) => {
     const fetchQuizzes = async () => {
       setLoading(true);
       setError(null);
-      console.log("Fetching quizzes for videoId:", videoId);
+      console.log("Fetching quizzes for videoId:", chapterId);
       try {
-        const res = await fetch("/api/getQuiz", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ videoId: videoId || "" }),
-        });
-        const data = await res.json();
-        if (res.ok) {
-          setQuizzes(data.questions || []);
+        const res: Quiz[] | null = (await CreateCourseQuizz(chapterId))?.map((quiz: Quiz): Quiz => ({
+          ...quiz,
+          videoId: chapterId
+        })) || [];
+        if (res && Array.isArray(res)) {
+          setQuizzes(res);
         } else {
-          setError(data.error || "Failed to load quizzes");
+          setError("Failed to load quizzes");
         }
       } catch (err) {
         console.error("Error fetching quizzes:", err);
@@ -51,7 +49,7 @@ const QuizCard: React.FC<Props> = ({ videoId }) => {
       }
     };
     fetchQuizzes();
-  }, [videoId]);
+  }, [chapterId]);
 
   const checkAnswer = () => {
     const newQuestionState = { ...questionState };
@@ -159,4 +157,4 @@ const QuizCard: React.FC<Props> = ({ videoId }) => {
   );
 };
 
-export default QuizCard;
+export default CourseQuizCard;

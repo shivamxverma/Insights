@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Mynotes from '@/components/Mynotes';
 import AiNotes from '@/components/AiNotes';
 import AiChat from '@/components/AiChat';
-import QuizCard from '@/components/QuizCards';
+import QuizCard from '@/components/CourseQuizCards';
 import Header from '@/components/Header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -13,6 +13,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SidebarProvider } from '@/components/ui/sidebar';
 import CourseSideBar from '@/components/CourseSideBar';
 import CourseTranscript from '@/components/CourseTranscript';
+import CourseAiNotes from '@/components/courseAinotes';
+import CourseQuizCard from '@/components/CourseQuizCards';
 
 interface CourseLearningProps {
   course: Course;
@@ -176,7 +178,7 @@ const  CourseLearningContent = ({ course, unitIndex, chapterIndex }: Props) => {
                 <TabsContent value="mynotes" className="h-full p-0 m-0">
                   <ScrollArea className="h-full">
                     <div className="p-3 h-full">
-                      <Mynotes moduleId={course.id} videoId={chapter.videoId} />
+                      <Mynotes moduleId={course.id} videoId={chapter.id} />
                     </div>
                   </ScrollArea>
                 </TabsContent>
@@ -226,21 +228,21 @@ const  CourseLearningContent = ({ course, unitIndex, chapterIndex }: Props) => {
               <TabsContent value="notes" className="h-full p-0 m-0">
                 <ScrollArea className="h-full">
                   <div className="p-3">
-                    {/* <AiNotes moduleId={course.id} videoId={chapter.videoId} /> */}
+                    <CourseAiNotes course={course} unitIndex={unitIndex} chapterIndex={chapterIndex}/>
                   </div>
                 </ScrollArea>
               </TabsContent>
               <TabsContent value="chat" className="h-full p-0 m-0">
                 <ScrollArea className="h-full">
                   <div className="p-3">
-                    {/* <AiChat moduleId={course.id} videoId={chapter.videoId} /> */}
+                    <AiChat type="course" moduleId={chapter.id} videoId={chapter.videoId} />
                   </div>
                 </ScrollArea>
               </TabsContent>
               <TabsContent value="quiz" className="h-full p-0 m-0">
                 <ScrollArea className="h-full">
                   <div className="p-3">
-                    {/* <QuizCard videoId={chapter.videoId} /> */}
+                    <CourseQuizCard chapterId={chapter.id} />
                   </div>
                 </ScrollArea>
               </TabsContent>

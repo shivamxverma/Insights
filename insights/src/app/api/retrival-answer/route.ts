@@ -21,9 +21,9 @@ function isZeroVector(vector: number[]): boolean {
 }
 
 export async function POST(req: Request) {
+  const { query, namespace, moduleId , type} = await req.json();
+  console.log("Received query: ", moduleId, namespace , type);
   try {
-    const { query, namespace, moduleId } = await req.json();
-    console.log("Received query: ", moduleId, namespace);
     if (!query || !namespace || !moduleId) {
       return NextResponse.json(
         { error: "query, namespace, and moduleId are required" },
@@ -33,29 +33,49 @@ export async function POST(req: Request) {
 
     console.log(`Received query: "${query}" for namespace: "${namespace}"`);
 
-    const checkEmbedding = await prisma.video.findFirst({
+    let checkEmbedding  ;
+    if(type === "video"){
+       checkEmbedding = await prisma.video.findFirst({
       where: { videoId: namespace },
-      select: { embeddingCreated: true },
+      select: { hasEmbedding: true },
     });
-
+    }
+    else {
+        checkEmbedding = await prisma.chapter.findFirst({
+        where: { id: moduleId },
+        select: { hasEmbedding : true },
+    }
+        )}
     // If no data exists in Pinecone, generate and upload it
-    if (checkEmbedding?.embeddingCreated !== true) {
+    if (checkEmbedding?.hasEmbedding !== true) {
       console.log(`No data found in Pinecone for namespace: ${namespace}, fetching from Prisma`);
-
-      const transcript = await prisma.video.findFirst({
-        where: { videoId: namespace },
-        select: { summary: true },
-      });
-
-      if (!transcript) {
+        let transcript: string | null = null;
+        if(type === "video"){
+           const data = await prisma.video.findFirst({
+            where: { videoId: namespace },
+            select: { summary: true },
+          });
+          transcript = data?.summary ?? null;
+        }
+        else{
+            const data = await prisma.chapter.findFirst({
+            where: { id: moduleId },
+            
+          });
+          console.log("Data: ", data);
+          transcript = data?.transcript ?? null;
+        }
+        console.log("Transcript: ", transcript);
+      if (transcript?.length === 0) {
         return NextResponse.json({ error: "No data found" }, { status: 404 });
       }
-      if (!transcript.summary) {
-        return NextResponse.json({ error: "No summary found" }, { status: 404 });
+
+      if (!transcript) {
+        return NextResponse.json({ error: "Transcript is null" }, { status: 400 });
       }
 
       console.log("Creating embeddings from video summary");
-      const { chunks, embeddings } = await processText(transcript.summary, {
+      const { chunks, embeddings } = await processText(transcript, {
         bufferSize: 2,  
         mergeLengthThreshold: 200,
         cosineSimThreshold: 0.9,
@@ -90,10 +110,18 @@ export async function POST(req: Request) {
       await uploadToPinecone(validVectors, namespace);
       console.log("Processing and uploading complete");
 
+      if(type === "video"){
       await prisma.video.update({
         where: { moduleId_videoId: { moduleId: moduleId, videoId: namespace } },
-        data: { embeddingCreated: true },
+        data: { hasEmbedding: true },
       });
+    }
+    else{
+        await prisma.chapter.update({
+        where: { id: moduleId },
+        data: { hasEmbedding: true },
+      });
+    }
     }
 
     const content = await retrieveAnswer(query, namespace);

@@ -14,9 +14,10 @@ interface Message {
 interface AiChatProps {
   videoId: string;
   moduleId: string;
+  type     : "video" | "course";
 }
 
-export default function AiChat({ moduleId, videoId }: AiChatProps) {
+export default function AiChat({ type, moduleId, videoId }: AiChatProps) {
   console.log("Video ID:", videoId, "Module ID:", moduleId);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -60,7 +61,7 @@ export default function AiChat({ moduleId, videoId }: AiChatProps) {
       const res = await fetch("/api/retrival-answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: input, namespace: videoId, moduleId: moduleId }),
+        body: JSON.stringify({ query: input, namespace: videoId, moduleId: moduleId , type : type }),
       });
       if (!res.ok) throw new Error(`API returned ${res.status}`);
       const data = await res.json();

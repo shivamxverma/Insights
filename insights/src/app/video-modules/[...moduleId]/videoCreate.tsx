@@ -223,7 +223,7 @@ function VideoLearningContent({
               <TabsContent value="chat" className="h-full p-0 m-0">
                 <ScrollArea className="h-full">
                   <div className="p-3">
-                    <AiChat moduleId={courseId} videoId={currentVideo.videoId} />
+                    <AiChat type="video" moduleId={courseId} videoId={currentVideo.videoId} />
                   </div>
                 </ScrollArea>
               </TabsContent>
