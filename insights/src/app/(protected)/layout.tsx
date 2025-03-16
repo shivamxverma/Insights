@@ -117,7 +117,7 @@ const SidebarLayout = ({ children }: Props) => {
           </header>
 
           <main className="flex-1 overflow-auto p-4">
-            <div className="h-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
+            <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
               {children}
             </div>
           </main>

@@ -15,7 +15,7 @@ const CreatePage = async (props: Props) => {
   const isPro = false; // await checkSubscription();
   return (
     <div className="flex flex-col items-center max-w-4xl px-4 mx-auto my-16 sm:px-6 lg:px-8">
-      <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8 transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-300">
+      <h1 className="text-4xl md:text-5xl font-bold text-center text-blue-600 dark:text-gray-100 mb-8 transition-all duration-300 hover:text-blue-800 dark:hover:text-blue-300">
         Create Your Learning Journey
       </h1>
       <div className="flex items-center p-6 mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">

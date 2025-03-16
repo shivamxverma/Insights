@@ -48,7 +48,45 @@ model User {
   credits       Int          @default(5)
   webAnalytic   webAnalysis[]
   videoModules  VideoModule[]
-  chatPdfs       ChatPdf[]
+  chatPdfs      ChatPdf[]
+  courses       Course[] 
+}
+
+
+model Course {
+  id        String   @id @default(cuid())
+  name      String
+  image     String?
+  userId    String
+  createdAt DateTime @default(now())
+  units     Unit[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId], name: "course_userId_index")
+}
+
+model Unit {
+  id       String    @id @default(cuid())
+  courseId String
+  name     String
+  course   Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  chapters Chapter[]
+  @@index([courseId], name: "courseId")
+}
+
+model Chapter {
+  id                 String       @id @default(cuid())
+  unitId             String
+  name               String
+  youtubeSearchQuery String
+  videoId            String
+  transcript         String?      @db.Text  
+  generatedSummary   String?      @db.Text  
+  note               String?
+  hasEmbedding       Boolean      @default(false) 
+  createdAt          DateTime     @default(now())
+  unit               Unit         @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  @@index([unitId], name: "unitId")
+  courseQuiz         CourseQuiz[]  
 }
 
 model webAnalysis {
@@ -101,6 +139,16 @@ model Quiz {
   answer      String   @default("") // Max 15 words enforced in code
   options     String   // JSON stringified array of options
   @@index([videoId])
+}
+
+model CourseQuiz {
+  id          String   @id @default(cuid())
+  chapterId   String
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  question    String
+  answer      String   @default("") 
+  options     String  
+  @@index([chapterId], name: "courseQuiz_chapterId_index")
 }
 
 model ChatPdf {
