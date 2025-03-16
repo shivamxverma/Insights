@@ -26,6 +26,11 @@ const items = [
     icon: LayoutDashboard,
   },
   {
+    title: "Explore Courses",
+    url: "/explore",
+    icon: LayoutDashboard,
+  },
+  {
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,

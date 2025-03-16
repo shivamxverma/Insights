@@ -148,3 +148,37 @@ export async function CreateCourseQuizz(chapterId: string): Promise<any> {
     throw new Error("Failed to create course quiz"); 
   } 
 }
+
+export async function DeleteCourse(courseId: string) {
+  try {
+    await prisma.course.delete({
+      where: {
+        id: courseId,
+      },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    return { success: false };
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function fetchCourses(userId: string) {
+  try {
+    const courses = await prisma.course.findMany({
+      include: {
+        units: {
+          include: { chapters: true },
+        },
+      },
+    });
+    return courses;
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
