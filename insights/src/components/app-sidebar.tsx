@@ -31,14 +31,14 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Modules",
+    title: "videoModules",
     url: "/modules",
     icon: Bot,
+  },
+  {
+    title: "YT-video",
+    url: "/yt-video",
+    icon: LayoutDashboard,
   },
   {
     title: "Webpages/Articles",

@@ -7,7 +7,7 @@ import Header from "@/components/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/app/(protected)/app-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 import Transcript from "@/components/Transcript";
 import AiNotes from "@/components/AiNotes";
 import AiChat from "@/components/AiChat";

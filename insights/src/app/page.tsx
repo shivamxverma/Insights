@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import HomePage from "@/components/HomePage";
-import { ModeToggle } from "./(protected)/mode-toggle";
+import { ModeToggle } from "../components/mode-toggle";
 import ChatPdfPage from "@/components/ChatPdfpage";
 import ArticleSummarizer from "@/components/articlesumarry";
 import { Clock, BookOpen, User, Globe, Subtitles, FileText } from "lucide-react";

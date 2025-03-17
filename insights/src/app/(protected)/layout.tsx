@@ -5,8 +5,8 @@ import React, { useState, useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation'; // Import useRouter for client-side navigation
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
-import { AppSidebar } from './app-sidebar';
-import { ModeToggle } from './mode-toggle';
+import { AppSidebar } from '../../components/app-sidebar';
+import { ModeToggle } from '../../components/mode-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,

@@ -4,7 +4,7 @@ import { Menu, Share, ChevronDown, Delete } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DeleteVideo } from "@/lib/query";
 import { redirect } from "next/navigation";
-import { ModeToggle } from "@/app/(protected)/mode-toggle";
+import { ModeToggle } from "@/components/mode-toggle";
 
 interface HeaderProps {
   videoTitle: string;

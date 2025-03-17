@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { Github, Chrome, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ModeToggle } from "../(protected)/mode-toggle";
+import { ModeToggle } from "../../components/mode-toggle";
 import Image from "next/image";
 
 export default function LoginForm() {
