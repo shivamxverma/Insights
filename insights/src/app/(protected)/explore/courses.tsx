@@ -13,7 +13,13 @@ interface Chapter {
   id: string;
   name: string;
   videoId: string;
-  courseQuiz: any[];
+  generatedSummary: string | null;
+  note: string | null;
+  hasEmbedding: boolean;
+  createdAt: Date;
+  unitId: string;
+  youtubeSearchQuery: string;
+  transcript: string | null;
 }
 
 interface Unit {

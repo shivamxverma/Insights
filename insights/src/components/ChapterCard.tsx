@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 type Props = {
   chapter: Chapter;
@@ -20,7 +20,6 @@ export type ChapterCardHandler = {
 
 const ChapterCard = React.forwardRef<ChapterCardHandler, Props>(
   ({ chapter, chapterIndex, setCompletedChapters, completedChapters }, ref) => {
-    const { toast } = useToast();
     const [success, setSuccess] = React.useState<boolean | null>(null);
     const { mutate: getChapterInfo, status } = useMutation({
       mutationFn: async () => {
@@ -60,10 +59,14 @@ const ChapterCard = React.forwardRef<ChapterCardHandler, Props>(
           onError: (error) => {
             console.error(error);
             setSuccess(false);
-            toast({
-              title: "Error",
-              description: "There was an error loading your chapter",
-              variant: "destructive",
+            toast.error("There was an error loading your chapter", {
+              
+              description: "Error",
+              
+              style: {
+                backgroundColor: "#dc2626", // Red for destructive
+                color: "white",
+              },
             });
             addChapterIdToSet();
           },

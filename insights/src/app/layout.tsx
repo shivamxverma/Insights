@@ -31,6 +31,7 @@ export default function RootLayout({
       <body className={cn(lexend.className)}>
         <Provider>
         {children}
+        
         </Provider>
       </body>
     </html>

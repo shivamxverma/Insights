@@ -72,7 +72,7 @@ export default function WebScrapingPage() {
           </nav>
           <div className="flex items-center space-x-3">
             <ModeToggle />
-            <Link href="/dashboard">
+            <Link href="/create">
             <Button
               variant="outline"
               className="text-sm font-medium text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -101,7 +101,7 @@ export default function WebScrapingPage() {
           </p>
           <p className="text-base text-gray-600 dark:text-gray-300 mb-8">
             Want to summarize your Video's?{" "}
-            <Link href="/dashboard" className="text-blue-500 dark:text-blue-300 hover:underline">
+            <Link href="/create" className="text-blue-500 dark:text-blue-300 hover:underline">
               Go to Workspace to summarize
             </Link>
           </p>
@@ -297,7 +297,7 @@ export default function WebScrapingPage() {
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Start saving time and effort today! Summarize YouTube videos effortlessly with Insights.
           </h2>
-          <Link href="/dashboard">
+          <Link href="/create">
           <Button className="bg-white text-black px-6 py-3 rounded-lg hover:bg-blue-200 transition duration-200 transform hover:scale-105 dark:text-black">
             Try Insights for Free
           </Button>

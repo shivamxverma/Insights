@@ -15,7 +15,7 @@ export default function HomePage() {
             to improve your learning efficiency by 10x.
           </p>
           <div className="flex justify-center lg:justify-start gap-4">
-            <button onClick={() => window.location.href = '/dashboard'} className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
+            <button onClick={() => window.location.href = '/create'} className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
               Get Started Free
             </button>
             <button className="bg-white text-blue-600 dark:bg-gray-700 dark:text-gray-200 px-6 py-3 rounded-full border border-blue-600 dark:border-blue-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition">

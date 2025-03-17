@@ -11,7 +11,7 @@ import { Plus, Trash } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 type Props = { isPro: boolean };
@@ -25,7 +25,7 @@ type Input = z.infer<typeof createChaptersSchema>;
 
 const CreateCourseForm = ({ isPro }: Props) => {
   const router = useRouter();
-  const { toast } = useToast();
+
   const { mutate: createChapters, status } = useMutation({
     mutationFn: async ({ title, units }: Input) => {
       const response = await axios.post("/api/course/createChapters", {
@@ -46,28 +46,17 @@ const CreateCourseForm = ({ isPro }: Props) => {
 
   function onSubmit(data: Input) {
     if (data.units.some((unit) => unit === "")) {
-      toast({
-        title: "Error",
-        description: "Please fill all the units",
-        variant: "destructive",
-      });
+      toast.error( "Please fill all the units");
       return;
     }
     createChapters(data, {
       onSuccess: ({ course_id }) => {
-        toast({
-          title: "Success",
-          description: "Course created successfully",
-        });
+        toast.success("Course created successfully",);
         router.push(`/create/${course_id}`);
       },
       onError: (error) => {
         console.error(error);
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-          variant: "destructive",
-        });
+        toast.error("Something went wrong");
       },
     });
   }
@@ -168,7 +157,7 @@ const CreateCourseForm = ({ isPro }: Props) => {
             className="w-full mt-8 py-3 font-semibold bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             size="lg"
           >
-            {status === "pending" ? "Creating..." : "Let’s Go!"}
+            {status === "pending" ? "Creating..." : "Let's Go!"}
           </Button>
         </form>
       </Form>

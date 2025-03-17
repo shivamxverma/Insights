@@ -20,11 +20,21 @@ export default function UploadPDF() {
   const handleFileChange = (selectedFile: File | null) => {
     if (!selectedFile) return
     if (selectedFile.size > MAX_FILE_SIZE) {
-      toast.error("File size exceeds 4MB limit.")
+      toast.error("File size exceeds 4MB limit.",{
+        style: {
+          backgroundColor: "#dc2626", // Red for destructive
+          color: "white",
+        },
+      })
       return
     }
     if (!ALLOWED_FORMATS.includes(selectedFile.type)) {
-      toast.error("Only PDF files are allowed.")
+      toast.error("Only PDF files are allowed." ,{
+        style: {
+          backgroundColor: "#dc2626", // Red for destructive
+          color: "white",
+        },
+      })
       return
     }
     setFile(selectedFile)
@@ -38,10 +48,20 @@ export default function UploadPDF() {
       if (response.error) {
         throw new Error(response.error)
       }
-      toast.success("Upload successful!")
+      toast.success("Upload successful!",{
+        style: {
+          backgroundColor: "green", // Red for destructive
+          color: "white",
+        },
+      })
       // Optionally, redirect or update UI here
     } catch (err) {
-      toast.error("Upload failed. Please try again.")
+      toast.error("Upload failed. Please try again." ,{
+        style: {
+          backgroundColor: "#dc2626", // Red for destructive
+          color: "white",
+        },
+      })
     } finally {
       setUploading(false)
     }

@@ -53,7 +53,7 @@ export function VideoSidebar({ courseId, videoId, videos }: VideoSidebarProps) {
           {open && (
             
             <h1 className="text-2xl font-extrabold text-gray-800 dark:text-gray-100 tracking-wide leading-tight drop-shadow-md transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
-              <Link href={`/dashboard`}>Insights</Link>
+              <Link href={`/create`}>Insights</Link>
             </h1>
           )}
         </div>

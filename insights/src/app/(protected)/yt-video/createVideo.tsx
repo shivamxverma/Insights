@@ -72,13 +72,23 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
     },
     onSuccess: ({ module }) => {
       const { videoId } = getYouTubeIds(url);
-      toast.success('Video or playlist added to module');
+      toast.success('Video or playlist added to module',{
+        style: {
+          backgroundColor: "green", // Red for destructive
+          color: "white",
+        },
+      });
       queryClient.invalidateQueries({ queryKey: ['modules', userId] });
       router.push(`/video-modules/${module.id}${videoId ? `/${videoId}` : ''}`);
     },
     onError: (error: any) => {
       console.error(error);
-      toast.error(error.message || 'Failed to add video or playlist to module');
+      toast.error(error.message || 'Failed to add video or playlist to module',{
+        style: {
+          backgroundColor: "#dc2626", // Red for destructive
+          color: "white",
+        },
+      });
     },
   });
 

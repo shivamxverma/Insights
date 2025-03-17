@@ -1,13 +1,39 @@
-import { getAuthSession } from '@/lib/auth';
-import { fetchCourses } from '@/lib/courseQuery'; // Updated function
-import { redirect } from 'next/navigation';
-import Courses from './courses';
+import { getAuthSession } from "@/lib/auth";
+import { fetchCourses } from "@/lib/courseQuery"; // Updated function
+import { redirect } from "next/navigation";
+import Courses from "./courses";
+
+// Define interfaces to match the fetched data structure
+interface Chapter {
+  id: string;
+  name: string;
+  videoId: string;
+  generatedSummary: string | null;
+  note: string | null;
+  hasEmbedding: boolean;
+  createdAt: Date;
+  unitId: string;
+  youtubeSearchQuery: string;
+  transcript: string | null;
+}
+
+interface Unit {
+  id: string;
+  name: string;
+  chapters: Chapter[];
+}
+
+interface Course {
+  id: string;
+  name: string;
+  units: Unit[];
+}
 
 const MyCourses = async () => {
   const session = await getAuthSession();
 
   if (!session) {
-    redirect('/login');
+    redirect("/login");
   }
 
   let myCourses, allCourses;

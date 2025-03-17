@@ -91,7 +91,7 @@ const SidebarLayout = ({ children }: Props) => {
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
                       <DropdownMenuItem
-                        onClick={() => router.push('/dashboard')}
+                        onClick={() => router.push('/create')}
                         className="text-gray-800 dark:text-gray-100 bg-blue-500  hover:bg-blue-700 transition-all -300 hover:shadow-md cursor-pointer"
                       >
                         <span className="w-full text-left text-black dark:text-white">Profile</span>
