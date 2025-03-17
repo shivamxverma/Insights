@@ -1,26 +1,21 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import Mynotes from '@/components/Mynotes';
-import AiNotes from '@/components/AiNotes';
-import AiChat from '@/components/AiChat';
-import QuizCard from '@/components/CourseQuizCards';
-import Header from '@/components/Header';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from "react";
+import Mynotes from "@/components/Mynotes";
+import AiNotes from "@/components/AiNotes";
+import AiChat from "@/components/AiChat";
+import QuizCard from "@/components/CourseQuizCards";
+import Header from "@/components/Header";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { SidebarProvider } from '@/components/ui/sidebar';
-import CourseSideBar from '@/components/CourseSideBar';
-import CourseTranscript from '@/components/CourseTranscript';
-import CourseAiNotes from '@/components/courseAinotes';
-import CourseQuizCard from '@/components/CourseQuizCards';
+import { SidebarProvider } from "@/components/ui/sidebar";
+import CourseSideBar from "@/components/CourseSideBar";
+import CourseTranscript from "@/components/CourseTranscript";
+import CourseAiNotes from "@/components/courseAinotes";
+import CourseQuizCard from "@/components/CourseQuizCards";
 
-interface CourseLearningProps {
-  course: Course;
-  unitIndex: number;
-  chapterIndex: number;
-}
 interface Chapter {
   id: string;
   name: string;
@@ -40,18 +35,23 @@ interface Course {
   units: Unit[];
 }
 
+interface CourseLearningProps {
+  course: Course;
+  unitIndex: number;
+  chapterIndex: number;
+}
+
 interface Props {
   course: Course;
   unitIndex: number;
   chapterIndex: number;
 }
 
-const  CourseLearningContent = ({ course, unitIndex, chapterIndex }: Props) => {
+const CourseLearningContent = ({ course, unitIndex, chapterIndex }: Props) => {
   const [leftTab, setLeftTab] = useState("transcript");
   const [rightTab, setRightTab] = useState("notes");
   const router = useRouter();
-  // const { open } = useSidebar();
-
+  const path = `${course.id}/${unitIndex}/${chapterIndex}`;
   const unit = course.units[unitIndex];
   const chapter = unit.chapters[chapterIndex];
 
@@ -109,10 +109,11 @@ const  CourseLearningContent = ({ course, unitIndex, chapterIndex }: Props) => {
   return (
     <div className="h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900">
       <Header
-        moduleId={unit.name}
-        videoTitle={chapter.name}
-        courseId={course.id}
-        videoId={chapter.videoId}
+        type="course"
+        title={chapter.name}
+        parentTitle={course.name}
+        id={path} // `${course.id}/${unitIndex}/${chapterIndex}`
+        parentId={course.id}
       />
       <main
         className="flex flex-1 overflow-hidden"
@@ -171,7 +172,7 @@ const  CourseLearningContent = ({ course, unitIndex, chapterIndex }: Props) => {
                 <TabsContent value="transcript" className="h-full p-0 m-0">
                   <ScrollArea className="h-full">
                     <div className="p-3">
-                    <CourseTranscript course={course} unitIndex={unitIndex} chapterIndex={chapterIndex} />
+                      <CourseTranscript course={course} unitIndex={unitIndex} chapterIndex={chapterIndex} />
                     </div>
                   </ScrollArea>
                 </TabsContent>
@@ -228,7 +229,7 @@ const  CourseLearningContent = ({ course, unitIndex, chapterIndex }: Props) => {
               <TabsContent value="notes" className="h-full p-0 m-0">
                 <ScrollArea className="h-full">
                   <div className="p-3">
-                    <CourseAiNotes course={course} unitIndex={unitIndex} chapterIndex={chapterIndex}/>
+                    <CourseAiNotes course={course} unitIndex={unitIndex} chapterIndex={chapterIndex} />
                   </div>
                 </ScrollArea>
               </TabsContent>
@@ -254,7 +255,6 @@ const  CourseLearningContent = ({ course, unitIndex, chapterIndex }: Props) => {
   );
 };
 
-
 export function CourseLearning({ course, unitIndex, chapterIndex }: CourseLearningProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -264,11 +264,10 @@ export function CourseLearning({ course, unitIndex, chapterIndex }: CourseLearni
 
   if (!mounted) return null;
 
-
-return (
-      <SidebarProvider>
-        <div className="flex  min-h-screen bg-gray-100 dark:bg-gray-900 text-foreground">
-        <CourseSideBar 
+  return (
+    <SidebarProvider>
+      <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-foreground">
+        <CourseSideBar
           course={course}
           unitIndex={unitIndex}
           currentChapterIndex={chapterIndex}
@@ -278,8 +277,7 @@ return (
           unitIndex={unitIndex}
           chapterIndex={chapterIndex}
         />
-
-        </div>
+      </div>
     </SidebarProvider>
   );
 }

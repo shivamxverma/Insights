@@ -1,7 +1,5 @@
 import { prisma } from "@/lib/db";
-import { strict_output } from "@/lib/geminiCourse";
 import {
-  getQuestionsFromTranscript,
   getTranscript,
   searchYoutube,
 } from "@/lib/youtubeCourse";
@@ -32,38 +30,6 @@ export async function POST(req: Request)  {
     }
     const videoId = await searchYoutube(chapter.youtubeSearchQuery);
     let transcript = await getTranscript(videoId!);
-    let maxLength = 500;
-    transcript = transcript.split(" ").slice(0, maxLength).join(" ");
-
-    const { summary }: { summary: string } = await strict_output(
-      "You are an AI capable of summarising a youtube transcript",
-      "summarise in 250 words or less and do not talk of the sponsors or anything unrelated to the main topic, also do not introduce what the summary is about.\n" +
-        transcript,
-      { summary: "summary of the transcript" }
-    );
-
-    const questions = await getQuestionsFromTranscript(
-      transcript,
-      chapter.name
-    );
-
-    await prisma.courseQuiz.createMany({
-      data: questions.map((question) => {
-        let options = [
-          question.answer,
-          question.option1,
-          question.option2,
-          question.option3,
-        ];
-        options = options.sort(() => Math.random() - 0.5);
-        return {
-          question: question.question,
-          answer: question.answer,
-          options: JSON.stringify(options),
-          chapterId: chapterId,
-        };
-      }),
-    });
 
     await prisma.chapter.update({
       where: { id: chapterId },
@@ -73,8 +39,8 @@ export async function POST(req: Request)  {
           .replace(/[^a-zA-Z0-9\s]/g, "")
           .replace(/\s+/g, " ")
           .trim(),
-        generatedSummary: summary,
-      },
+        
+        },
     });
 
     return NextResponse.json({ success: true });

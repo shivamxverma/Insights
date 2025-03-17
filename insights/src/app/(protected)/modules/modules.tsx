@@ -86,7 +86,7 @@ const VideoModules: React.FC<Props> = ({ modules }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Link href={`/video-modules/${module.id}`} passHref>
+                <Link href={`/video-modules/${module.id}/${modules[0].videos[0].videoId}`} passHref>
                   <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                     <div className="relative w-full h-48">
                       <div

@@ -66,13 +66,8 @@ export async function CourseGeneratedSummary( chapterId : string){
         }
 
         if(chapter?.transcript){
-            const transcript = JSON.parse(chapter.transcript);
-            const transcriptText = transcript.map((seg : any) => seg.text).join(" ");
-            if(!transcriptText.trim()){
-                console.warn("Transcript is empty, cannot generate summary");
-                return null;
-            }
-            const summary = await generateSummary(transcriptText);
+            const transcript = chapter.transcript;
+            const summary = await generateSummary(transcript);
             await prisma.chapter.update({
                 where : {
                     id : chapterId
@@ -149,31 +144,52 @@ export async function CreateCourseQuizz(chapterId: string): Promise<any> {
   } 
 }
 
-export async function DeleteCourse(courseId: string) {
+export async function DeleteCourse(courseId: string , userId: string) {
   try {
     await prisma.course.delete({
       where: {
+        userId: userId,
         id: courseId,
       },
     });
     return { success: true };
   } catch (error) {
     console.error("Error deleting course:", error);
-    return { success: false };
-  } finally {
-    await prisma.$disconnect();
-  }
+    return { 
+      success: false ,
+      message : "not authorized"
+    };
+  } 
 }
-
-export async function fetchCourses(userId: string) {
+export async function fetchCourses(userId: string, all = false) {
   try {
-    const courses = await prisma.course.findMany({
-      include: {
-        units: {
-          include: { chapters: true },
+    let courses;
+    if (all) {
+      // Fetch all courses
+      courses = await prisma.course.findMany({
+        include: {
+          units: {
+            include: {
+              chapters: true, // Include chapters for thumbnail logic
+            },
+          },
         },
-      },
-    });
+      });
+    } else {
+      // Fetch only the user's courses
+      courses = await prisma.course.findMany({
+        where: {
+          userId: userId, // Assuming a userId field links courses to users
+        },
+        include: {
+          units: {
+            include: {
+              chapters: true, // Include chapters for thumbnail logic
+            },
+          },
+        },
+      });
+    }
     return courses;
   } catch (error) {
     console.error("Error fetching courses:", error);
@@ -181,4 +197,22 @@ export async function fetchCourses(userId: string) {
   } finally {
     await prisma.$disconnect();
   }
+}
+
+export async function DeleteChapter(chapterId: string , userId: string) {
+  try {
+    await prisma.course.delete({
+      where: {
+        userId: userId,
+        id: chapterId,
+      },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    return { 
+      success: false ,
+      message : "not authorized"
+    };
+  } 
 }

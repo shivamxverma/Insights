@@ -101,7 +101,13 @@ function VideoLearningContent({
 
   return (
     <div className="h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900">
-      <Header moduleId={module.name || "name"} videoTitle={currentVideo.name || "Untitled Video"} courseId={module.id} videoId={currentVideo.id} />
+       <Header
+              type="module"
+              title={currentVideo.name || "Untitled Video"}
+              parentTitle={module.name || "name"}
+              id={module.id} 
+              parentId={`${currentVideo.videoId}`}
+          />
       <main
         className="flex flex-1 overflow-hidden"
         id="split-container"

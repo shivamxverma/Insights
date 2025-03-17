@@ -53,7 +53,7 @@ const CourseSideBar = ({ course, unitIndex, currentChapterIndex }: Props) => {
           />
           {open && (
             <h1 className="text-2xl font-extrabold text-gray-800 dark:text-gray-100 tracking-wide leading-tight drop-shadow-md transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
-              <Link href={`/dashboard`}>Insights</Link>
+              <Link href={`/create`}>Insights</Link>
             </h1>
           )}
         </div>
@@ -62,11 +62,11 @@ const CourseSideBar = ({ course, unitIndex, currentChapterIndex }: Props) => {
       <Button
         className="w-full flex items-center gap-2 p-2 mt-2 mb-4 transition-all duration-200 hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white hover:shadow-md"
         variant="outline"
-        onClick={() => window.location.href = "/modules"}
+        onClick={() => window.location.href = "/explore"}
         aria-label={open ? "Collapse Sidebar" : "Expand Sidebar"}
       >
         <LayoutDashboard className="h-4 w-4 transition-transform duration-200 hover:scale-110" />
-        {open && <span className="transition-opacity duration-200 hover:opacity-80">Modules</span>}
+        {open && <span className="transition-opacity duration-200 hover:opacity-80">Explore courses</span>}
       </Button>
 
       <SidebarContent>

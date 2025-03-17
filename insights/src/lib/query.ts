@@ -189,12 +189,15 @@ export async function DeleteWebProject(projectId: string) {
   }
 }
 
-export async function DeleteVideo(id: string) {
-  console.log("Deleting video with ID:", id);
+export async function DeleteVideo(videoId: string , moduleId : string) {
+  console.log("Deleting video with ID:", videoId);
   try {
     const data = await prisma.video.delete({
       where: {
-        id
+         moduleId_videoId: {
+           moduleId: moduleId,
+           videoId: videoId,
+         },
       },
     });
     if(data){

@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Youtube, Search, Share } from "lucide-react";
+import { Youtube, Search, Share, User, Grid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { DeleteCourse } from "@/lib/courseQuery"; // Assuming you have a delete function for courses
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Chapter {
   id: string;
@@ -25,39 +26,47 @@ interface Course {
   id: string;
   name: string;
   units: Unit[];
+  userId?: string; // Optional, if courses are linked to users
 }
 
 interface Props {
-  courses: Course[];
+  courses: Course[]; // User's courses
+  allCourses: Course[]; // All courses
+  userId: string;
 }
 
-const Courses: React.FC<Props> = ({ courses }) => {
+const Courses: React.FC<Props> = ({ courses: myCourses, allCourses, userId }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTab, setSelectedTab] = useState("my-courses");
   const router = useRouter();
 
   const handleCopyLink = (courseId: string) => {
-    const url = `${window.location.origin}/course/${courseId}`;
+    const url = `${window.location.origin}/course/${courseId}/0/0`;
     navigator.clipboard.writeText(url);
     alert("Course URL copied to clipboard!");
   };
 
   const handleDelete = async (courseId: string) => {
-    const data = await DeleteCourse(courseId); // Replace with your actual delete function
+    const data = await DeleteCourse(courseId, userId); // Pass userId for authorization
     if (data.success) {
       router.push("/courses");
       router.refresh();
     } else {
-      alert("Failed to delete course.");
+      alert("Not authorized or failed to delete course.");
     }
   };
 
-  const filteredCourses = courses.filter((course) =>
+  // Determine which courses to display based on the selected tab
+  const displayedCourses = selectedTab === "my-courses" ? myCourses : allCourses;
+
+  // Filter courses based on search term
+  const filteredCourses = displayedCourses.filter((course) =>
     course.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-foreground p-4">
-      <div className="mb-8 text-center flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="mb-8 text-center flex flex-col sm:flex-row justify-between items-center gap-16">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-gray-100 transition-all duration-300 hover:text-blue-500 dark:hover:text-blue-300">
             Your Courses
@@ -67,6 +76,23 @@ const Courses: React.FC<Props> = ({ courses }) => {
           </p>
         </div>
         <div className="max-w-md w-full">
+          <Tabs
+            defaultValue="my-courses"
+            value={selectedTab}
+            onValueChange={setSelectedTab}
+            className="w-full max-w-3xl mx-auto"
+          >
+            <TabsList className="grid grid-cols-2 mb-6">
+              <TabsTrigger value="my-courses" className="flex items-center gap-2">
+                <User className="w-4 h-4" />
+                My Courses
+              </TabsTrigger>
+              <TabsTrigger value="all-courses" className="flex items-center gap-2">
+                <Grid className="w-4 h-4" />
+                All Courses
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 transition-transform duration-200 hover:scale-110" />
             <input
@@ -88,6 +114,9 @@ const Courses: React.FC<Props> = ({ courses }) => {
               ? `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`
               : "https://via.placeholder.com/480x360?text=No+Video";
 
+            // Only show delete button for user's own courses (my-courses tab)
+            const showDeleteButton = selectedTab === "my-courses";
+
             return (
               <motion.div
                 key={course.id}
@@ -95,7 +124,7 @@ const Courses: React.FC<Props> = ({ courses }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Link href={`/course/${course.id}/0/0`} passHref> {/* Default to unit 0, chapter 0 */}
+                <Link href={`/course/${course.id}/0/0`} passHref>
                   <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                     <div className="relative w-full h-48">
                       <div
@@ -127,18 +156,20 @@ const Courses: React.FC<Props> = ({ courses }) => {
                               <Share className="h-4 w-4 transition-transform duration-200 hover:scale-110" />
                               <span className="hidden sm:inline ml-1">Share</span>
                             </Button>
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              className="gap-1 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500 transition-all duration-300 transform hover:scale-105 hover:shadow-md"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleDelete(course.id);
-                              }}
-                            >
-                              <span className="hidden sm:inline">Delete</span>
-                            </Button>
+                            {showDeleteButton && (
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                className="gap-1 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500 transition-all duration-300 transform hover:scale-105 hover:shadow-md"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  handleDelete(course.id);
+                                }}
+                              >
+                                <span className="hidden sm:inline">Delete</span>
+                              </Button>
+                            )}
                           </div>
                         </div>
                         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mt-2 line-clamp-2 transition-colors duration-200 hover:text-blue-500 dark:hover:text-blue-300">
