@@ -137,28 +137,45 @@ Output only a JSON array of objects, where each object has:
     // Parse the JSON response
     const questions = JSON.parse(text) as { question: string; answer: string; options: string[] }[];
     
-    // Basic validation to ensure each question has the correct answer in its options
+    // Validate and shuffle options
     return questions.map(q => {
-      // Make sure the answer is included in the options
+      // Ensure the answer is in the options array
       if (!q.options.includes(q.answer)) {
-        q.options[0] = q.answer; // Replace first option with the answer if missing
+        // If the answer is missing, add it (this should rarely happen with a good prompt)
+        q.options.push(q.answer);
+        // Trim to 4 options if more were added
+        q.options = q.options.slice(0, 4);
       }
+
+      // Shuffle the options array using Fisher-Yates algorithm
+      for (let i = q.options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+      }
+
       return q;
     });
     
   } catch (error) {
     console.error("Error generating questions:", error);
     // Return fallback questions in the detected language
+    const fallbackOptions = [
+      isHindi ? "कृपया बाद में पुनः प्रयास करें।" : "Please try again later.",
+      isHindi ? "विकल्प 1" : "Option 1",
+      isHindi ? "विकल्प 2" : "Option 2",
+      isHindi ? "विकल्प 3" : "Option 3",
+    ];
+    // Shuffle fallback options
+    for (let i = fallbackOptions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [fallbackOptions[i], fallbackOptions[j]] = [fallbackOptions[j], fallbackOptions[i]];
+    }
+
     return [
       {
         question: isHindi ? "प्रश्न उत्पन्न करने में त्रुटि हुई।" : "Error occurred while generating a question.",
         answer: isHindi ? "कृपया बाद में पुनः प्रयास करें।" : "Please try again later.",
-        options: [
-          isHindi ? "कृपया बाद में पुनः प्रयास करें।" : "Please try again later.",
-          isHindi ? "विकल्प 1" : "Option 1",
-          isHindi ? "विकल्प 2" : "Option 2",
-          isHindi ? "विकल्प 3" : "Option 3",
-        ].sort(() => Math.random() - 0.5),
+        options: fallbackOptions,
       },
     ];
   }

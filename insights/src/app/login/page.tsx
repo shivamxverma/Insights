@@ -14,7 +14,7 @@ export default function LoginForm() {
     setIsLoading(true);
     try {
       await signIn(provider, {
-        callbackUrl: "/dashboard", // Redirect after successful login
+        callbackUrl: "/create", // Redirect after successful login
       });
     } catch (error) {
       console.error("OAuth sign-in error:", error);
