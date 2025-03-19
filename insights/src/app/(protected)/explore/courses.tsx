@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { DeleteCourse } from "@/lib/courseQuery"; // Assuming you have a delete function for courses
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
 
 interface Chapter {
   id: string;
@@ -49,7 +50,7 @@ const Courses: React.FC<Props> = ({ courses: myCourses, allCourses, userId }) =>
   const handleCopyLink = (courseId: string) => {
     const url = `${window.location.origin}/course/${courseId}/0/0`;
     navigator.clipboard.writeText(url);
-    alert("Course URL copied to clipboard!");
+    toast.success("Course URL copied to clipboard!");
   };
 
   const handleDelete = async (courseId: string) => {
@@ -58,7 +59,12 @@ const Courses: React.FC<Props> = ({ courses: myCourses, allCourses, userId }) =>
       router.push("/explore");
       router.refresh();
     } else {
-      alert("Not authorized or failed to delete course.");
+      toast.error("only creator can delete course",{
+        style: {
+          backgroundColor: "#dc2626", // Red for destructive
+          color: "white",
+        },
+      });
     }
   };
 

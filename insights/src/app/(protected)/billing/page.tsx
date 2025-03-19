@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Youtube } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Pricing plan interface for type safety
 interface Plan {
@@ -132,7 +133,13 @@ const PricingPage = () => {
                   </div>
                   <Button
                     className="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
-                    onClick={() => alert(`Get started with ${plan.name}!`)} // Placeholder action
+                    onClick={() => 
+                     toast.success(`Get started with ${plan.name}!`, {
+                      style: {
+                        backgroundColor: '#059669', // Green for success
+                        color: 'white',
+                      },
+                    })}
                   >
                     Get Started
                   </Button>

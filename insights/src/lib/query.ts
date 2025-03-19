@@ -1,4 +1,5 @@
 'use server'
+import { getAuthSession } from "./auth";
 import { prisma } from "./db";
 import { retrieveAnswer } from "./retrieval";
 import { Module } from "./types";
@@ -249,8 +250,14 @@ export async function DeleteModule(id: string) {
 }
 
 export async function GetWebProject() {
+  const session = await getAuthSession();
+  const userId = session?.user?.id;
   try {
-    const data = await prisma.webAnalysis.findMany();
+    const data = await prisma.webAnalysis.findMany({
+      where :{
+        userId
+      }
+    })
     return data;
   } catch (error) {
     // console.error("Error fetching web projects:", error);
@@ -259,8 +266,14 @@ export async function GetWebProject() {
 }
 
 export async function GetChatProject() {
+  const session = await getAuthSession();
+  const userId = session?.user?.id;
   try {
-    const data = await prisma.chatPdf.findMany()
+    const data = await prisma.chatPdf.findMany({
+      where :{
+        userId
+      }
+    })
     return data;
   } catch (error) {
     // console.error("Error fetching chat projects:", error);

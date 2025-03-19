@@ -7,6 +7,7 @@ import { Youtube, Search, Share } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { DeleteModule } from "@/lib/query";
+import { toast } from "sonner";
 
  interface Video {
   videoId: string;
@@ -29,7 +30,8 @@ const VideoModules: React.FC<Props> = ({ modules }) => {
   const handleCopyLink = (moduleId: string) => {
     const url = `${window.location.origin}/video-modules/${moduleId}`;
     navigator.clipboard.writeText(url);
-    alert("Module URL copied to clipboard!");
+    toast.success("Module URL copied to clipboard!");
+
   };
 
   const handleDelete = async (moduleId: string) => {
@@ -38,7 +40,7 @@ const VideoModules: React.FC<Props> = ({ modules }) => {
       router.push("/modules");
       router.refresh();
     } else {
-      alert("Failed to delete module.");
+      toast.error("Failed to delete module.");
     }
   };
 
