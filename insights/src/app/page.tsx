@@ -11,6 +11,7 @@ import { ModeToggle } from "../components/mode-toggle";
 import ChatPdfPage from "@/components/ChatPdfpage";
 import ArticleSummarizer from "@/components/articlesumarry";
 import { Clock, BookOpen, User, Globe, Subtitles, FileText } from "lucide-react";
+import CourseCreation from "@/components/createCourse";
 
 
 export default function WebScrapingPage() {
@@ -46,10 +47,11 @@ export default function WebScrapingPage() {
           <nav className="hidden md:flex space-x-6">
             {[
               { id: "home", label: "Home" },
+              { id: "create", label: "CourseCreation" },
               { id: "youtube", label: "YouTube" },
               { id: "chatpdf", label: "ChatPdf" },
               { id: "article", label: "Website/Article" },
-              { href: "/pricing", label: "Pricing" },
+              { href: "/billing", label: "Billing" },
             ].map((link) => (
               link.href ? (
                 <Link 
@@ -88,6 +90,10 @@ export default function WebScrapingPage() {
       <div id="home">
         <HomePage />
       </div>
+      <div id="create">
+        <CourseCreation/>
+      </div>
+
 
       {/* YouTube Video Summarizer Section */}
       <main id="youtube" className="container mx-auto px-4 py-16">

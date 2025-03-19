@@ -55,7 +55,7 @@ const Courses: React.FC<Props> = ({ courses: myCourses, allCourses, userId }) =>
   const handleDelete = async (courseId: string) => {
     const data = await DeleteCourse(courseId, userId); // Pass userId for authorization
     if (data.success) {
-      router.push("/courses");
+      router.push("/explore");
       router.refresh();
     } else {
       alert("Not authorized or failed to delete course.");

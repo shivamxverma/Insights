@@ -1,5 +1,3 @@
-// app/page.tsx
-import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -8,11 +6,14 @@ export default function HomePage() {
         {/* Left Section: Text Content */}
         <div className="lg:w-1/2 text-center lg:text-left">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 mb-4">
-            AI Summarizer & Generator <br /> for Enhanced Learning
+            AI Summarizer & Course Generator <br /> for Enhanced Learning
           </h1>
           <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
             Insights - YouTube Video Summarizer, PDF Summary, chatPdf and more. Get Summary, anwer to your question, and Notes with Insights AI
             to improve your learning efficiency by 10x.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
+          Just provide your course topic, and AI will create a detailed course for you with YouTube video recommendations.
           </p>
           <div className="flex justify-center lg:justify-start gap-4">
             <button onClick={() => window.location.href = '/create'} className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
@@ -57,13 +58,13 @@ export default function HomePage() {
                 <span className="text-green-600 dark:text-green-400">✔ Online Articles</span>
               </div>
               <div className="mt-4">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Quiz's</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Create course</h3>
                 <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 bg-gray-50 dark:bg-gray-700 h-32 flex items-center justify-center text-gray-500 dark:text-gray-400">
-                  quiz's Section Placeholder
+                  course content will be here
                 </div>
               </div>
               <div className="mt-4 text-sm text-gray-600 dark:text-gray-300">
-                Summary to enhance your YouTube videos with Insights to efficiently
+                Structured course with YouTube videos with Insights to efficiently
                 learn and improve efficiency
               </div>
               <div className="mt-4 bg-blue-800 text-white p-2 rounded flex justify-between items-center">

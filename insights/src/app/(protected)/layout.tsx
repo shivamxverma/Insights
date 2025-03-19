@@ -54,7 +54,7 @@ const SidebarLayout = ({ children }: Props) => {
                 <Button
                   className="cursor-pointer w-20 rounded-lg text-blue-500 dark:text-blue-300 border-gray-300 dark:border-gray-600 transition-all duration-300 hover:bg-blue-600 dark:hover:bg-blue-500 hover:text-white hover:shadow-md"
                   variant="outline"
-                  onClick={() => router.push('/pricing')} // Navigate to pricing page
+                  onClick={() => router.push('/billing')} // Navigate to pricing page
                 >
                   Upgrade
                 </Button>

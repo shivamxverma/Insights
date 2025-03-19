@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Bot, CreditCard, LayoutDashboard, Presentation, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Bot, CreditCard, LayoutDashboard, Presentation, Plus, ChevronLeft, ChevronRight, Youtube, DoorClosedIcon, PresentationIcon } from 'lucide-react';
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
@@ -23,7 +23,7 @@ const items = [
   {
     title: "Create",
     url: "/create",
-    icon: LayoutDashboard,
+    icon: Plus,
   },
   {
     title: "Explore Courses",
@@ -31,19 +31,19 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: "videoModules",
-    url: "/modules",
-    icon: Bot,
-  },
-  {
     title: "YT-video",
     url: "/yt-video",
+    icon: Youtube,
+  },
+  {
+    title: "videoModules",
+    url: "/modules",
     icon: LayoutDashboard,
   },
   {
     title: "Webpages/Articles",
     url: "/website-article",
-    icon: Presentation,
+    icon: PresentationIcon,
   },
   {
     title: "Documents",
