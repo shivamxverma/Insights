@@ -23,7 +23,7 @@ const ChatPdfProject = async () => {
       await DeletechatPdfProject(projectId);
       revalidatePath("/document"); 
     } catch (error) {
-      console.error("Failed to delete project:", error);
+      // console.error("Failed to delete project:", error);
     }
   }
 

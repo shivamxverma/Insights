@@ -19,7 +19,7 @@ Output only the rephrased transcript entries without additional commentary.
     const response = await model.generateContent(prompt);
     return response.response.text();
   } catch (error) {
-    console.error("Error rephrasing transcript:", error);
+    // console.error("Error rephrasing transcript:", error);
     return transcriptText; // Fallback to original
   }
 }
@@ -82,7 +82,7 @@ ${transcript}
     const response = await model.generateContent(prompt);
     return response.response.text();
   } catch (error) {
-    console.error("Error generating summary:", error);
+    // console.error("Error generating summary:", error);
     return `
 ### ✅ **Summary**  
 - Unable to generate summary due to an error.
@@ -132,7 +132,7 @@ Output only a JSON array of objects, where each object has:
     text = text.replace(/```json\n|\n```/g, "").trim();
 
     // Log raw response for debugging
-    console.log("Raw Gemini Response:", text);
+    // console.log("Raw Gemini Response:", text);
 
     // Parse the JSON response
     const questions = JSON.parse(text) as { question: string; answer: string; options: string[] }[];
@@ -157,7 +157,7 @@ Output only a JSON array of objects, where each object has:
     });
     
   } catch (error) {
-    console.error("Error generating questions:", error);
+    // console.error("Error generating questions:", error);
     // Return fallback questions in the detected language
     const fallbackOptions = [
       isHindi ? "कृपया बाद में पुनः प्रयास करें।" : "Please try again later.",

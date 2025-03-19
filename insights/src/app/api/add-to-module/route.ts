@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
     if (video?.summary) {
       transcript = JSON.parse(video.summary);
       if (!Array.isArray(transcript)) {
-        console.error('Invalid transcript format in database:', video.summary);
+        // console.error('Invalid transcript format in database:', video.summary);
         throw new Error('Invalid transcript format in database');
       }
       transcript = transcript.map((seg) => ({
@@ -77,11 +77,11 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    console.log('Fetched transcript:', transcript);
-    console.log('Fetched generatedSummary:', generatedSummary);
+    // console.log('Fetched transcript:', transcript);
+    // console.log('Fetched generatedSummary:', generatedSummary);
     return NextResponse.json({ transcript, generatedSummary }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching transcript:', error);
+    // console.error('Error fetching transcript:', error);
     const errorMessage = error instanceof Error ? error.message : 'Failed to fetch transcript';
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }

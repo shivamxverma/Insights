@@ -5,8 +5,8 @@ import { Module } from "./types";
 
 
 export async function addMynotes(notes: string, moduleId: string, videoId: string) {
-  console.log("Module ID in addnotes:", moduleId, "Video ID:", videoId);
-  console.log("Notes added:", notes);
+  // console.log("Module ID in addnotes:", moduleId, "Video ID:", videoId);
+  // console.log("Notes added:", notes);
   try {
     const data = await prisma.video.update({
       where: {
@@ -21,13 +21,13 @@ export async function addMynotes(notes: string, moduleId: string, videoId: strin
     });
     return data;
   } catch (error) {
-    console.error("Error adding notes:", error);
+    // console.error("Error adding notes:", error);
     throw error; // Re-throw to allow caller to handle it
   }
 }
 
 export async function getNotes( moduleId: string, videoId: string) {
-  console.log("Module ID in addnotes:", moduleId, "Video ID:", videoId);
+  // console.log("Module ID in addnotes:", moduleId, "Video ID:", videoId);
   try {
     const data = await prisma.video.findFirst({
       where: {
@@ -40,13 +40,13 @@ export async function getNotes( moduleId: string, videoId: string) {
     });
     return data?.note;
   } catch (error) {
-    console.error("Error adding notes:", error);
+    // console.error("Error adding notes:", error);
     throw error; // Re-throw to allow caller to handle it
   }
 }
 
 export async function fetchModuleVideos(userId: string): Promise<Module[]> {
-  console.log("Fetching module videos for user:", userId);
+  // console.log("Fetching module videos for user:", userId);
   try {
     const data = await prisma.videoModule.findMany({
       where: {
@@ -84,13 +84,13 @@ export async function fetchModuleVideos(userId: string): Promise<Module[]> {
 
     return transformedData;
   } catch (error) {
-    console.error("Error fetching module videos:", error);
+    // console.error("Error fetching module videos:", error);
     throw new Error("Failed to fetch module videos");
   }
 }
 
 export async function createWebScrapeProject(projectName: string, url: string, userId: string): Promise<string> {
-  console.log("data", projectName, url, userId);
+  // console.log("data", projectName, url, userId);
   try {
     const data = await prisma.webAnalysis.findFirst({
       where: { url },
@@ -99,7 +99,7 @@ export async function createWebScrapeProject(projectName: string, url: string, u
       return data.id; // Return existing project's ID
     }
   } catch (error) {
-    console.error("Error fetching project:", error);
+    // console.error("Error fetching project:", error);
     throw error;
   }
 
@@ -112,22 +112,22 @@ export async function createWebScrapeProject(projectName: string, url: string, u
         summary: "",
       },
     });
-    console.log("Created project:", data);
+    // console.log("Created project:", data);
     return data.id; // Return new project's ID
   } catch (error) {
-    console.error("Error creating project:", error);
+    // console.error("Error creating project:", error);
     throw error;
   }
 }
 
 // Saves the summary for a project by ID
 export async function SaveSummaryWebscraper(projectId: string, summary: string) {
-  console.log("Saving scrape summary for project ID:", projectId);
+  // console.log("Saving scrape summary for project ID:", projectId);
   try {
     const existingRecord = await prisma.webAnalysis.findFirst({
       where: { id: projectId },
     });
-    console.log("Existing record:", existingRecord);
+    // console.log("Existing record:", existingRecord);
     if (!existingRecord) {
       throw new Error(`No record found for project ID: ${projectId}`);
     }
@@ -136,10 +136,10 @@ export async function SaveSummaryWebscraper(projectId: string, summary: string) 
       where: { id: projectId },
       data: { summary },
     });
-    console.log("Updated record:", data);
+    // console.log("Updated record:", data);
     return data;
   } catch (error) {
-    console.error("Error saving summary:", error);
+    // console.error("Error saving summary:", error);
     throw error;
   }
 }
@@ -158,7 +158,7 @@ export async function GetScrapeSumary(url: string) {
       id : data ? data.id : null
     } 
   } catch (error) {
-    console.error("Error fetching summary:", error);
+    // console.error("Error fetching summary:", error);
     throw error;
   }
 }
@@ -171,7 +171,7 @@ export async function GetScrapeSumaryThroughProjectId(projectId: string) {
     });
     return data?.summary || null || "";
   } catch (error) {
-    console.error("Error fetching summary:", error);
+    // console.error("Error fetching summary:", error);
     throw error;
   }
 }
@@ -181,16 +181,16 @@ export async function DeleteWebProject(projectId: string) {
     const deletedProject = await prisma.webAnalysis.delete({
       where: { id: projectId },
     });
-    console.log("Deleted project:", deletedProject);
+    // console.log("Deleted project:", deletedProject);
     return deletedProject;
   } catch (error) {
-    console.error("Error deleting project:", error);
+    // console.error("Error deleting project:", error);
     throw error;
   }
 }
 
 export async function DeleteVideo(videoId: string , moduleId : string) {
-  console.log("Deleting video with ID:", videoId);
+  // console.log("Deleting video with ID:", videoId);
   try {
     const data = await prisma.video.delete({
       where: {
@@ -213,7 +213,7 @@ export async function DeleteVideo(videoId: string , moduleId : string) {
       data : null
     }
   } catch (error) {
-    console.error("Error deleting video:", error);
+    // console.error("Error deleting video:", error);
     return {
       success : false,
       message : "Error deleting video",
@@ -223,7 +223,7 @@ export async function DeleteVideo(videoId: string , moduleId : string) {
 }
 
 export async function DeleteModule(id: string) {
-  console.log("Deleting module with ID:", id);
+  // console.log("Deleting module with ID:", id);
   try {
     const data = await prisma.videoModule.delete({
       where: {
@@ -243,7 +243,7 @@ export async function DeleteModule(id: string) {
       data : null
     }
   } catch (error) {
-    console.error("Error deleting module:", error);
+    // console.error("Error deleting module:", error);
     throw error;
   }
 }
@@ -253,7 +253,7 @@ export async function GetWebProject() {
     const data = await prisma.webAnalysis.findMany();
     return data;
   } catch (error) {
-    console.error("Error fetching web projects:", error);
+    // console.error("Error fetching web projects:", error);
     throw error;
   }
 }
@@ -263,7 +263,7 @@ export async function GetChatProject() {
     const data = await prisma.chatPdf.findMany()
     return data;
   } catch (error) {
-    console.error("Error fetching chat projects:", error);
+    // console.error("Error fetching chat projects:", error);
     throw error;
   }
 }
@@ -273,10 +273,10 @@ export async function DeletechatPdfProject(projectId: string) {
     const deletedProject = await prisma.chatPdf.delete({
       where: { id: projectId },
     });
-    console.log("Deleted project:", deletedProject);
+    // console.log("Deleted project:", deletedProject);
     return deletedProject;
   } catch (error) {
-    console.error("Error deleting project:", error);
+    // console.error("Error deleting project:", error);
     throw error;
   }
 }
@@ -286,7 +286,7 @@ export async function chatPdfChatbot( query : string, namespace : string ){
     const res = await retrieveAnswer(query, namespace);
     return res;
   } catch (error) {
-    console.error("Error fetching chat projects:", error);
+    // console.error("Error fetching chat projects:", error);
     throw error;
    }
 }
@@ -299,7 +299,7 @@ export async function chatPdfContent( projectId : string ){
     });
     return data?.content || "No content available for this video.";
   } catch (error) {
-    console.error("Error fetching chat projects:", error);
+    // console.error("Error fetching chat projects:", error);
     throw error;
   }
 }
@@ -320,7 +320,7 @@ export async function GetCourse(courseId : string){
     });
     return data;
   } catch (error) {
-    console.error("Error fetching chat projects:", error);
+    // console.error("Error fetching chat projects:", error);
     throw error;
   }
 }

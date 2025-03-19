@@ -18,7 +18,7 @@ export default async function VideoLearningPage(props : Props) {
   const userId = session.user.id;
   const [courseId, videoId] = moduleId;
 
-  console.log("Course ID:", courseId, "Video ID:", videoId);
+  // console.log("Course ID:", courseId, "Video ID:", videoId);
   if(!courseId) {
     notFound();
   }
@@ -74,7 +74,7 @@ export default async function VideoLearningPage(props : Props) {
   ) ;
 }
 
-  console.log("Current Video Index:", currentVideoIndex);
+  // console.log("Current Video Index:", currentVideoIndex);
 
   return (
     <VideoLearningPageClient

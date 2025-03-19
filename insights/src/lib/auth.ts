@@ -60,7 +60,7 @@ export const authOptions: NextAuthOptions = {
 
         return true
         } catch (error) {
-        console.error("Error during sign-in:", error)
+        // console.error("Error during sign-in:", error)
         return false
         }
     },

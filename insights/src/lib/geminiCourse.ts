@@ -91,8 +91,8 @@ export async function strict_output(
       }`;
 
       if (verbose) {
-        console.log("Attempt:", attempt + 1);
-        console.log("Full Prompt:", fullPrompt);
+        // console.log("Attempt:", attempt + 1);
+        // console.log("Full Prompt:", fullPrompt);
       }
 
       const result = await model.generateContent({
@@ -158,15 +158,15 @@ export async function strict_output(
       return isListInput ? normalizedOutput : normalizedOutput[0];
     } catch (error: any) {
       errorMsg = `\n\nPrevious error: ${error.message}`;
-      console.error(`Attempt ${attempt + 1} failed:`, verbose ? error : error.message);
+      // console.error(`Attempt ${attempt + 1} failed:`, verbose ? error : error.message);
 
       if (error.message.includes("429")) {
-        console.warn("Rate limit hit, retrying after delay...");
+        // console.warn("Rate limit hit, retrying after delay...");
         await delay(2000 * (attempt + 1)); // Exponential backoff
       }
 
       if (attempt === maxRetries - 1) {
-        console.error("Max retries reached, returning empty result");
+        // console.error("Max retries reached, returning empty result");
         return isListInput ? [] : {};
       }
     }

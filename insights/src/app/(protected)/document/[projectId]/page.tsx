@@ -10,7 +10,7 @@ interface Props {
 
 export default async function ChatPdfPage({ params }: Props) {
   const { projectId } = await params; // Await the params Promise to get the actual object
-  console.log("projectId", projectId);
+  // console.log("projectId", projectId);
   const content = await chatPdfContent(projectId);
 
   return (

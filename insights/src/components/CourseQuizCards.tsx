@@ -30,7 +30,7 @@ const CourseQuizCard: React.FC<Props> = ({ chapterId }) => {
     const fetchQuizzes = async () => {
       setLoading(true);
       setError(null);
-      console.log("Fetching quizzes for videoId:", chapterId);
+      // console.log("Fetching quizzes for videoId:", chapterId);
       try {
         const res: Quiz[] | null = (await CreateCourseQuizz(chapterId))?.map((quiz: Quiz): Quiz => ({
           ...quiz,
@@ -42,7 +42,7 @@ const CourseQuizCard: React.FC<Props> = ({ chapterId }) => {
           setError("Failed to load quizzes");
         }
       } catch (err) {
-        console.error("Error fetching quizzes:", err);
+        // console.error("Error fetching quizzes:", err);
         setError("Failed to load quizzes");
       } finally {
         setLoading(false);

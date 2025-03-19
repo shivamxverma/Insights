@@ -22,7 +22,7 @@ function isZeroVector(vector: number[]): boolean {
 
 export async function POST(req: Request) {
   const { query, namespace, moduleId , type} = await req.json();
-  console.log("Received query: ", moduleId, namespace , type);
+  // console.log("Received query: ", moduleId, namespace , type);
   try {
     if (!query || !namespace || !moduleId) {
       return NextResponse.json(
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log(`Received query: "${query}" for namespace: "${namespace}"`);
+    // console.log(`Received query: "${query}" for namespace: "${namespace}"`);
 
     let checkEmbedding  ;
     if(type === "video"){
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
         )}
     // If no data exists in Pinecone, generate and upload it
     if (checkEmbedding?.hasEmbedding !== true) {
-      console.log(`No data found in Pinecone for namespace: ${namespace}, fetching from Prisma`);
+      // console.log(`No data found in Pinecone for namespace: ${namespace}, fetching from Prisma`);
         let transcript: string | null = null;
         if(type === "video"){
            const data = await prisma.video.findFirst({
@@ -62,10 +62,10 @@ export async function POST(req: Request) {
             where: { id: moduleId },
             
           });
-          console.log("Data: ", data);
+          // console.log("Data: ", data);
           transcript = data?.transcript ?? null;
         }
-        console.log("Transcript: ", transcript);
+        // console.log("Transcript: ", transcript);
       if (transcript?.length === 0) {
         return NextResponse.json({ error: "No data found" }, { status: 404 });
       }
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Transcript is null" }, { status: 400 });
       }
 
-      console.log("Creating embeddings from video summary");
+      // console.log("Creating embeddings from video summary");
       const { chunks, embeddings } = await processText(transcript, {
         bufferSize: 2,  
         mergeLengthThreshold: 200,
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
         maxSentencesPerBatch: 300,
         maxChunkLength: 500,
       });
-      console.log(`Processed ${chunks.length} chunks`);
+      // console.log(`Processed ${chunks.length} chunks`);
 
       const validVectors: PineconeRecord[] = [];
       for (let index = 0; index < chunks.length; index++) {
@@ -104,11 +104,11 @@ export async function POST(req: Request) {
           console.warn(`Skipping chunk ${index} due to invalid embedding`);
         }
       }
-      console.log(`Prepared ${validVectors.length} valid vectors for Pinecone (filtered from ${chunks.length})`);
+      // console.log(`Prepared ${validVectors.length} valid vectors for Pinecone (filtered from ${chunks.length})`);
 
-      console.log(`Uploading embeddings to Pinecone namespace: ${namespace}`);
+      // console.log(`Uploading embeddings to Pinecone namespace: ${namespace}`);
       await uploadToPinecone(validVectors, namespace);
-      console.log("Processing and uploading complete");
+      // console.log("Processing and uploading complete");
 
       if(type === "video"){
       await prisma.video.update({

@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
           generatedSummary: video.generatedSummary || null,
         } as TranscriptResponse);
       } catch (e) {
-        console.error("Error parsing stored transcript:", e);
+        // console.error("Error parsing stored transcript:", e);
       }
     }
 
@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
           }
           throw new Error("No transcript available");
         } catch (error) {
-          console.error("Error detecting language:", error);
+          // console.error("Error detecting language:", error);
           throw new Error("No transcript available for this video");
         }
       }
@@ -97,7 +97,7 @@ export async function GET(req: NextRequest) {
       generatedSummary: video?.generatedSummary || null,
     } as TranscriptResponse);
   } catch (error) {
-    console.error("Error fetching transcript:", error);
+    // console.error("Error fetching transcript:", error);
     const errorMessage = error instanceof Error ? error.message : "Failed to fetch transcript";
     return NextResponse.json({ error: errorMessage } as ErrorResponse, { status: 500 });
   }

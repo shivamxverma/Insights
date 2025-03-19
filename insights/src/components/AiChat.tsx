@@ -57,7 +57,7 @@ export default function AiChat({ type, moduleId, videoId }: AiChatProps) {
     setIsLoading(true);
 
     try {
-      console.log("Sending query: ", moduleId, videoId);
+      // console.log("Sending query: ", moduleId, videoId);
       const res = await fetch("/api/retrival-answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -72,7 +72,7 @@ export default function AiChat({ type, moduleId, videoId }: AiChatProps) {
       };
       setMessages((prev) => [...prev, systemMessage]);
     } catch (error) {
-      console.error("Failed to fetch response:", error);
+      // console.error("Failed to fetch response:", error);
       const errorMessage: Message = {
         role: "SYSTEM",
         content: "Failed to generate a response.",

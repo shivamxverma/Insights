@@ -38,7 +38,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling bold");
+          // console.log("Toggling bold");
           editor.chain().focus().toggleBold().run();
         }}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -52,7 +52,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling italic");
+          // console.log("Toggling italic");
           editor.chain().focus().toggleItalic().run();
         }}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
@@ -66,7 +66,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling strike");
+          // console.log("Toggling strike");
           editor.chain().focus().toggleStrike().run();
         }}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
@@ -80,7 +80,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling code");
+          // console.log("Toggling code");
           editor.chain().focus().toggleCode().run();
         }}
         disabled={!editor.can().chain().focus().toggleCode().run()}
@@ -94,7 +94,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling heading 1");
+          // console.log("Toggling heading 1");
           editor.chain().focus().toggleHeading({ level: 1 }).run();
         }}
         className={`transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105 ${
@@ -107,7 +107,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling heading 2");
+          // console.log("Toggling heading 2");
           editor.chain().focus().toggleHeading({ level: 2 }).run();
         }}
         className={`transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105 ${
@@ -120,7 +120,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling heading 3");
+          // console.log("Toggling heading 3");
           editor.chain().focus().toggleHeading({ level: 3 }).run();
         }}
         className={`transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105 ${
@@ -133,7 +133,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling heading 4");
+          // console.log("Toggling heading 4");
           editor.chain().focus().toggleHeading({ level: 4 }).run();
         }}
         className={`transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105 ${
@@ -146,7 +146,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling ordered list");
+          // console.log("Toggling ordered list");
           editor.chain().focus().toggleOrderedList().run();
         }}
         className={`transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105 ${
@@ -159,7 +159,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling code block");
+          // console.log("Toggling code block");
           editor.chain().focus().toggleCodeBlock().run();
         }}
         className={`transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105 ${
@@ -172,7 +172,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Toggling blockquote");
+          // console.log("Toggling blockquote");
           editor.chain().focus().toggleBlockquote().run();
         }}
         className={`transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105 ${
@@ -185,7 +185,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Undo");
+          // console.log("Undo");
           editor.chain().focus().undo().run();
         }}
         disabled={!editor.can().chain().focus().undo().run()}
@@ -197,7 +197,7 @@ const Toolbar = ({ editor }: { editor: any }) => {
         variant="ghost"
         size="sm"
         onClick={() => {
-          console.log("Redo");
+          // console.log("Redo");
           editor.chain().focus().redo().run();
         }}
         disabled={!editor.can().chain().focus().redo().run()}
@@ -226,7 +226,7 @@ const Mynotes = ({ moduleId, videoId }: MynotesProps) => {
     content: "",
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      console.log("Editor updated:", html);
+      // console.log("Editor updated:", html);
       setEditorState(html);
     },
     autofocus: true,
@@ -240,12 +240,12 @@ const Mynotes = ({ moduleId, videoId }: MynotesProps) => {
       try {
         const data = await getNotes(moduleId, videoId);
         if (data && editor) {
-          console.log("Setting fetched notes:", data);
+          // console.log("Setting fetched notes:", data);
           editor.commands.setContent(data);
           setEditorState(data);
         }
       } catch (err) {
-        console.error("Error fetching existing notes:", err);
+        // console.error("Error fetching existing notes:", err);
       }
     };
     fetchNotes();
@@ -253,7 +253,7 @@ const Mynotes = ({ moduleId, videoId }: MynotesProps) => {
 
   useEffect(() => {
     if (debouncedEditorState && debouncedEditorState.trim() && debouncedEditorState !== "<p></p>" && !isSaving) {
-      console.log("Auto-saving:", debouncedEditorState);
+      // console.log("Auto-saving:", debouncedEditorState);
       handleSave();
     }
   }, [debouncedEditorState]);
@@ -274,7 +274,7 @@ const Mynotes = ({ moduleId, videoId }: MynotesProps) => {
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError("Failed to save notes. Please try again.");
-      console.error("Save error:", err);
+      // console.error("Save error:", err);
     } finally {
       setIsSaving(false);
     }

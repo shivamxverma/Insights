@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ role: "assistant", content: answer });
 
   } catch (error) {
-    console.error("Error in chat API:", error);
+    // console.error("Error in chat API:", error);
     return NextResponse.json({ error: "Failed to generate response" }, { status: 500 });
   }
 }

@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: "Summary updated successfully" }, { status: 200 });
   } catch (error) {
-    console.error("Error updating summary:", error);
+    // console.error("Error updating summary:", error);
     return NextResponse.json({ error: "Failed to update summary" }, { status: 500 });
   }
 }

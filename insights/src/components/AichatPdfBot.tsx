@@ -56,7 +56,7 @@ export default function AiChatPdfBot({ moduleId }: AiChatProps) {
     setIsLoading(true);
 
     try {
-      console.log("Sending query: ", moduleId);
+      // console.log("Sending query: ", moduleId);
       const res = await chatPdfChatbot(input, moduleId);
       if (!res) throw new Error(`API returned ${res}`);
       const systemMessage: Message = {
@@ -66,7 +66,7 @@ export default function AiChatPdfBot({ moduleId }: AiChatProps) {
       };
       setMessages((prev) => [...prev, systemMessage]);
     } catch (error) {
-      console.error("Failed to fetch response:", error);
+      // console.error("Failed to fetch response:", error);
       const errorMessage: Message = {
         role: "SYSTEM",
         content: "Failed to generate a response.",

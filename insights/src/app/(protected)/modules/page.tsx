@@ -15,7 +15,7 @@ const MyModules = async () => {
   try {
     modules = await fetchModuleVideos(session.user.id);
   } catch (error) {
-    console.error("Error in MyModules:", error);
+    // console.error("Error in MyModules:", error);
     return <div className="text-center text-red-500">Error loading modules</div>;
   }
 

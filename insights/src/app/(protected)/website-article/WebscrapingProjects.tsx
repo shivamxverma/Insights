@@ -23,7 +23,7 @@ const WebscrapingProjects = async () => {
       await DeleteWebProject(projectId);
       revalidatePath("/website-article"); // Refresh the page after deletion
     } catch (error) {
-      console.error("Failed to delete project:", error);
+      // console.error("Failed to delete project:", error);
     }
   }
 

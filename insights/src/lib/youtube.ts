@@ -14,7 +14,7 @@ export async function getTranscript(videoId: string): Promise<{ text: string; st
       duration: typeof t.duration === "number" ? t.duration / 1000 : 0, // Default to 0 if invalid, convert ms to seconds
     }));
   } catch (error) {
-    console.log(`Transcript fetch failed for ${videoId}:`, error);
+    // console.log(`Transcript fetch failed for ${videoId}:`, error);
     const details = await fetchVideoDetails(videoId);
     return details?.description ? [{ text: details.description, start: 0, duration: 0 }] : [];
   }
@@ -29,7 +29,7 @@ async function fetchVideoDetails(videoId: string) {
     const data = await res.json();
     return data.items?.[0]?.snippet || null;
   } catch (error) {
-    console.error("Failed to fetch video details:", error);
+    // console.error("Failed to fetch video details:", error);
     return null;
   }
 }

@@ -82,7 +82,7 @@ export default function CreateVideoClient({ userId, modules }: CreateVideoClient
       router.push(`/video-modules/${module.id}${videoId ? `/${videoId}` : ''}`);
     },
     onError: (error: any) => {
-      console.error(error);
+      // console.error(error);
       toast.error(error.message || 'Failed to add video or playlist to module',{
         style: {
           backgroundColor: "#dc2626", // Red for destructive

@@ -66,7 +66,7 @@ const Transcript: React.FC<TranscriptProps> = ({ moduleId, videoId }) => {
           setError(data.error || "Unknown error");
         }
       } catch (error) {
-        console.error("Error fetching transcript:", error);
+        // console.error("Error fetching transcript:", error);
         setError("Failed to fetch transcript.");
       } finally {
         setLoading(false);

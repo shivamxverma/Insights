@@ -55,7 +55,7 @@ export default function SummaryPage({ content, projectId }: Props) {
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
         setError(errorMessage);
-        console.error("Error fetching summary:", err);
+        // console.error("Error fetching summary:", err);
       } finally {
         setIsLoading(false);
       }

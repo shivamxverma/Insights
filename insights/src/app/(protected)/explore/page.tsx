@@ -41,7 +41,7 @@ const MyCourses = async () => {
     myCourses = await fetchCourses(session.user.id); // User's courses
     allCourses = await fetchCourses(session.user.id, true); // All courses
   } catch (error) {
-    console.error("Error in MyCourses:", error);
+    // console.error("Error in MyCourses:", error);
     return <div className="text-center text-red-500">Error loading courses</div>;
   }
 

@@ -15,7 +15,7 @@ export default function CourseAiNotes({course , unitIndex , chapterIndex  }: Tra
     const unitId = course.units[unitIndex].id;
     const chapterId = course.units[unitIndex].chapters[chapterIndex].id;
     const videoId   = course.units[unitIndex].chapters[chapterIndex].videoId;
-    console.log("in AiNotes - Module ID:", unitId, "Video ID:", videoId);
+    // console.log( "in AiNotes - Module ID:", unitId, "Video ID:", videoId);
 
   const [summary, setSummary] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,7 +34,7 @@ export default function CourseAiNotes({course , unitIndex , chapterIndex  }: Tra
         setSummary(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch summary");
-        console.error("Error in AiNotes:", err);
+        // console.error("Error in AiNotes:", err);
       } finally {
         setLoading(false);
       }

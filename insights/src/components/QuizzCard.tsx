@@ -29,7 +29,7 @@ const QuizCard: React.FC<Props> = ({ videoId }) => {
     const fetchQuizzes = async () => {
       setLoading(true);
       setError(null);
-      console.log("Fetching quizzes for videoId:", videoId);
+      // console.log("Fetching quizzes for videoId:", videoId);
       try {
         const res = await fetch("/api/getQuiz", {
           method: "POST",
@@ -43,7 +43,7 @@ const QuizCard: React.FC<Props> = ({ videoId }) => {
           setError(data.error || "Failed to load quizzes");
         }
       } catch (err) {
-        console.error("Error fetching quizzes:", err);
+        // console.error("Error fetching quizzes:", err);
         setError("Failed to load quizzes");
       } finally {
         setLoading(false);

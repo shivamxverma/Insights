@@ -59,7 +59,7 @@ const CourseTranscript: React.FC<TranscriptProps> = ({ course, unitIndex, chapte
           setError("No transcript available.");
         }
       } catch (error) {
-        console.error("Error fetching transcript:", error);
+        // console.error("Error fetching transcript:", error);
         setError("Failed to fetch transcript.");
       } finally {
         setLoading(false);

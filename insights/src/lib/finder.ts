@@ -33,7 +33,7 @@ export async function findGeneratedSummary({ moduleId, videoId }: TranscriptProp
       const transcript: TranscriptSegment[] = JSON.parse(video.summary);
       const transcriptText = transcript.map((seg) => seg.text).join(" ");
       if (!transcriptText.trim()) {
-        console.warn("Transcript is empty, cannot generate summary");
+        // console.warn("Transcript is empty, cannot generate summary");
         return null;
       }
 
@@ -60,7 +60,7 @@ export async function findGeneratedSummary({ moduleId, videoId }: TranscriptProp
     }
 
     const data = await res.json();
-    console.log("Transcript data from API:", data);
+    // console.log("Transcript data from API:", data);
 
     const transcript: TranscriptSegment[] = Array.isArray(data.transcript)
       ? data.transcript
@@ -68,7 +68,7 @@ export async function findGeneratedSummary({ moduleId, videoId }: TranscriptProp
     const transcriptText = transcript.map((seg) => seg.text).join(" ");
 
     if (!transcriptText.trim()) {
-      console.warn("Fetched transcript is empty, cannot generate summary");
+      // console.warn("Fetched transcript is empty, cannot generate summary");
       return null;
     }
 
@@ -87,7 +87,7 @@ export async function findGeneratedSummary({ moduleId, videoId }: TranscriptProp
 
     return summary;
   } catch (error) {
-    console.error("Error in findGeneratedSummary:", error);
+    // console.error("Error in findGeneratedSummary:", error);
     throw new Error(error instanceof Error ? error.message : "Failed to generate summary");
   }
 }

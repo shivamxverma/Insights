@@ -37,7 +37,7 @@ export default function ProjectForm({ userId }: Props) {
     }
 
     try {
-      console.log("Creating project with userId:", userId);
+      // console.log("Creating project with userId:", userId);
       const projectId = await createWebScrapeProject(name, url, userId);
 
       if (!projectId) {
@@ -47,7 +47,7 @@ export default function ProjectForm({ userId }: Props) {
       // Redirect to SummaryPage with the project URL
       router.push(`/website-article/${projectId}`);
     } catch (err) {
-      console.error("Project creation error:", err);
+      // console.error("Project creation error:", err);
       setError(err instanceof Error ? err.message : "An error occurred");
       setIsLoading(false);
     }

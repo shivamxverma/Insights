@@ -39,18 +39,18 @@ export async function uploadPDF(pdf: File | null) {
 
   let newProject: { id: string } | undefined = undefined;
   try {
-    console.log(`Received file for upload: ${pdf.name}, size: ${pdf.size} bytes`);
+    // console.log(`Received file for upload: ${pdf.name}, size: ${pdf.size} bytes`);
 
     const arrayBuffer = await pdf.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    console.log(`Converted file to buffer, length: ${buffer.length} bytes`);
+    // console.log(`Converted file to buffer, length: ${buffer.length} bytes`);
 
     const pdfData = await pdfParse(buffer);
     const extractedText = pdfData.text.trim();
     if (!extractedText) {
       return { error: "Extracted text is empty" };
     }
-    console.log(`Extracted text, length: ${extractedText.length} characters`);
+    // console.log(`Extracted text, length: ${extractedText.length} characters`);
 
     const summarizedText =  await generateSummary(extractedText);
     newProject = await prisma.chatPdf.create({
@@ -60,7 +60,7 @@ export async function uploadPDF(pdf: File | null) {
         userId: session.user.id,
       },
     });
-    console.log(`Created new project: ${newProject.id}`);
+    // console.log(`Created new project: ${newProject.id}`);
 
     const { chunks, embeddings } = await processText(extractedText, {
       bufferSize: 1,
@@ -69,7 +69,7 @@ export async function uploadPDF(pdf: File | null) {
       percentileThreshold: 90,
       maxSentencesPerBatch: 500,
     });
-    console.log(`Processed ${chunks.length} chunks`);
+    // console.log(`Processed ${chunks.length} chunks`);
 
     if (!newProject) {
       throw new Error("New project creation failed");
@@ -95,17 +95,17 @@ export async function uploadPDF(pdf: File | null) {
           },
         });
       } else {
-        console.warn(`Skipping chunk ${index} due to invalid embedding`);
+        // console.warn(`Skipping chunk ${index} due to invalid embedding`);
       }
     }
-    console.log(`Prepared ${validVectors.length} valid vectors for Pinecone (filtered from ${chunks.length})`);
+    // console.log(`Prepared ${validVectors.length} valid vectors for Pinecone (filtered from ${chunks.length})`);
 
     const namespace =  newProject.id;
-    console.log(`Uploading embeddings to Pinecone namespace: ${namespace}`);
+    // console.log(`Uploading embeddings to Pinecone namespace: ${namespace}`);
     await uploadToPinecone(validVectors, namespace);
-    console.log("Processing and uploading complete");
+    // console.log("Processing and uploading complete");
   } catch (error) {
-    console.error("Error processing PDF:", error);
+    // console.error("Error processing PDF:", error);
     return { error: "Failed to process PDF" };
   }
 

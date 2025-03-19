@@ -106,11 +106,11 @@ export async function SummarizeScrapeContent(content: string): Promise<string> {
    try {
       const result = await model.generateContent(summarizationPrompt);
       const summary = result.response.text();
-      console.log("Generated summary:", summary);
+      // console.log("Generated summary:", summary);
       return summary;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      console.error("Error generating summary:", error);
+      // console.error("Error generating summary:", error);
       return errorMessage;
 
 }

@@ -23,23 +23,23 @@ export async function scrapedContent(projectId: string): Promise<string | undefi
         url = data.url;
       }
       else{
-        console.error("No data found for project ID:", projectId);
+        // console.error("No data found for project ID:", projectId);
         return;
       }
     }
     catch (error) {
-      console.error("Error fetching summary:", error);
+      // console.error("Error fetching summary:", error);
       throw error;
     }
 
   try {
     const result = await scraper.scrape(url);
     if (!result || !result.content) {
-      console.error(`Failed to scrape content from ${url}`);
+      // console.error(`Failed to scrape content from ${url}`);
       return;
     }
 
-    console.log(`Scraped content length from ${url}:`, result.content.length);
+    // console.log(`Scraped content length from ${url}:`, result.content.length);
 
     // const { chunks, embeddings } = await processText(result.content);
     // if (!chunks.length || !embeddings.length) {
@@ -70,7 +70,7 @@ export async function scrapedContent(projectId: string): Promise<string | undefi
 
     return result.content;
   } catch (error) {
-    console.error(`Error processing ${url}:`, error);
+    // console.error(`Error processing ${url}:`, error);
   } finally {
     await scraper.close();
   }
@@ -79,7 +79,7 @@ export async function scrapedContent(projectId: string): Promise<string | undefi
 if (require.main === module) {
   const url = process.argv[2];
   if (!url) {
-    console.error("Please provide a URL as an argument.");
+    // console.error("Please provide a URL as an argument.");
     process.exit(1);
   }
   scrapedContent(url)

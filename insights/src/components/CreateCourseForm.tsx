@@ -55,7 +55,7 @@ const CreateCourseForm = ({ isPro }: Props) => {
         router.push(`/create/${course_id}`);
       },
       onError: (error) => {
-        console.error(error);
+        // console.error(error);
         toast.error("Something went wrong");
       },
     });

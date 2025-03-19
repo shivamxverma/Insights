@@ -10,7 +10,7 @@ interface TranscriptProps {
 }
 
 export default function AiNotes({ moduleId, videoId }: TranscriptProps) {
-  console.log("in AiNotes - Module ID:", moduleId, "Video ID:", videoId);
+  // console.log("in AiNotes - Module ID:", moduleId, "Video ID:", videoId);
 
   const [summary, setSummary] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,7 +29,7 @@ export default function AiNotes({ moduleId, videoId }: TranscriptProps) {
         setSummary(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch summary");
-        console.error("Error in AiNotes:", err);
+        // console.error("Error in AiNotes:", err);
       } finally {
         setLoading(false);
       }

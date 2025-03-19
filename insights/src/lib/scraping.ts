@@ -144,7 +144,7 @@ export class AdvancedScraper {
         },
       };
     } catch (error) {
-      console.error("Cheerio scraping failed:", error);
+      // console.error("Cheerio scraping failed:", error);
       return null;
     }
   }
@@ -167,7 +167,7 @@ export class AdvancedScraper {
         };
       }
     } catch (error) {
-      console.error("Readability extraction failed:", error);
+      // console.error("Readability extraction failed:", error);
     }
     return null;
   }
@@ -237,7 +237,7 @@ export class AdvancedScraper {
       }, this.customSelectors);
 
       const duration = Date.now() - startTime;
-      console.log(`Playwright scrape duration: ${duration}ms`);
+      // console.log(`Playwright scrape duration: ${duration}ms`);
 
       return {
         content: this.postProcessContent(result.content),
@@ -249,7 +249,7 @@ export class AdvancedScraper {
         },
       };
     } catch (error) {
-      console.error("Playwright scraping failed:", error);
+      // console.error("Playwright scraping failed:", error);
       return null;
     } finally {
       await page.close();
@@ -260,7 +260,7 @@ export class AdvancedScraper {
   // ===== Combined Scraping =====
   async scrape(url: string): Promise<ScrapingResult | null> {
     if (AdvancedScraper.requestCount >= AdvancedScraper.MAX_REQUESTS_PER_MINUTE) {
-      console.error("Rate limit exceeded");
+      // console.error("Rate limit exceeded");
       throw new Error("Rate limit exceeded");
     }
     AdvancedScraper.requestCount++;
@@ -293,11 +293,11 @@ export class AdvancedScraper {
       }
     }
 
-    console.log("Scraped content length:", finalResult?.content.length);
-    console.log("Scraped content:", finalResult?.content);
+    // console.log("Scraped content length:", finalResult?.content.length);
+    // console.log("Scraped content:", finalResult?.content);
 
     const totalDuration = Date.now() - startTime;
-    console.log(`Total scrape duration: ${totalDuration}ms`);
+    // console.log(`Total scrape duration: ${totalDuration}ms`);
 
     // Cache functionality removed
 

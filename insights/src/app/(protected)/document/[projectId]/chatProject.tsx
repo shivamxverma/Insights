@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function SummaryPage({ content, projectId }: Props) {
-  console.log("content in chatpdf" , content)
+  // console.log("content in chatpdf" , content)
   const [summary, setSummary] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +32,7 @@ export default function SummaryPage({ content, projectId }: Props) {
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
         setError(errorMessage);
-        console.error("Error fetching summary:", err);
+        // console.error("Error fetching summary:", err);
       } finally {
         setIsLoading(false);
       }

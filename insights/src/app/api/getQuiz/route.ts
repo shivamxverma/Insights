@@ -8,7 +8,7 @@ import { prisma } from "@/lib/db";
 export async function POST(req: NextRequest) {
   const { videoId } = await req.json();
 
-  console.log("Received videoId:", videoId); // Debug log
+  // console.log("Received videoId:", videoId); // Debug log
 
   if (!videoId) {
     return NextResponse.json(
@@ -41,10 +41,10 @@ export async function POST(req: NextRequest) {
       where: { videoId: videoId },
       select: { summary: true },
     });
-    console.log("Fetched transcript:", transcript); // Debug log
+    // console.log("Fetched transcript:", transcript); // Debug log
 
     const generatedQuestions = await generateQuestions(transcript?.summary!, "Video Quiz");
-    console.log("Generated questions:", generatedQuestions); // Debug log
+    // console.log("Generated questions:", generatedQuestions); // Debug log
 
     await prisma.quiz.deleteMany({
       where: { videoId: video.id },
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ questions: quizzes }, { status: 201 });
   } catch (error) {
-    console.error("Quiz Creation Error:", error);
+    // console.error("Quiz Creation Error:", error);
     return NextResponse.json({ error: "Failed to generate quizzes" }, { status: 500 });
   }
 }
